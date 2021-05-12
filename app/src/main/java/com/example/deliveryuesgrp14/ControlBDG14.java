@@ -124,12 +124,11 @@ public class ControlBDG14 {
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: MARCA                                                 */\n" +
                         "/*==============================================================*/\n" +
-                        "create table MARCA \n" +
+                        "create table MARCA\n" +
                         "(\n" +
-                        "   CODMARCA             INTEGER              not null,\n" +
-                        "   CODPRODUCT           INTEGER,\n" +
-                        "   NOMBREMARCA          CHAR(256)            not null,\n" +
-                        "   constraint PK_MARCA primary key (CODMARCA)\n" +
+                        "   CODMARCA             int not null,\n" +
+                        "   NOMBREMARCA          char(256) not null,\n" +
+                        "   primary key (CODMARCA)\n" +
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: MENU                                                  */\n" +
@@ -170,14 +169,15 @@ public class ControlBDG14 {
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: PRODUCTO                                              */\n" +
                         "/*==============================================================*/\n" +
-                        "create table PRODUCTO \n" +
+                        "create table PRODUCTO\n" +
                         "(\n" +
-                        "   CODPRODUCT           INTEGER              not null,\n" +
-                        "   CODCATEGORIA         INTEGER,\n" +
-                        "   NOMBRECLIENTE        CHAR(250)            not null,\n" +
-                        "   DESCRIPCIONPROD      CHAR(250)            not null,\n" +
-                        "   EXISTENCIAS          INTEGER              not null,\n" +
-                        "   constraint PK_PRODUCTO primary key (CODPRODUCT)\n" +
+                        "   CODPRODUCT           int not null,\n" +
+                        "   CODCATEGORIA         int,\n" +
+                        "   CODMARCA             int,\n" +
+                        "   NOMBREPRODUCTO       char(250) not null,\n" +
+                        "   DESCRIPCIONPROD      char(250) not null,\n" +
+                        "   EXISTENCIAS          int not null,\n" +
+                        "   primary key (CODPRODUCT)\n" +
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: PRODUCTOPRECIO                                        */\n" +
@@ -257,26 +257,27 @@ public class ControlBDG14 {
     public void cerrar(){
         DBHelper.close();
     }
-//    public String insertar(Alumno alumno){
-//
-//        String regInsertados = "Registro Inserado Nº= ";
-//        long contador = 0;
-//
-//        ContentValues alum = new ContentValues();
-//        alum.put("Carnet", alumno.getCarnet());
-//        alum.put("nombre",alumno.getNombre());
-//        alum.put("apellido",alumno.getApellido());
-//        alum.put("sexo",alumno.getSexo());
-//        alum.put("matganadas", alumno.getMatganadas());
-//        contador = db.insert("alumno",null,alum);
-//        if(contador==-1 || contador==0){
-//            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
-//        }
-//        else {
-//            regInsertados = regInsertados+contador;
-//        }
-//        return regInsertados;
-//    }
+    public String insertar(Producto producto){
+
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+         ContentValues prod = new ContentValues();
+          prod.put("CODPRODUCT", producto.getCodProduct());
+          prod.put("CODCATEGORIA",producto.getCodCategoria());
+          prod.put("CODMARCA",producto.getCodMarca());
+          prod.put("NOMBREPRODUCTO",producto.getNombreProducto());
+          prod.put("DESCRIPCIONPROD", producto.getDescripcionProd());
+          prod.put("EXISTENCIAS", producto.getExistencias());
+          contador = db.insert("PRODUCTO",null,prod);
+          if(contador==-1 || contador==0){
+          regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+         }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+       return regInsertados;
+        }
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){
 //            String[] id = {alumno.getCarnet()};
@@ -300,7 +301,7 @@ public class ControlBDG14 {
 //        contador+=db.delete("alumno", "carnet='"+alumno.getCarnet()+"'", null);
 //        regAfectados+=contador;
 //        return regAfectados;
-//    }
+//   }
 
 
 //    public Alumno consultarAlumno(String carnet){
