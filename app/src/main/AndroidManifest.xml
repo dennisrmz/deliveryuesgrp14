@@ -19,8 +19,13 @@
         <activity android:name=".PedidoConsultarActivity" />
         <activity android:name=".PedidoActualizarActivity" />
         <activity android:name=".PedidoMenuActivity" />
+        <activity android:name=".MenuPrincipalActivity"></activity>
+        <activity android:name=".ProductoEliminarActivity" />
+        <activity android:name=".ProductoActualizarActivity" />
+        <activity android:name=".ProductoConsultarActivity" />
+        <activity android:name=".ProductoInsertarActivity" />
+        <activity android:name=".ProductoMenuActivity" />
         <activity android:name=".MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
