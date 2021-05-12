@@ -8,6 +8,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+
+
 public class ControlBDG14 {
 
     private final Context context;
@@ -237,6 +239,7 @@ public class ControlBDG14 {
                         "   CONTRASENA           CHAR(256)            not null,\n" +
                         "   constraint PK_USUARIO primary key (CODUSUARIO)\n" +
                         ");");
+
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -286,9 +289,7 @@ public class ControlBDG14 {
 //        }else{
 //            return "Registro con carnet " + alumno.getCarnet() + " no existe";
 //        }
-//    }
-
-
+//      }
 
 //    public String eliminar(Alumno alumno){
 //        String regAfectados="filas afectadas= ";
@@ -405,54 +406,53 @@ public class ControlBDG14 {
 //            default:
 //                return false;
 //        }
-//
-//        }
-//    public String llenarBDRG14(){
-////        final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
-////        final String[] VAnombre = {"Carlos","Pedro","Sara","Gabriela"};
-////        final String[] VAapellido = {"Orantes","Ortiz","Gonzales","Coto"};
-////        final String[] VAsexo = {"M","M","F","F"};
-////        final String[] VMcodmateria = {"MAT115","PRN115","IEC115","TSI115"};
-////        final String[] VMnommateria = {"Matematica I","Programacion I","Ingenieria Economica","Teoria de Sistemas"};
-////        final String[] VMunidadesval = {"4","4","4","4"};
-////        final String[] VNcarnet =
-////                {"OO12035","OF12044","GG11098","CC12021","OO12035","GG11098","OF12044"};
-////        final String[] VNcodmateria =
-////                {"MAT115","PRN115","IEC115","TSI115","IC115","MAT115","PRN115"};
-////        final String[] VNciclo =
-////                {"12016","12016","22016","22016","22016","12016","22016"};
-////        final float[] VNnotafinal = {7,5,8,7,6,10,7};
-////        abrir();
-////        db.execSQL("DELETE FROM alumno");
-////        db.execSQL("DELETE FROM materia");
-////        db.execSQL("DELETE FROM nota");
-////        Alumno alumno = new Alumno();
-////        for(int i=0;i<4;i++){
-////            alumno.setCarnet(VAcarnet[i]);
-////            alumno.setNombre(VAnombre[i]);
-////            alumno.setApellido(VAapellido[i]);
-////            alumno.setSexo(VAsexo[i]);
-////            alumno.setMatganadas(0);
-////            insertar(alumno);
-////        }
-////        Materia materia = new Materia();
-////        for(int i=0;i<4;i++){
-////            materia.setCodmateria(VMcodmateria[i]);
-////            materia.setNommateria(VMnommateria[i]);
-////            materia.setUnidadesval(VMunidadesval[i]);
-////            insertar(materia);
-////        }
-////        Nota nota = new Nota();
-////        for(int i=0;i<7;i++){
-////            nota.setCarnet(VNcarnet[i]);
-////            nota.setCodmateria(VNcodmateria[i]);
-////            nota.setCiclo(VNciclo[i]);
-////            nota.setNotafinal(VNnotafinal[i]);
-////            insertar(nota);
-////        }
-////        cerrar();
-////        return "Guardo Correctamente";
-//   }
+//       }
+public String llenarBDRG14(){
+//    final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
+//    final String[] VAnombre = {"Carlos","Pedro","Sara","Gabriela"};
+//    final String[] VAapellido = {"Orantes","Ortiz","Gonzales","Coto"};
+//    final String[] VAsexo = {"M","M","F","F"};
+//    final String[] VMcodmateria = {"MAT115","PRN115","IEC115","TSI115"};
+//    final String[] VMnommateria = {"Matematica I","Programacion I","Ingenieria Economica","Teoria de Sistemas"};
+//    final String[] VMunidadesval = {"4","4","4","4"};
+//    final String[] VNcarnet =
+//            {"OO12035","OF12044","GG11098","CC12021","OO12035","GG11098","OF12044"};
+//    final String[] VNcodmateria =
+//            {"MAT115","PRN115","IEC115","TSI115","IC115","MAT115","PRN115"};
+//    final String[] VNciclo =
+//            {"12016","12016","22016","22016","22016","12016","22016"};
+//    final float[] VNnotafinal = {7,5,8,7,6,10,7};
+     abrir();
+//    db.execSQL("DELETE FROM alumno");
+//    db.execSQL("DELETE FROM materia");
+//    db.execSQL("DELETE FROM nota");
+//    Alumno alumno = new Alumno();
+//    for(int i=0;i<4;i++){
+//        alumno.setCarnet(VAcarnet[i]);
+//        alumno.setNombre(VAnombre[i]);
+//        alumno.setApellido(VAapellido[i]);
+//        alumno.setSexo(VAsexo[i]);
+//        alumno.setMatganadas(0);
+//        insertar(alumno);
+//    }
+//    Materia materia = new Materia();
+//    for(int i=0;i<4;i++){
+//        materia.setCodmateria(VMcodmateria[i]);
+//        materia.setNommateria(VMnommateria[i]);
+//        materia.setUnidadesval(VMunidadesval[i]);
+//        insertar(materia);
+//    }
+//    Nota nota = new Nota();
+//    for(int i=0;i<7;i++){
+//        nota.setCarnet(VNcarnet[i]);
+//        nota.setCodmateria(VNcodmateria[i]);
+//        nota.setCiclo(VNciclo[i]);
+//        nota.setNotafinal(VNnotafinal[i]);
+//        insertar(nota);
+//    }
+     cerrar();
+    return "Guardo Correctamente";
+}
 }
 
 
