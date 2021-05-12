@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 
 
@@ -22,8 +23,9 @@ public class ControlBDG14 {
         DBHelper = new DatabaseHelper(context);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
-        private static final String BASE_DATOS = "sistemaCafetines.s3db";
+        private static final String BASE_DATOS = "sistemacafetines.s3db";
         private static final int VERSION = 1;
+
         public DatabaseHelper(Context context) {
             super(context, BASE_DATOS, null, VERSION);
         }
@@ -32,6 +34,8 @@ public class ControlBDG14 {
         @Override
         public void onCreate(SQLiteDatabase db) {
             try{
+
+
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: ACCESOUSUARIO                                         */\n" +
                         "/*==============================================================*/\n" +
@@ -126,9 +130,11 @@ public class ControlBDG14 {
                         "/*==============================================================*/\n" +
                         "create table MARCA\n" +
                         "(\n" +
+
                         "   CODMARCA             int not null,\n" +
                         "   NOMBREMARCA          char(256) not null,\n" +
                         "   primary key (CODMARCA)\n" +
+
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: MENU                                                  */\n" +
@@ -171,6 +177,7 @@ public class ControlBDG14 {
                         "/*==============================================================*/\n" +
                         "create table PRODUCTO\n" +
                         "(\n" +
+
                         "   CODPRODUCT           int not null,\n" +
                         "   CODCATEGORIA         int,\n" +
                         "   CODMARCA             int,\n" +
@@ -178,6 +185,7 @@ public class ControlBDG14 {
                         "   DESCRIPCIONPROD      char(250) not null,\n" +
                         "   EXISTENCIAS          int not null,\n" +
                         "   primary key (CODPRODUCT)\n" +
+
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: PRODUCTOPRECIO                                        */\n" +
@@ -257,6 +265,7 @@ public class ControlBDG14 {
     public void cerrar(){
         DBHelper.close();
     }
+
     public String insertar(Producto producto){
 
         String regInsertados = "Registro Inserado Nº= ";
@@ -278,6 +287,44 @@ public class ControlBDG14 {
         }
        return regInsertados;
         }
+
+  public String insertar(Usuario usuario){
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+        ContentValues user = new ContentValues();
+        user.put("Correo", usuario.getCorreo());
+        user.put("nombre",usuario.getNombreUsu());
+        user.put("apellido",usuario.getContrasena());
+        contador = db.insert("USUARIO",null,user);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+//    public String insertar(Alumno alumno){
+//
+//        String regInsertados = "Registro Inserado Nº= ";
+//        long contador = 0;
+//
+//        ContentValues alum = new ContentValues();
+//        alum.put("Carnet", alumno.getCarnet());
+//        alum.put("nombre",alumno.getNombre());
+//        alum.put("apellido",alumno.getApellido());
+//        alum.put("sexo",alumno.getSexo());
+//        alum.put("matganadas", alumno.getMatganadas());
+//        contador = db.insert("alumno",null,alum);
+//        if(contador==-1 || contador==0){
+//            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+//        }
+//        else {
+//            regInsertados = regInsertados+contador;
+//        }
+//        return regInsertados;
+//    }
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){
 //            String[] id = {alumno.getCarnet()};
@@ -407,6 +454,7 @@ public class ControlBDG14 {
 //            default:
 //                return false;
 //        }
+
 //       }
 public String llenarBDRG14(){
 //    final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
@@ -453,6 +501,7 @@ public String llenarBDRG14(){
 //    }
      cerrar();
     return "Guardo Correctamente";
+
 }
 }
 
