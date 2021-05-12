@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.widget.Toast;
 
 public class ControlBDG14 {
 
@@ -20,8 +21,9 @@ public class ControlBDG14 {
         DBHelper = new DatabaseHelper(context);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
-        private static final String BASE_DATOS = "sistemaCafetines.s3db";
+        private static final String BASE_DATOS = "sistemacafetines.s3db";
         private static final int VERSION = 1;
+
         public DatabaseHelper(Context context) {
             super(context, BASE_DATOS, null, VERSION);
         }
@@ -30,6 +32,8 @@ public class ControlBDG14 {
         @Override
         public void onCreate(SQLiteDatabase db) {
             try{
+
+
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: ACCESOUSUARIO                                         */\n" +
                         "/*==============================================================*/\n" +
@@ -125,7 +129,6 @@ public class ControlBDG14 {
                         "create table MARCA \n" +
                         "(\n" +
                         "   CODMARCA             INTEGER              not null,\n" +
-                        "   CODPRODUCT           INTEGER,\n" +
                         "   NOMBREMARCA          CHAR(256)            not null,\n" +
                         "   constraint PK_MARCA primary key (CODMARCA)\n" +
                         ");");
@@ -172,6 +175,7 @@ public class ControlBDG14 {
                         "(\n" +
                         "   CODPRODUCT           INTEGER              not null,\n" +
                         "   CODCATEGORIA         INTEGER,\n" +
+                        "   CODMARCA             INTEGER,\n" +
                         "   NOMBRECLIENTE        CHAR(250)            not null,\n" +
                         "   DESCRIPCIONPROD      CHAR(250)            not null,\n" +
                         "   EXISTENCIAS          INTEGER              not null,\n" +
@@ -253,6 +257,26 @@ public class ControlBDG14 {
     }
     public void cerrar(){
         DBHelper.close();
+    }
+
+
+    public String insertar(Usuario usuario){
+
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+        ContentValues user = new ContentValues();
+        user.put("Correo", usuario.getCorreo());
+        user.put("nombre",usuario.getNombreUsu());
+        user.put("apellido",usuario.getContrasena());
+        contador = db.insert("USUARIO",null,user);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
     }
 //    public String insertar(Alumno alumno){
 //
@@ -407,7 +431,7 @@ public class ControlBDG14 {
 //        }
 //
 //        }
-//    public String llenarBDRG14(){
+    public String llenarBDRG14(){
 ////        final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
 ////        final String[] VAnombre = {"Carlos","Pedro","Sara","Gabriela"};
 ////        final String[] VAapellido = {"Orantes","Ortiz","Gonzales","Coto"};
@@ -450,9 +474,9 @@ public class ControlBDG14 {
 ////            nota.setNotafinal(VNnotafinal[i]);
 ////            insertar(nota);
 ////        }
-////        cerrar();
-////        return "Guardo Correctamente";
-//   }
+        cerrar();
+        return "Guardo Correctamente";
+}
 }
 
 
