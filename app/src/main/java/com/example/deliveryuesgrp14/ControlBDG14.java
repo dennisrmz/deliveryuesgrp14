@@ -9,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+
+
 public class ControlBDG14 {
 
     private final Context context;
@@ -126,11 +128,13 @@ public class ControlBDG14 {
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: MARCA                                                 */\n" +
                         "/*==============================================================*/\n" +
-                        "create table MARCA \n" +
+                        "create table MARCA\n" +
                         "(\n" +
-                        "   CODMARCA             INTEGER              not null,\n" +
-                        "   NOMBREMARCA          CHAR(256)            not null,\n" +
-                        "   constraint PK_MARCA primary key (CODMARCA)\n" +
+
+                        "   CODMARCA             int not null,\n" +
+                        "   NOMBREMARCA          char(256) not null,\n" +
+                        "   primary key (CODMARCA)\n" +
+
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: MENU                                                  */\n" +
@@ -171,15 +175,17 @@ public class ControlBDG14 {
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: PRODUCTO                                              */\n" +
                         "/*==============================================================*/\n" +
-                        "create table PRODUCTO \n" +
+                        "create table PRODUCTO\n" +
                         "(\n" +
-                        "   CODPRODUCT           INTEGER              not null,\n" +
-                        "   CODCATEGORIA         INTEGER,\n" +
-                        "   CODMARCA             INTEGER,\n" +
-                        "   NOMBRECLIENTE        CHAR(250)            not null,\n" +
-                        "   DESCRIPCIONPROD      CHAR(250)            not null,\n" +
-                        "   EXISTENCIAS          INTEGER              not null,\n" +
-                        "   constraint PK_PRODUCTO primary key (CODPRODUCT)\n" +
+
+                        "   CODPRODUCT           int not null,\n" +
+                        "   CODCATEGORIA         int,\n" +
+                        "   CODMARCA             int,\n" +
+                        "   NOMBREPRODUCTO       char(250) not null,\n" +
+                        "   DESCRIPCIONPROD      char(250) not null,\n" +
+                        "   EXISTENCIAS          int not null,\n" +
+                        "   primary key (CODPRODUCT)\n" +
+
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: PRODUCTOPRECIO                                        */\n" +
@@ -241,6 +247,7 @@ public class ControlBDG14 {
                         "   CONTRASENA           CHAR(256)            not null,\n" +
                         "   constraint PK_USUARIO primary key (CODUSUARIO)\n" +
                         ");");
+
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -259,9 +266,29 @@ public class ControlBDG14 {
         DBHelper.close();
     }
 
+    public String insertar(Producto producto){
 
-    public String insertar(Usuario usuario){
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
 
+         ContentValues prod = new ContentValues();
+          prod.put("CODPRODUCT", producto.getCodProduct());
+          prod.put("CODCATEGORIA",producto.getCodCategoria());
+          prod.put("CODMARCA",producto.getCodMarca());
+          prod.put("NOMBREPRODUCTO",producto.getNombreProducto());
+          prod.put("DESCRIPCIONPROD", producto.getDescripcionProd());
+          prod.put("EXISTENCIAS", producto.getExistencias());
+          contador = db.insert("PRODUCTO",null,prod);
+          if(contador==-1 || contador==0){
+          regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+         }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+       return regInsertados;
+        }
+
+  public String insertar(Usuario usuario){
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;
 
@@ -310,9 +337,7 @@ public class ControlBDG14 {
 //        }else{
 //            return "Registro con carnet " + alumno.getCarnet() + " no existe";
 //        }
-//    }
-
-
+//      }
 
 //    public String eliminar(Alumno alumno){
 //        String regAfectados="filas afectadas= ";
@@ -323,7 +348,7 @@ public class ControlBDG14 {
 //        contador+=db.delete("alumno", "carnet='"+alumno.getCarnet()+"'", null);
 //        regAfectados+=contador;
 //        return regAfectados;
-//    }
+//   }
 
 
 //    public Alumno consultarAlumno(String carnet){
@@ -429,53 +454,54 @@ public class ControlBDG14 {
 //            default:
 //                return false;
 //        }
-//
-//        }
-    public String llenarBDRG14(){
-////        final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
-////        final String[] VAnombre = {"Carlos","Pedro","Sara","Gabriela"};
-////        final String[] VAapellido = {"Orantes","Ortiz","Gonzales","Coto"};
-////        final String[] VAsexo = {"M","M","F","F"};
-////        final String[] VMcodmateria = {"MAT115","PRN115","IEC115","TSI115"};
-////        final String[] VMnommateria = {"Matematica I","Programacion I","Ingenieria Economica","Teoria de Sistemas"};
-////        final String[] VMunidadesval = {"4","4","4","4"};
-////        final String[] VNcarnet =
-////                {"OO12035","OF12044","GG11098","CC12021","OO12035","GG11098","OF12044"};
-////        final String[] VNcodmateria =
-////                {"MAT115","PRN115","IEC115","TSI115","IC115","MAT115","PRN115"};
-////        final String[] VNciclo =
-////                {"12016","12016","22016","22016","22016","12016","22016"};
-////        final float[] VNnotafinal = {7,5,8,7,6,10,7};
-////        abrir();
-////        db.execSQL("DELETE FROM alumno");
-////        db.execSQL("DELETE FROM materia");
-////        db.execSQL("DELETE FROM nota");
-////        Alumno alumno = new Alumno();
-////        for(int i=0;i<4;i++){
-////            alumno.setCarnet(VAcarnet[i]);
-////            alumno.setNombre(VAnombre[i]);
-////            alumno.setApellido(VAapellido[i]);
-////            alumno.setSexo(VAsexo[i]);
-////            alumno.setMatganadas(0);
-////            insertar(alumno);
-////        }
-////        Materia materia = new Materia();
-////        for(int i=0;i<4;i++){
-////            materia.setCodmateria(VMcodmateria[i]);
-////            materia.setNommateria(VMnommateria[i]);
-////            materia.setUnidadesval(VMunidadesval[i]);
-////            insertar(materia);
-////        }
-////        Nota nota = new Nota();
-////        for(int i=0;i<7;i++){
-////            nota.setCarnet(VNcarnet[i]);
-////            nota.setCodmateria(VNcodmateria[i]);
-////            nota.setCiclo(VNciclo[i]);
-////            nota.setNotafinal(VNnotafinal[i]);
-////            insertar(nota);
-////        }
-        cerrar();
-        return "Guardo Correctamente";
+
+//       }
+public String llenarBDRG14(){
+//    final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
+//    final String[] VAnombre = {"Carlos","Pedro","Sara","Gabriela"};
+//    final String[] VAapellido = {"Orantes","Ortiz","Gonzales","Coto"};
+//    final String[] VAsexo = {"M","M","F","F"};
+//    final String[] VMcodmateria = {"MAT115","PRN115","IEC115","TSI115"};
+//    final String[] VMnommateria = {"Matematica I","Programacion I","Ingenieria Economica","Teoria de Sistemas"};
+//    final String[] VMunidadesval = {"4","4","4","4"};
+//    final String[] VNcarnet =
+//            {"OO12035","OF12044","GG11098","CC12021","OO12035","GG11098","OF12044"};
+//    final String[] VNcodmateria =
+//            {"MAT115","PRN115","IEC115","TSI115","IC115","MAT115","PRN115"};
+//    final String[] VNciclo =
+//            {"12016","12016","22016","22016","22016","12016","22016"};
+//    final float[] VNnotafinal = {7,5,8,7,6,10,7};
+     abrir();
+//    db.execSQL("DELETE FROM alumno");
+//    db.execSQL("DELETE FROM materia");
+//    db.execSQL("DELETE FROM nota");
+//    Alumno alumno = new Alumno();
+//    for(int i=0;i<4;i++){
+//        alumno.setCarnet(VAcarnet[i]);
+//        alumno.setNombre(VAnombre[i]);
+//        alumno.setApellido(VAapellido[i]);
+//        alumno.setSexo(VAsexo[i]);
+//        alumno.setMatganadas(0);
+//        insertar(alumno);
+//    }
+//    Materia materia = new Materia();
+//    for(int i=0;i<4;i++){
+//        materia.setCodmateria(VMcodmateria[i]);
+//        materia.setNommateria(VMnommateria[i]);
+//        materia.setUnidadesval(VMunidadesval[i]);
+//        insertar(materia);
+//    }
+//    Nota nota = new Nota();
+//    for(int i=0;i<7;i++){
+//        nota.setCarnet(VNcarnet[i]);
+//        nota.setCodmateria(VNcodmateria[i]);
+//        nota.setCiclo(VNciclo[i]);
+//        nota.setNotafinal(VNnotafinal[i]);
+//        insertar(nota);
+//    }
+     cerrar();
+    return "Guardo Correctamente";
+
 }
 }
 
