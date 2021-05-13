@@ -12,6 +12,7 @@ public class UsuarioConsultarActivity extends AppCompatActivity {
     EditText editCorreo;
     EditText editNombre;
     EditText editContrasena;
+    EditText editRol;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +22,7 @@ public class UsuarioConsultarActivity extends AppCompatActivity {
         editCorreo = (EditText) findViewById(R.id.editCorreo);
         editNombre = (EditText) findViewById(R.id.editNombre);
         editContrasena = (EditText) findViewById(R.id.editContrasena);
+        editRol = (EditText) findViewById(R.id.editConsulRol);
     }
 
     public void consultarUsuario(View v) {
@@ -31,9 +33,14 @@ public class UsuarioConsultarActivity extends AppCompatActivity {
             Toast.makeText(this, "Usuario con correo " + editCorreo.getText().toString() +
                     " no encontrado", Toast.LENGTH_LONG).show();
         else{
+            helper.abrir();
+            String rol = helper.consultarRolUser(usuario.getCodUsuario());
+            helper.cerrar();
+
             editCorreo.setText(usuario.getCorreo());
             editNombre.setText(usuario.getNombreUsu());
             editContrasena.setText(usuario.getContrasena());
+            editRol.setText(rol);
         }
     }
 

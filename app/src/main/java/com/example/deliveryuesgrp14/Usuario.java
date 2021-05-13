@@ -1,6 +1,7 @@
 package com.example.deliveryuesgrp14;
 
 public class Usuario {
+    private int codUsuario;
     private String correo;
     private String nombreusu;
     private String contrasena;
@@ -8,10 +9,19 @@ public class Usuario {
     public Usuario(){
     }
 
-    public Usuario(String correo, String nombreusu, String contrasena){
+    public Usuario(int codUsuario,String correo, String nombreusu, String contrasena){
+        this.codUsuario = codUsuario;
         this.correo = correo;
         this.nombreusu = nombreusu;
         this.contrasena = contrasena;
+    }
+
+    public int getCodUsuario(){
+        return codUsuario;
+    }
+
+    public void setCodUsuario(int codUsuario){
+        this.codUsuario = codUsuario;
     }
 
     public String getCorreo(){
