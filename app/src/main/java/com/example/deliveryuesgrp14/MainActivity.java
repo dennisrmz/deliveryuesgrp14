@@ -14,6 +14,7 @@ public class MainActivity extends ListActivity {
 
     String[] menu={"Login", "Tabla Usuario" ,"Tabla Opciones Crud" ,"LLenar Basede Datos",};
     String[] activities={"MenuPrincipalActivity", "UsuarioMenuActivity","RolMenuActivity" };
+
     ControlBDG14 BDhelper;
 
     @Override
@@ -46,6 +47,7 @@ public class MainActivity extends ListActivity {
             String tost=BDhelper.llenarBDRG14();
             BDhelper.cerrar();
             Toast.makeText(this, tost, Toast.LENGTH_SHORT).show();
+
             String nombreValue=activities[0];
             try{
                 Class<?>
@@ -55,6 +57,7 @@ public class MainActivity extends ListActivity {
             }catch(ClassNotFoundException e){
                 e.printStackTrace();
             }
+
 
         }
     }

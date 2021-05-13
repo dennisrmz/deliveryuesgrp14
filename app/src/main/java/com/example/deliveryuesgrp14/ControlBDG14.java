@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 
 
@@ -23,9 +22,8 @@ public class ControlBDG14 {
         DBHelper = new DatabaseHelper(context);
     }
     private static class DatabaseHelper extends SQLiteOpenHelper {
-        private static final String BASE_DATOS = "sistemacafetines.s3db";
+        private static final String BASE_DATOS = "sistemaCafetines.s3db";
         private static final int VERSION = 1;
-
         public DatabaseHelper(Context context) {
             super(context, BASE_DATOS, null, VERSION);
         }
@@ -34,8 +32,6 @@ public class ControlBDG14 {
         @Override
         public void onCreate(SQLiteDatabase db) {
             try{
-
-
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: ACCESOUSUARIO                                         */\n" +
                         "/*==============================================================*/\n" +
@@ -130,11 +126,9 @@ public class ControlBDG14 {
                         "/*==============================================================*/\n" +
                         "create table MARCA\n" +
                         "(\n" +
-
                         "   CODMARCA             int not null,\n" +
                         "   NOMBREMARCA          char(256) not null,\n" +
                         "   primary key (CODMARCA)\n" +
-
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: MENU                                                  */\n" +
@@ -177,7 +171,6 @@ public class ControlBDG14 {
                         "/*==============================================================*/\n" +
                         "create table PRODUCTO\n" +
                         "(\n" +
-
                         "   CODPRODUCT           int not null,\n" +
                         "   CODCATEGORIA         int,\n" +
                         "   CODMARCA             int,\n" +
@@ -185,7 +178,6 @@ public class ControlBDG14 {
                         "   DESCRIPCIONPROD      char(250) not null,\n" +
                         "   EXISTENCIAS          int not null,\n" +
                         "   primary key (CODPRODUCT)\n" +
-
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: PRODUCTOPRECIO                                        */\n" +
@@ -265,7 +257,6 @@ public class ControlBDG14 {
     public void cerrar(){
         DBHelper.close();
     }
-
     public String insertar(Producto producto){
 
         String regInsertados = "Registro Inserado Nº= ";
@@ -288,7 +279,117 @@ public class ControlBDG14 {
        return regInsertados;
         }
 
-  public String insertarUsuario(Usuario usuario){
+
+    public Producto consultarProducto(String codProduct){
+        String[] id = {codProduct};
+        Cursor cursor = db.query("PRODUCTO", camposProducto, "CODPRODUCT = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            Producto producto = new Producto();
+            producto.setCodProduct(cursor.getInt(0));
+            producto.setCodCategoria(cursor.getInt(1));
+            producto.setCodMarca(cursor.getInt(2));
+            producto.setNombreProducto(cursor.getString(3));
+            producto.setDescripcionProd(cursor.getString(4));
+            producto.setExistencias(cursor.getInt(5));
+            return producto;
+        }else{
+            return null;
+        }
+
+    }
+    public String actualizar(Producto producto){
+        long contador = 0;
+        String[] id = {Integer.toString(producto.getCodProduct())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODPRODUCT", producto.getCodProduct());
+        cv.put("CODCATEGORIA",producto.getCodCategoria());
+        cv.put("CODMARCA",producto.getCodMarca());
+        cv.put("NOMBREPRODUCTO",producto.getNombreProducto());
+        cv.put("DESCRIPCIONPROD", producto.getDescripcionProd());
+        cv.put("EXISTENCIAS", producto.getExistencias());
+
+        contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
+        if(contador==-1 || contador==0){
+            return "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            return "Registro Actualizado Correctamente";
+        }
+
+    }
+
+    public String eliminar(Producto producto){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("PRODUCTO", "CODPRODUCT='"+producto.getCodProduct()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+    ///******************************Marca*****************************
+    public String insertar(Marca marca ){
+
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+        ContentValues marc = new ContentValues();
+        marc.put("CODMARCA", marca.getCodMarca());
+        marc.put("NOMBREMARCA",marca.getNombreMarca());
+
+        contador = db.insert("MARCA",null,marc);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+
+    public Marca consultarMarca(String codMarca){
+        String[] id = {codMarca};
+        Cursor cursor = db.query("MARCA", camposMarca, "CODMARCA = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            Marca marca = new Marca();
+            marca.setCodMarca(cursor.getInt(0));
+            marca.setNombreMarca(cursor.getString(1));
+
+            return marca;
+        }else{
+            return null;
+        }
+
+    }
+    public String actualizar(Marca marca){
+        long contador = 0;
+        String[] id = {Integer.toString(marca.getCodMarca())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODMARCA", marca.getCodMarca());
+        cv.put("NOMBREMARCA",marca.getNombreMarca());
+
+
+        contador =  db.update("MARCA", cv, "CODMARCA = ?", id);
+        if(contador==-1 || contador==0){
+            return "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            return "Registro Actualizado Correctamente";
+        }
+
+    }
+
+    public String eliminar(Marca marca){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("MARCA", "CODMARCA='"+marca.getCodMarca()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+
+    public String insertar(Usuario usuario){
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;
 
@@ -460,6 +561,7 @@ public class ControlBDG14 {
 //        }
 //        return regInsertados;
 //    }
+
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){
 //            String[] id = {alumno.getCarnet()};
@@ -589,7 +691,6 @@ public class ControlBDG14 {
 //            default:
 //                return false;
 //        }
-
 //       }
 public String llenarBDRG14(){
 //    final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
@@ -636,7 +737,6 @@ public String llenarBDRG14(){
 //    }
      cerrar();
     return "Guardo Correctamente";
-
 }
 }
 

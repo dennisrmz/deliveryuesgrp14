@@ -51,7 +51,7 @@
 
     <TableRow>
         <Button
-            android:onClick="insertarAlumno"
+            android:onClick="insertarProducto"
             android:text="insertar" />
         <Button android:onClick="limpiarTexto"
             android:text="limpiar" />
