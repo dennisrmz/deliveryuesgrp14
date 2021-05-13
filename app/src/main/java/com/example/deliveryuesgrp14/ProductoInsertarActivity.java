@@ -28,13 +28,18 @@ public class ProductoInsertarActivity extends Activity {
         editDescripcionProd = (EditText) findViewById(R.id.editDescripcion);
         editExistencias = (EditText) findViewById(R.id.editExistencias);
     }
-    public void insertarAlumno(View v) {
-        int codProducto = (int) CodProducto.getTextAlignment();
-        int categoria = (int) editCategoria.getTextAlignment();
-        int marca = (int) editMarca.getTextAlignment();
+    public void insertarProducto(View v) {
+        String pivote;
+        pivote =  CodProducto.getText().toString();
+        int codProducto = Integer.parseInt(pivote);
+        pivote =  editCategoria.getText().toString();
+        int categoria = Integer.parseInt(pivote);
+        pivote =  editMarca.getText().toString();
+        int marca = Integer.parseInt(pivote);
         String nombre=editNombre.getText().toString();
         String descripcionProducto=editDescripcionProd.getText().toString();
-        int existencias = (int) editExistencias.getTextAlignment();
+        pivote = editExistencias.getText().toString();
+        int existencias = Integer.parseInt(pivote);
         String regInsertados;
         Producto producto=new Producto();
         producto.setCodProduct(codProducto);

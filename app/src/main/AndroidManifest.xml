@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliveryuesgrp14">
+
         <activity android:name=".ClienteEliminarActivity"></activity>
         <activity android:name=".ClienteConsultarActivity" />
         <activity android:name=".ClienteActualizarActivity" />
@@ -19,12 +20,30 @@
         <activity android:name=".PedidoConsultarActivity" />
         <activity android:name=".PedidoActualizarActivity" />
         <activity android:name=".PedidoMenuActivity" />
-        <activity android:name=".MenuPrincipalActivity"></activity>
+        
+        <activity android:name=".RolEliminarActivity"/>
+        <activity android:name=".RolConsultarActivity" />
+        <activity android:name=".RolActualizarActivity" />
+        <activity android:name=".RolInsertarActivity" />
+        <activity android:name=".RolMenuActivity" />
+
+        <activity android:name=".MarcaEliminarActivity"></activity>
+        <activity android:name=".MarcaActualizarActivity" />
+        <activity android:name=".MarcaConsultarActivity" />
+        <activity android:name=".MarcaInsertarActivity" />
+        <activity android:name=".MarcaMenuActivity" />
+        <activity android:name=".MenuPrincipalActivity" />
+      
         <activity android:name=".ProductoEliminarActivity" />
         <activity android:name=".ProductoActualizarActivity" />
         <activity android:name=".ProductoConsultarActivity" />
         <activity android:name=".ProductoInsertarActivity" />
         <activity android:name=".ProductoMenuActivity" />
+        <activity android:name=".UsuarioMenuActivity" />
+        <activity android:name=".UsuarioConsultarActivity" />
+        <activity android:name=".UsuarioActualizarActivity" />
+        <activity android:name=".UsuarioEliminarActivity" />
+        <activity android:name=".UsuarioInsertarActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

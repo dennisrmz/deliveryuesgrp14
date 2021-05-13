@@ -297,6 +297,74 @@ public class ControlBDG14 {
 
         contador = db.insert("CLIENTE",null,prod);
         if(contador==-1 || contador==0){
+                regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+            }
+            else {
+                regInsertados = regInsertados+contador;
+            }
+            return regInsertados;
+      }
+
+
+    public Producto consultarProducto(String codProduct){
+        String[] id = {codProduct};
+        Cursor cursor = db.query("PRODUCTO", camposProducto, "CODPRODUCT = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            Producto producto = new Producto();
+            producto.setCodProduct(cursor.getInt(0));
+            producto.setCodCategoria(cursor.getInt(1));
+            producto.setCodMarca(cursor.getInt(2));
+            producto.setNombreProducto(cursor.getString(3));
+            producto.setDescripcionProd(cursor.getString(4));
+            producto.setExistencias(cursor.getInt(5));
+            return producto;
+        }else{
+            return null;
+        }
+
+    }
+    public String actualizar(Producto producto){
+        long contador = 0;
+        String[] id = {Integer.toString(producto.getCodProduct())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODPRODUCT", producto.getCodProduct());
+        cv.put("CODCATEGORIA",producto.getCodCategoria());
+        cv.put("CODMARCA",producto.getCodMarca());
+        cv.put("NOMBREPRODUCTO",producto.getNombreProducto());
+        cv.put("DESCRIPCIONPROD", producto.getDescripcionProd());
+        cv.put("EXISTENCIAS", producto.getExistencias());
+
+        contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
+        if(contador==-1 || contador==0){
+            return "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            return "Registro Actualizado Correctamente";
+        }
+
+    }
+
+    public String eliminar(Producto producto){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("PRODUCTO", "CODPRODUCT='"+producto.getCodProduct()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+    ///******************************Marca*****************************
+    public String insertar(Marca marca ){
+
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+        ContentValues marc = new ContentValues();
+        marc.put("CODMARCA", marca.getCodMarca());
+        marc.put("NOMBREMARCA",marca.getNombreMarca());
+
+        contador = db.insert("MARCA",null,marc);
+        if(contador==-1 || contador==0){
             regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
         }
         else {
@@ -304,6 +372,7 @@ public class ControlBDG14 {
         }
         return regInsertados;
     }
+
 
     public Cliente ConsultarCliente(String codCliente){
         String[] id = {codCliente};
@@ -316,6 +385,21 @@ public class ControlBDG14 {
             cliente.setApellidoCliente(cursor.getString(3));
             cliente.setNumTelefono(cursor.getString(4));
             return cliente;
+         }else{
+            return null;
+        }
+
+    }
+    public Marca consultarMarca(String codMarca){
+        String[] id = {codMarca};
+        Cursor cursor = db.query("MARCA", camposMarca, "CODMARCA = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            Marca marca = new Marca();
+            marca.setCodMarca(cursor.getInt(0));
+            marca.setNombreMarca(cursor.getString(1));
+
+            return marca;
         }else{
             return null;
         }
@@ -362,6 +446,50 @@ public class ControlBDG14 {
         contador = db.insert("PEDIDO",null,prod);
         if(contador==-1 || contador==0){
             regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+  
+    public String actualizar(Marca marca){
+        long contador = 0;
+        String[] id = {Integer.toString(marca.getCodMarca())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODMARCA", marca.getCodMarca());
+        cv.put("NOMBREMARCA",marca.getNombreMarca());
+
+
+        contador =  db.update("MARCA", cv, "CODMARCA = ?", id);
+        if(contador==-1 || contador==0){
+            return "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            return "Registro Actualizado Correctamente";
+        }
+
+    }
+
+    public String eliminar(Marca marca){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("MARCA", "CODMARCA='"+marca.getCodMarca()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+
+    public String insertar(Usuario usuario){
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+        ContentValues user = new ContentValues();
+        user.put("CORREO", usuario.getCorreo());
+        user.put("NOMBREUSU",usuario.getNombreUsu());
+        user.put("CONTRASENA",usuario.getContrasena());
+        contador = db.insert("USUARIO",null,user);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro de usuario, Registro dublicado. Verificar insercion";
         }
         else {
             regInsertados = regInsertados+contador;
@@ -369,6 +497,160 @@ public class ControlBDG14 {
         return regInsertados;
     }
 
+    public Usuario consultarUsuario(String correo){
+        String[] camposUsuario = {"CORREO", "NOMBREUSU", "CONTRASENA"};
+        String[] id = {correo};
+        Cursor cursor = db.query("USUARIO", camposUsuario, "CORREO = ?", id, null, null, null);
+        if(cursor.moveToFirst()){
+            Usuario usuario = new Usuario();
+            usuario.setCorreo(cursor.getString(0));
+            usuario.setNombreUsu(cursor.getString(1));
+            usuario.setContrasena(cursor.getString(2));
+            return usuario;
+        }else{
+            return null;
+        }
+    }
+
+    public String actualizarUsuario(Usuario usuario){
+        if(verificarIntegridadUsuario(usuario,1)){
+            String[] id = {usuario.getCorreo()};
+            ContentValues cv = new ContentValues();
+
+            cv.put("NOMBREUSU", usuario.getNombreUsu());
+            cv.put("CONTRASENA", usuario.getContrasena());
+            db.update("USUARIO", cv, "CORREO = ?", id);
+            return "Registro Actualizado Correctamente";
+        }else{
+            return  "Registro con correo " + usuario.getCorreo() + " no existe";
+        }
+    }
+
+    public String eliminarUsuario(Usuario usuario){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+//        if (verificarIntegridadUsuario(usuario,2)) {
+//            contador+=db.delete("nota", "carnet='"+alumno.getCarnet()+"'", null);
+//        }
+        contador+=db.delete("USUARIO", "CORREO='"+usuario.getCorreo()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+
+    private boolean verificarIntegridadUsuario(Object dato, int relacion) throws SQLException{
+        switch(relacion){
+            case 1:
+            {
+                //verificar que exista usuario
+                Usuario usuario2 = (Usuario)dato;
+                String[] id = {usuario2.getCorreo()};
+                abrir();
+                Cursor c2 = db.query("USUARIO", null, "CORREO = ?", id, null, null,null);
+                if(c2.moveToFirst()){
+                    //Se encontro Alumno
+                    return true;
+                }
+                return false;
+            }
+            case 2:
+            {
+                //verificar que exista usuario
+                Rol rol2 = (Rol)dato;
+                String[] id = {Integer.toString(rol2.getIdRol())};
+                abrir();
+                Cursor c2 = db.query("OPCIONCRUD", null, "CODOPCION = ?", id, null, null,null);
+                if(c2.moveToFirst()){
+                    //Se encontro Alumno
+                    return true;
+                }
+                return false;
+            }
+            default: {
+                return false;
+            }
+        }
+    }
+
+    public String insertarRol(Rol rol){
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+        ContentValues role = new ContentValues();
+        role.put("CODOPCION", rol.getNum());
+        role.put("DESCRIPCIONCRUD", rol.getDescripcion());
+        role.put("NUMCRUD",rol.getNum());
+
+        contador = db.insert("OPCIONCRUD",null,role);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro de rol, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+
+    public Rol consultarRol(String idRol){
+        String[] camposRol = {"CODOPCION", "DESCRIPCIONCRUD", "NUMCRUD"};
+        String[] id = {idRol};
+        Cursor cursor = db.query("OPCIONCRUD", camposRol, "CODOPCION = ?", id, null, null, null);
+        if(cursor.moveToFirst()){
+            Rol role = new Rol();
+            role.setIdRol(cursor.getInt(0));
+            role.setDescripcion(cursor.getString(1));
+            role.setNum(cursor.getInt(2));
+            return role;
+        }else{
+            return null;
+        }
+    }
+
+    public String actualizarRol(Rol rol){
+        if(verificarIntegridadUsuario(rol,2)){
+            String[] id = {Integer.toString(rol.getIdRol())};
+            ContentValues cv = new ContentValues();
+
+            cv.put("DESCRIPCIONCRUD", rol.getDescripcion());
+            cv.put("NUMCRUD", rol.getNum());
+            db.update("OPCIONCRUD", cv, "CODOPCION = ?", id);
+            return "Registro Actualizado Correctamente";
+        }else{
+            return  "Registro con COD " + rol.getIdRol() + " no existe";
+        }
+    }
+
+    public String eliminarRol(Rol rol){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+//        if (verificarIntegridadUsuario(usuario,2)) {
+//            contador+=db.delete("nota", "carnet='"+alumno.getCarnet()+"'", null);
+//        }
+        contador+=db.delete("OPCIONCRUD", "CODOPCION='"+rol.getIdRol()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+//    public String insertar(Alumno alumno){
+//
+//        String regInsertados = "Registro Inserado Nº= ";
+//        long contador = 0;
+//
+//        ContentValues alum = new ContentValues();
+//        alum.put("Carnet", alumno.getCarnet());
+//        alum.put("nombre",alumno.getNombre());
+//        alum.put("apellido",alumno.getApellido());
+//        alum.put("sexo",alumno.getSexo());
+//        alum.put("matganadas", alumno.getMatganadas());
+//        contador = db.insert("alumno",null,alum);
+//        if(contador==-1 || contador==0){
+//            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+//        }
+//        else {
+//            regInsertados = regInsertados+contador;
+//        }
+//        return regInsertados;
+//    }
 
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){

@@ -7,15 +7,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Codigo Producto" />
+        android:text="@string/rol" />
     <EditText
-        android:id="@+id/codProducto"
+        android:id="@+id/editRol"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"  />
+        android:inputType="number"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Eliminar"
-        android:onClick="eliminarProducto"/>
+        android:text="@string/eliminar"
+        android:onClick="eliminarRol"/>
 </LinearLayout>

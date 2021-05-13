@@ -12,8 +12,9 @@ import android.widget.Toast;
 
 public class MainActivity extends ListActivity {
 
-    String[] menu={"Login","LLenar Basede Datos"};
-    String[] activities={"MenuPrincipalActivity"};
+    String[] menu={"Login", "Tabla Usuario" ,"Tabla Opciones Crud" ,"LLenar Basede Datos",};
+    String[] activities={"MenuPrincipalActivity", "UsuarioMenuActivity","RolMenuActivity" };
+
     ControlBDG14 BDhelper;
 
     @Override
@@ -27,7 +28,7 @@ public class MainActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        if(position!=1){
+        if(position!=3){
 
             String nombreValue=activities[position];
 
@@ -46,6 +47,7 @@ public class MainActivity extends ListActivity {
             String tost=BDhelper.llenarBDRG14();
             BDhelper.cerrar();
             Toast.makeText(this, tost, Toast.LENGTH_SHORT).show();
+
             String nombreValue=activities[0];
             try{
                 Class<?>
@@ -55,6 +57,7 @@ public class MainActivity extends ListActivity {
             }catch(ClassNotFoundException e){
                 e.printStackTrace();
             }
+
 
         }
     }
