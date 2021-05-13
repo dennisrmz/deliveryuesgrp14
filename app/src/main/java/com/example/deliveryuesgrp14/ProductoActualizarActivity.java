@@ -50,7 +50,7 @@ public class ProductoActualizarActivity extends AppCompatActivity {
         producto.setDescripcionProd(descripcionProducto);
         producto.setExistencias(existencias);
         helper.abrir();
-        String estado = helper.actualizar(producto);
+        String estado = helper.actualizarProducto(producto);
         helper.cerrar();
         Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
     }

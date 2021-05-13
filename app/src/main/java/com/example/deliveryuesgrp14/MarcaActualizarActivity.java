@@ -35,7 +35,7 @@ public class MarcaActualizarActivity extends Activity {
         marca.setCodMarca(codMarca);
         marca.setNombreMarca(nombre);
         helper.abrir();
-        String estado = helper.actualizar(marca);
+        String estado = helper.actualizarMarca(marca);
         helper.cerrar();
         Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
     }

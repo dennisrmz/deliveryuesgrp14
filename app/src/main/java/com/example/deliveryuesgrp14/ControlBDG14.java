@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import androidx.annotation.MenuRes;
 
 
 public class ControlBDG14 {
@@ -27,7 +28,8 @@ public class ControlBDG14 {
             {"CODMARCA","NOMBREMARCA"};
     private static final String[]camposCliente = new String [] {"CODCLIENTE","CODUSUARIO","NOMBRECLIENTE","APELLIDOCLIENTE", "NUMTELEFONO"};
     private static final String[]camposPedido = new String [] {"CODPEDIDO","CODREPAR","CODUBICACION","CODCLIENTE","CODLOCAL","TOTAL","COMENTARIOPEDIDO", "ESTADO"};
-
+    private static final String[]camposMenu = new String []
+            {"CODMENU","CODLOCAL" ,"PRECIOCOMBO","DESCRIPCIONCOMBO"};
     private static class DatabaseHelper extends SQLiteOpenHelper {
         private static final String BASE_DATOS = "sistemaCafetines.s3db";
         private static final int VERSION = 1;
@@ -51,10 +53,11 @@ public class ControlBDG14 {
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: CAMBOPRODUCTO                                         */\n" +
                         "/*==============================================================*/\n" +
-                        "create table CAMBOPRODUCTO \n" +
+                        "create table COMBOPRODUCTO \n" +
                         "(\n" +
                         "   CODPRODUCT           INTEGER              not null,\n" +
                         "   CODMENU              INTEGER              not null,\n" +
+                        "   CANTPRODUCT           INTEGER              not null,\n" +
                         "   constraint PK_CAMBOPRODUCTO primary key (CODPRODUCT, CODMENU)\n" +
                         ");");
                 db.execSQL(
@@ -264,7 +267,7 @@ public class ControlBDG14 {
     public void cerrar(){
         DBHelper.close();
     }
-    public String insertar(Producto producto){
+    public String insertarProducto(Producto producto){
 
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;
@@ -327,7 +330,7 @@ public class ControlBDG14 {
         }
 
     }
-    public String actualizar(Producto producto){
+    public String actualizarProducto(Producto producto){
         long contador = 0;
         String[] id = {Integer.toString(producto.getCodProduct())};
         ContentValues cv = new ContentValues();
@@ -348,7 +351,7 @@ public class ControlBDG14 {
 
     }
 
-    public String eliminar(Producto producto){
+    public String eliminarProducto(Producto producto){
         String regAfectados="filas afectadas= ";
         int contador=0;
         contador+=db.delete("PRODUCTO", "CODPRODUCT='"+producto.getCodProduct()+"'", null);
@@ -357,7 +360,7 @@ public class ControlBDG14 {
     }
 
     ///******************************Marca*****************************
-    public String insertar(Marca marca ){
+    public String insertarMarca(Marca marca ){
 
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;
@@ -455,7 +458,7 @@ public class ControlBDG14 {
         return regInsertados;
     }
   
-    public String actualizar(Marca marca){
+    public String actualizarMarca(Marca marca){
         long contador = 0;
         String[] id = {Integer.toString(marca.getCodMarca())};
         ContentValues cv = new ContentValues();
@@ -473,7 +476,7 @@ public class ControlBDG14 {
 
     }
 
-    public String eliminar(Marca marca){
+    public String eliminarMarca(Marca marca){
         String regAfectados="filas afectadas= ";
         int contador=0;
         contador+=db.delete("MARCA", "CODMARCA='"+marca.getCodMarca()+"'", null);
@@ -481,7 +484,97 @@ public class ControlBDG14 {
         return regAfectados;
     }
 
+/// *****************************Menu Restaurante*******************************************************
 
+    public String insertarMenu(MenuRest menuRest ){
+
+        String regInsertados = "Menu Insertado Nº= ";
+        long contador = 0;
+
+        ContentValues menu = new ContentValues();
+        menu.put("CODMENU", menuRest.getCODMENU());
+        menu.put("CODLOCAL",menuRest.getCODLOCAL());
+        menu.put("PRECIOCOMBO",menuRest.getPRECIOCOMBO());
+        menu.put("DESCRIPCIONCOMBO",menuRest.getDESCRIPCIONCOMBO());
+
+        contador = db.insert("MENU",null,menu);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el Menu, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+
+    public MenuRest consultarMenu(String codMenu){
+        String[] id = {codMenu};
+        Cursor cursor = db.query("MENU", camposMenu, "CODMENU = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            MenuRest menu = new MenuRest();
+            menu.setCODMENU(cursor.getInt(0));
+            menu.setCODLOCAL(cursor.getInt(1));
+            menu.setPRECIOCOMBO(cursor.getFloat(2));
+            menu.setDESCRIPCIONCOMBO(cursor.getString(3));
+
+            return menu;
+        }else{
+            return null;
+        }
+
+    }
+
+    public String actualizarMenu(MenuRest menuRest){
+        long contador = 0;
+        String[] id = {Integer.toString(menuRest.getCODMENU())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODMENU", menuRest.getCODMENU());
+        cv.put("CODLOCAL",menuRest.getCODLOCAL());
+        cv.put("PRECIOCOMBO",menuRest.getPRECIOCOMBO());
+        cv.put("DESCRIPCIONCOMBO",menuRest.getDESCRIPCIONCOMBO());
+
+        contador =  db.update("MENU", cv, "CODMENU = ?", id);
+        if(contador==-1 || contador==0){
+            return "Error al actualizar  el menu";
+        }
+        else {
+            return "Menu Actualizado Correctamente";
+        }
+
+    }
+
+    public String eliminarMenu(MenuRest menuRest){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("MENU", "CODMENU='"+menuRest.getCODMENU()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+//*******************************Combo Menu*********************************************
+public String insertarCombo(ComboProducto combo ){
+
+    String regInsertados = "Registro Inserado Nº= ";
+    long contador = 0;
+
+    ContentValues marc = new ContentValues();
+    marc.put("CODMENU", combo.getCodMenu());
+    marc.put("CODPRODUCT",combo.getCodProducto());
+    marc.put("CANTPRODUCT",combo.getCodProducto());
+
+
+    contador = db.insert("COMBOPRODUCTO",null,marc);
+    if(contador==-1 || contador==0){
+        regInsertados = "Error al insertar el combo, Registro dublicado. Verificar insercion";
+    }
+    else {
+        regInsertados = regInsertados+contador;
+    }
+    return regInsertados;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
     public String insertarUsuario(Usuario usuario){
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;

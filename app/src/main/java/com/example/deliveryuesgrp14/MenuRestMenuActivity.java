@@ -1,7 +1,5 @@
 package com.example.deliveryuesgrp14;
 
-
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,23 +8,23 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class MarcaMenuActivity extends ListActivity {
+public class MenuRestMenuActivity extends ListActivity {
 
-    String[] menu={"Insertar Marca","Eliminar Marca","Consultar Marca",
-            "Actualizar Marca"};
-    String[] activities={"MarcaInsertarActivity","MarcaEliminarActivity","MarcaConsultarActivity",
-            "MarcaActualizarActivity"};
+    String[] menu={"Insertar Menu","Eliminar Menu","Consultar Menu",
+            "Actualizar Menu"};
+    String[] activities={"MenuRestInsertarActivity","MenuRestEliminarActivity","MenuRestConsultarActivity",
+            "MenuRestActualizarActivity"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         ListView listView = getListView();
 //        listView.setBackgroundColor(Color.rgb(0, 0, 255));
         ArrayAdapter<String> adapter = new
                 ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menu);
         setListAdapter(adapter);
     }
-
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
