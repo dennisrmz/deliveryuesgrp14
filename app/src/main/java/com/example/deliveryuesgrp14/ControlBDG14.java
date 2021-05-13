@@ -23,6 +23,7 @@ public class ControlBDG14 {
     }
 
     private static final String[]camposCliente = new String [] {"CODCLIENTE","CODUSUARIO","NOMBRECLIENTE","APELLIDOCLIENTE", "NUMTELEFONO"};
+    private static final String[]camposPedido = new String [] {"CODPEDIDO","CODREPAR","CODUBICACION","CODCLIENTE","CODLOCAL","TOTAL","COMENTARIOPEDIDO", "ESTADO"};
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
         private static final String BASE_DATOS = "sistemaCafetines.s3db";
@@ -341,6 +342,33 @@ public class ControlBDG14 {
         regAfectados+=contador;
         return regAfectados;
    }
+
+
+    public String insertarPedido(Pedido pedido){
+
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+
+        ContentValues prod = new ContentValues();
+        prod.put("CODPEDIDO", pedido.getCodPedido());
+        prod.put("CODREPAR", pedido.getCodRepar());
+        prod.put("CODUBICACION", pedido.getCodUbicacion());
+        prod.put("CODCLIENTE", pedido.getCodCliente());
+        prod.put("CODLOCAL",pedido.getCodLocal());
+        prod.put("TOTAL",pedido.getTotal());
+        prod.put("COMENTARIOPEDIDO",pedido.getComentarioPedido());
+        prod.put("ESTADO", pedido.getEstado());
+
+        contador = db.insert("PEDIDO",null,prod);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+
 
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){
