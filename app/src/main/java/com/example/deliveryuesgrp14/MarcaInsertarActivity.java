@@ -34,7 +34,7 @@ public class MarcaInsertarActivity extends AppCompatActivity {
         marca.setNombreMarca(nombre);
 
         helper.abrir();
-        regInsertados=helper.insertar(marca);
+        regInsertados=helper.insertarMarca(marca);
         helper.cerrar();
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }

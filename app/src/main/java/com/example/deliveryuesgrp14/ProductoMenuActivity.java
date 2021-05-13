@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 public class ProductoMenuActivity extends ListActivity {
 
-    String[] menu={"Insertar Registro","Eliminar Registro","Consultar Registro",
-            "Actualizar Registro"};
+    String[] menu={"Insertar Producto","Eliminar Producto","Consultar Producto",
+            "Actualizar Producto"};
     String[] activities={"ProductoInsertarActivity","ProductoEliminarActivity","ProductoConsultarActivity",
             "ProductoActualizarActivity"};
 

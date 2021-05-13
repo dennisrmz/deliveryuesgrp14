@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".PedidoActualizarActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dip"
+    android:stretchColumns="1" >
+    <TableRow>
+        <TextView android:text="Codigo del Pedido"/>
+        <EditText
+            android:id="@+id/codPedido"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Codigo del Repartidor "/>
+        <EditText
+            android:id="@+id/codRepar"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Codigo Ubicacion "/>
+        <EditText
+            android:id="@+id/codUbicacion"
+            android:inputType="number" />
+    </TableRow>
+
+
+    <TableRow>
+        <TextView android:text="Comentarios" />
+        <EditText
+            android:id="@+id/editComentario"
+            android:inputType="text"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Estado" />
+        <EditText
+            android:id="@+id/editEstado"
+            android:inputType="number"
+            />
+    </TableRow>
+
+
+
+    <TableRow>
+        <TextView android:text="Opciones" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:onClick="actualizarPedido"
+            android:text="Actualizar" />
+    </TableRow>
+    <TableRow>
+        <Button
+            android:onClick="limpiarTexto"
+            android:text="Limpiar" />
+    </TableRow>
+</TableLayout>
