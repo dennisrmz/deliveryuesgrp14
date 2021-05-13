@@ -421,13 +421,13 @@ public class ControlBDG14 {
 
       }
 
-        public String eliminarCliente(Cliente cliente){
-        String regAfectados="filas afectadas= ";
-        int contador=0;
+    public String eliminarCliente(Cliente cliente){
+    String regAfectados="filas afectadas= ";
+    int contador=0;
 
-        contador+=db.delete("CLIENTE", "CODCLIENTE='"+cliente.getCodCliente()+"'", null);
-        regAfectados+=contador;
-        return regAfectados;
+    contador+=db.delete("CLIENTE", "CODCLIENTE='"+cliente.getCodCliente()+"'", null);
+    regAfectados+=contador;
+    return regAfectados;
    }
 
 
@@ -454,6 +454,57 @@ public class ControlBDG14 {
         }
         return regInsertados;
     }
+
+    public Pedido consultarPedido(String codPedido){
+        String[] id = {codPedido};
+        Cursor cursor = db.query("PEDIDO",camposPedido, "CODPEDIDO = ?", id, null, null, null);
+        if(cursor.moveToFirst()){
+            Pedido pedido = new Pedido();
+            pedido.setCodPedido(cursor.getInt(0));
+            pedido.setCodRepar(cursor.getInt(1));
+            pedido.setCodUbicacion(cursor.getInt(2));
+            pedido.setCodCliente(cursor.getInt(3));
+            pedido.setCodLocal(cursor.getInt(4));
+            pedido.setTotal(cursor.getFloat(5));
+            pedido.setComentarioPedido(cursor.getString(6));
+            pedido.setEstado(cursor.getInt(7));
+            return pedido;
+
+        }else{
+
+            return null;
+        }
+
+    }
+
+    public String eliminarPedido(Pedido pedido){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+
+        contador+=db.delete("PEDIDO", "CODPEDIDO='"+pedido.getCodPedido()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+    public String actualizarPedido(Pedido pedido){
+
+        String[] id = {Integer.toString( pedido.getCodPedido())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODPEDIDO", pedido.getCodPedido());
+        cv.put("CODREPAR", pedido.getCodRepar());
+        cv.put("CODUBICACION", pedido.getCodUbicacion());
+//        cv.put("CODCLIENTE", pedido.getCodCliente());
+//        cv.put("CODLOCAL", pedido.getCodLocal());
+//        cv.put("TOTAL", pedido.getTotal());
+        cv.put("COMENTARIOPEDIDO", pedido.getComentarioPedido());
+        cv.put("ESTADO", pedido.getEstado());
+
+        db.update("PEDIDO", cv, "CODPEDIDO = ?", id);
+        return "Registro de Pedido Actualizado Correctamente";
+
+    }
+
+
   
     public String actualizar(Marca marca){
         long contador = 0;
@@ -482,7 +533,7 @@ public class ControlBDG14 {
     }
 
 
-    public String insertar(Usuario usuario){
+    public String insertarUsuario(Usuario usuario){
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;
 
