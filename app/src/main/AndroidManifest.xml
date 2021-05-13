@@ -20,6 +20,11 @@
         <activity android:name=".ProductoConsultarActivity" />
         <activity android:name=".ProductoInsertarActivity" />
         <activity android:name=".ProductoMenuActivity" />
+        <activity android:name=".UsuarioMenuActivity"></activity>
+        <activity android:name=".UsuarioConsultarActivity" />
+        <activity android:name=".UsuarioActualizarActivity" />
+        <activity android:name=".UsuarioEliminarActivity" />
+        <activity android:name=".UsuarioInsertarActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
