@@ -7,16 +7,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/correo" />
+        android:text="@string/rol" />
     <EditText
-        android:id="@+id/editCorreo"
+        android:id="@+id/editRol"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
-        android:maxLength="150"/>
+        android:inputType="number"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/eliminar"
-        android:onClick="eliminarUsuario"/>
+        android:onClick="eliminarRol"/>
 </LinearLayout>

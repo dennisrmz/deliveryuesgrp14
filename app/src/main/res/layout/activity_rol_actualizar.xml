@@ -2,39 +2,34 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="30dip"
+    android:paddingTop="10dip"
     android:stretchColumns="1" >
     <TableRow>
-        <TextView android:text="@string/correo"/>
+        <TextView android:text="@string/rol" />
         <EditText
-            android:id="@+id/editCorreo"
-            android:inputType="text"
-            android:maxLength="150" />
+            android:id="@+id/editRol"
+            android:inputType="number" />
     </TableRow>
     <TableRow>
-        <TextView android:text="@string/nombre_user" />
+        <TextView android:text="@string/descripcion" />
         <EditText
-            android:id="@+id/editNombre"
+            android:id="@+id/editDescripcion"
             android:inputType="text"
             android:maxLength="200" />
     </TableRow>
     <TableRow>
-        <TextView android:text="@string/contrasena" />
+        <TextView android:text="@string/numero" />
         <EditText
-            android:id="@+id/editContrasena"
+            android:id="@+id/editNumRol"
             android:inputType="text"
             android:maxLength="50" />
     </TableRow>
-
-
-    <TableRow>
-        <TextView android:text="@string/opciones" />
-    </TableRow>
-
     <TableRow>
         <Button
-            android:onClick="insertarUsuario"
-            android:text="@string/insertar" />
+            android:onClick="actualizarRol"
+            android:text="@string/actualizar" />
+    </TableRow>
+    <TableRow>
         <Button
             android:onClick="limpiarTexto"
             android:text="@string/limpiar" />

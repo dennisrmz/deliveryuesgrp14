@@ -7,27 +7,24 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class UsuarioEliminarActivity extends AppCompatActivity {
-
-    EditText editCorreo;
+public class RolEliminarActivity extends AppCompatActivity {
+    EditText editIdRol;
     ControlBDG14 controlhelper;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_usuario_eliminar);
+        setContentView(R.layout.activity_rol_eliminar);
         controlhelper=new ControlBDG14 (this);
-        editCorreo=(EditText)findViewById(R.id.editCorreo);
+        editIdRol=(EditText)findViewById(R.id.editRol);
     }
 
-    public void eliminarUsuario(View v){
+    public void eliminarRol(View v){
         String regEliminadas;
-        Usuario usuario=new Usuario();
-        usuario.setCorreo(editCorreo.getText().toString());
+        Rol role=new Rol();
+        role.setIdRol(Integer.parseInt(editIdRol.getText().toString()));
         controlhelper.abrir();
-        regEliminadas=controlhelper.eliminarUsuario(usuario);
+        regEliminadas=controlhelper.eliminarRol(role);
         controlhelper.cerrar();
         Toast.makeText(this, regEliminadas, Toast.LENGTH_SHORT).show();
     }
-
 }

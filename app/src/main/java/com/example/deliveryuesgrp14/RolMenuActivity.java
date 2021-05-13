@@ -10,16 +10,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class UsuarioMenuActivity extends ListActivity {
+public class RolMenuActivity extends ListActivity {
 
     String[] menu={"Insertar Registro","Eliminar Registro","Consultar Registro",
             "Actualizar Registro"};
-    String[] activities={"UsuarioInsertarActivity","UsuarioEliminarActivity","UsuarioConsultarActivity",
-            "UsuarioActualizarActivity"};
+    String[] activities={"RolInsertarActivity","RolEliminarActivity","RolConsultarActivity",
+            "RolActualizarActivity"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         ListView listView = getListView();
         listView.setBackgroundColor(Color.rgb(238, 237, 255));
         ArrayAdapter<String> adapter = new
