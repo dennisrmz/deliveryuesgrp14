@@ -13,7 +13,9 @@ import android.widget.Toast;
 public class MainActivity extends ListActivity {
 
     String[] menu={"Login","LLenar Basede Datos"};
+
     String[] activities={"MenuPrincipalActivity"};
+
     ControlBDG14 BDhelper;
 
     @Override
@@ -46,6 +48,7 @@ public class MainActivity extends ListActivity {
             String tost=BDhelper.llenarBDRG14();
             BDhelper.cerrar();
             Toast.makeText(this, tost, Toast.LENGTH_SHORT).show();
+
             String nombreValue=activities[0];
             try{
                 Class<?>
@@ -55,6 +58,7 @@ public class MainActivity extends ListActivity {
             }catch(ClassNotFoundException e){
                 e.printStackTrace();
             }
+
 
         }
     }
