@@ -46,4 +46,5 @@
     <string name="descripcion">descripcion</string>
     <string name="numero">numero</string>
     <string name="rol">Cod Rol</string>
+    <string name="opcion_crud">Opciones Crud</string>
 </resources>
