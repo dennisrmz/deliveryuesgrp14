@@ -27,7 +27,7 @@ public class MarcaEliminarActivity extends AppCompatActivity {
         int codMarca = Integer.parseInt(pivote);
         marca.setCodMarca(codMarca);
         helper.abrir();
-        regEliminadas=helper.eliminar(marca);
+        regEliminadas=helper.eliminarMarca(marca);
         helper.cerrar();
         Toast.makeText(this, regEliminadas, Toast.LENGTH_SHORT).show();
     }
