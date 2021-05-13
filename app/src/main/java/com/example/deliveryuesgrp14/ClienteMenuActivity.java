@@ -9,13 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class ClienteMenuActivity extends ListActivity {
-    String[] menu={"Insertar Cliente","Eliminar Cliente","Consultar Cliente", "Actualizar Cliente"};
-    String[] activities={"ClienteInsertarActivity","ClienteEliminarActivity","ClienteConsultarActivity", "ClienteActualizarActivity"};
+    String[] menu={"Insertar Cliente","Consultar Cliente","Eliminar Cliente", "Actualizar Cliente"};
+    String[] activities={"ClienteInsertarActivity","ClienteConsultarActivity","ClienteEliminarActivity", "ClienteActualizarActivity"};
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ListView listView = getListView();
-        listView.setBackgroundColor(Color.rgb(0, 0, 255));
+
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, menu);
         setListAdapter(adapter);
     }
@@ -23,7 +23,7 @@ public class ClienteMenuActivity extends ListActivity {
     protected void onListItemClick(ListView l,View v,int position,long id){
         super.onListItemClick(l, v, position, id);
         String nombreValue=activities[position];
-        l.getChildAt(position).setBackgroundColor(Color.rgb(128, 128, 255));
+       // l.getChildAt(position).setBackgroundColor(Color.rgb(128, 128, 255));
         try{
             Class<?> clase=Class.forName("com.example.deliveryuesgrp14."+nombreValue);
             Intent inte = new Intent(this,clase);

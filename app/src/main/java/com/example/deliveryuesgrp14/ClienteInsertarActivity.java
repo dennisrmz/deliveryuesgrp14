@@ -30,8 +30,9 @@ public class ClienteInsertarActivity extends Activity {
 
     }
     public void insertarCliente(View v) {
-        int codCliente = (int) CodCliente.getTextAlignment();
-        int usuario = (int) editUsuario.getTextAlignment();
+        int codCliente =(int)Integer.parseInt(CodCliente.getText().toString());
+        //int codCliente = (int) CodCliente.getTextAlignment();
+        int usuario = (int)Integer.parseInt(editUsuario.getText().toString());
         String nombre=editNombre.getText().toString();
         String apellido=editApellido.getText().toString();
         String telefono=editTelefono.getText().toString();
@@ -44,7 +45,7 @@ public class ClienteInsertarActivity extends Activity {
         cliente.setNumTelefono(telefono);
 
         helper.abrir();
-        regInsertados=helper.insertar(cliente);
+        regInsertados=helper.insertarCliente(cliente);
         helper.cerrar();
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }

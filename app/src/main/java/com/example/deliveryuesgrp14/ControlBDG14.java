@@ -21,6 +21,9 @@ public class ControlBDG14 {
         this.context = context;
         DBHelper = new DatabaseHelper(context);
     }
+
+    private static final String[]camposCliente = new String [] {"CODCLIENTE","CODUSUARIO","NOMBRECLIENTE","APELLIDOCLIENTE", "NUMTELEFONO"};
+
     private static class DatabaseHelper extends SQLiteOpenHelper {
         private static final String BASE_DATOS = "sistemaCafetines.s3db";
         private static final int VERSION = 1;
@@ -279,7 +282,7 @@ public class ControlBDG14 {
        return regInsertados;
         }
 
-    public String insertar(Cliente cliente){
+    public String insertarCliente(Cliente cliente){
 
         String regInsertados = "Registro Insertado Nº= ";
         long contador = 0;
@@ -300,6 +303,44 @@ public class ControlBDG14 {
         }
         return regInsertados;
     }
+
+    public Cliente ConsultarCliente(String codCliente){
+        String[] id = {codCliente};
+        Cursor cursor = db.query("CLIENTE", camposCliente, "CODCLIENTE = ?", id, null, null, null);
+        if(cursor.moveToFirst()){
+            Cliente cliente = new Cliente();
+            cliente.setCodCliente(cursor.getInt(0));
+            cliente.setCodUsuario(cursor.getInt(1));
+            cliente.setNombreCliente(cursor.getString(2));
+            cliente.setApellidoCliente(cursor.getString(3));
+            cliente.setNumTelefono(cursor.getString(4));
+            return cliente;
+        }else{
+            return null;
+        }
+
+    }
+
+    public String actualizarCliente(Cliente cliente){
+
+            String[] id = {Integer.toString( cliente.getCodCliente())};
+            ContentValues cv = new ContentValues();
+            cv.put("NOMBRECLIENTE", cliente.getNombreCliente());
+            cv.put("APELLIDOCLIENTE", cliente.getApellidoCliente());
+            cv.put("NUMTELEFONO", cliente.getNumTelefono());
+            db.update("CLIENTE", cv, "CODCLIENTE = ?", id);
+            return "Registro Actualizado Correctamente";
+
+      }
+
+        public String eliminarCliente(Cliente cliente){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+
+        contador+=db.delete("CLIENTE", "CODCLIENTE='"+cliente.getCodCliente()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+   }
 
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){
@@ -432,7 +473,7 @@ public class ControlBDG14 {
 //        }
 //       }
 public String llenarBDRG14(){
-//    final String[] VAcarnet = {"OO12035","OF12044","GG11098","CC12021"};
+//      final String[] VACODCLIENTE = {"3"};
 //    final String[] VAnombre = {"Carlos","Pedro","Sara","Gabriela"};
 //    final String[] VAapellido = {"Orantes","Ortiz","Gonzales","Coto"};
 //    final String[] VAsexo = {"M","M","F","F"};
