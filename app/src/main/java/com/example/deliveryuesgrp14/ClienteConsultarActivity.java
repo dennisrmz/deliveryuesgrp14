@@ -12,7 +12,6 @@ public class ClienteConsultarActivity extends Activity {
 
     ControlBDG14 helper;
     EditText CodCliente;
-
     EditText editNombre;
     EditText editApellido;
     EditText editTelefono;

@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
 import androidx.annotation.MenuRes;
 
 
@@ -424,13 +425,13 @@ public class ControlBDG14 {
 
       }
 
-        public String eliminarCliente(Cliente cliente){
-        String regAfectados="filas afectadas= ";
-        int contador=0;
+    public String eliminarCliente(Cliente cliente){
+    String regAfectados="filas afectadas= ";
+    int contador=0;
 
-        contador+=db.delete("CLIENTE", "CODCLIENTE='"+cliente.getCodCliente()+"'", null);
-        regAfectados+=contador;
-        return regAfectados;
+    contador+=db.delete("CLIENTE", "CODCLIENTE='"+cliente.getCodCliente()+"'", null);
+    regAfectados+=contador;
+    return regAfectados;
    }
 
 
@@ -457,6 +458,57 @@ public class ControlBDG14 {
         }
         return regInsertados;
     }
+
+    public Pedido consultarPedido(String codPedido){
+        String[] id = {codPedido};
+        Cursor cursor = db.query("PEDIDO",camposPedido, "CODPEDIDO = ?", id, null, null, null);
+        if(cursor.moveToFirst()){
+            Pedido pedido = new Pedido();
+            pedido.setCodPedido(cursor.getInt(0));
+            pedido.setCodRepar(cursor.getInt(1));
+            pedido.setCodUbicacion(cursor.getInt(2));
+            pedido.setCodCliente(cursor.getInt(3));
+            pedido.setCodLocal(cursor.getInt(4));
+            pedido.setTotal(cursor.getFloat(5));
+            pedido.setComentarioPedido(cursor.getString(6));
+            pedido.setEstado(cursor.getInt(7));
+            return pedido;
+
+        }else{
+
+            return null;
+        }
+
+    }
+
+    public String eliminarPedido(Pedido pedido){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+
+        contador+=db.delete("PEDIDO", "CODPEDIDO='"+pedido.getCodPedido()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+    public String actualizarPedido(Pedido pedido){
+
+        String[] id = {Integer.toString( pedido.getCodPedido())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODPEDIDO", pedido.getCodPedido());
+        cv.put("CODREPAR", pedido.getCodRepar());
+        cv.put("CODUBICACION", pedido.getCodUbicacion());
+//        cv.put("CODCLIENTE", pedido.getCodCliente());
+//        cv.put("CODLOCAL", pedido.getCodLocal());
+//        cv.put("TOTAL", pedido.getTotal());
+        cv.put("COMENTARIOPEDIDO", pedido.getComentarioPedido());
+        cv.put("ESTADO", pedido.getEstado());
+
+        db.update("PEDIDO", cv, "CODPEDIDO = ?", id);
+        return "Registro de Pedido Actualizado Correctamente";
+
+    }
+
+
   
     public String actualizarMarca(Marca marca){
         long contador = 0;
@@ -574,10 +626,14 @@ public String insertarCombo(ComboProducto combo ){
     return regInsertados;
 }
 
+  
 ////////////////////////////////////////////////////////////////////////////////////////////
-    public String insertarUsuario(Usuario usuario){
+
+    public String insertarUsuario(Usuario usuario, String idRol){
+
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;
+        long contador_two = 0;
 
         ContentValues user = new ContentValues();
         user.put("CORREO", usuario.getCorreo());
@@ -586,29 +642,42 @@ public String insertarCombo(ComboProducto combo ){
         contador = db.insert("USUARIO",null,user);
         if(contador==-1 || contador==0){
             regInsertados = "Error al insertar el registro de usuario, Registro dublicado. Verificar insercion";
+            return regInsertados;
         }
         else {
-            regInsertados = regInsertados+contador;
+            ContentValues accesousuario = new ContentValues();
+            accesousuario.put("CODUSUARIO", contador);
+            accesousuario.put("CODOPCION",Integer.parseInt(idRol));
+            contador_two = db.insert("ACCESOUSUARIO",null,accesousuario);
+
+            if(contador==-1 || contador==0){
+                regInsertados = "Se creo Usuario pero Error al insertar el registro de ACCESO USUARIO, Registro dublicado. Verificar insercion";
+                return regInsertados;
+            }else{
+                regInsertados = regInsertados+contador;
+            }
+
         }
         return regInsertados;
     }
 
     public Usuario consultarUsuario(String correo){
-        String[] camposUsuario = {"CORREO", "NOMBREUSU", "CONTRASENA"};
+        String[] camposUsuario = {"CODUSUARIO","CORREO", "NOMBREUSU", "CONTRASENA"};
         String[] id = {correo};
         Cursor cursor = db.query("USUARIO", camposUsuario, "CORREO = ?", id, null, null, null);
         if(cursor.moveToFirst()){
             Usuario usuario = new Usuario();
-            usuario.setCorreo(cursor.getString(0));
-            usuario.setNombreUsu(cursor.getString(1));
-            usuario.setContrasena(cursor.getString(2));
+            usuario.setCodUsuario(cursor.getInt(0));
+            usuario.setCorreo(cursor.getString(1));
+            usuario.setNombreUsu(cursor.getString(2));
+            usuario.setContrasena(cursor.getString(3));
             return usuario;
         }else{
             return null;
         }
     }
 
-    public String actualizarUsuario(Usuario usuario){
+    public String actualizarUsuario(Usuario usuario, int role){
         if(verificarIntegridadUsuario(usuario,1)){
             String[] id = {usuario.getCorreo()};
             ContentValues cv = new ContentValues();
@@ -616,6 +685,19 @@ public String insertarCombo(ComboProducto combo ){
             cv.put("NOMBREUSU", usuario.getNombreUsu());
             cv.put("CONTRASENA", usuario.getContrasena());
             db.update("USUARIO", cv, "CORREO = ?", id);
+
+            String[] camposUsuario = {"CODUSUARIO","CORREO", "NOMBREUSU", "CONTRASENA"};
+            Cursor cursor = db.query("USUARIO", camposUsuario, "CORREO = ?", id, null, null, null);
+            if(cursor.moveToFirst()){
+
+                ContentValues cv_two = new ContentValues();
+                String[] id_two = {Integer.toString(cursor.getInt(0))};
+                cv_two.put("CODOPCION", role);
+                db.update("ACCESOUSUARIO", cv_two, "CODUSUARIO = ?", id_two);
+
+            }else{
+                return null;
+            }
             return "Registro Actualizado Correctamente";
         }else{
             return  "Registro con correo " + usuario.getCorreo() + " no existe";
@@ -624,13 +706,24 @@ public String insertarCombo(ComboProducto combo ){
 
     public String eliminarUsuario(Usuario usuario){
         String regAfectados="filas afectadas= ";
+        int contado_two = 0;
         int contador=0;
 //        if (verificarIntegridadUsuario(usuario,2)) {
 //            contador+=db.delete("nota", "carnet='"+alumno.getCarnet()+"'", null);
 //        }
+        Usuario user = consultarUsuario(usuario.getCorreo());
+        eliminarRolUser(user.getCodUsuario());
         contador+=db.delete("USUARIO", "CORREO='"+usuario.getCorreo()+"'", null);
         regAfectados+=contador;
+        regAfectados+=contado_two;
         return regAfectados;
+    }
+
+    public int eliminarRolUser(int ide){
+        int contador=0;
+        contador+=db.delete("ACCESOUSUARIO", "CODUSUARIO='"+ide+"'", null);
+
+        return contador;
     }
 
 
@@ -702,6 +795,31 @@ public String insertarCombo(ComboProducto combo ){
         }
     }
 
+    public ArrayList<String> consultarRoles(){
+        ArrayList<String> listaRoles = new ArrayList<String>();
+        ArrayList<Rol> rolList;
+        rolList = new ArrayList<Rol>();
+        String[] camposRol = {"CODOPCION", "DESCRIPCIONCRUD", "NUMCRUD"};
+        Cursor cursor = db.rawQuery("SELECT * FROM OPCIONCRUD", null);
+        if(cursor.moveToFirst()){
+            while(cursor.moveToNext()){
+                Rol role = new Rol();
+                role.setIdRol(cursor.getInt(0));
+                role.setDescripcion(cursor.getString(1));
+                role.setNum(cursor.getInt(2));
+
+                rolList.add(role);
+            }
+
+            for(int i=0; i < rolList.size(); i++){
+                listaRoles.add(rolList.get(i).getIdRol() + "-" + rolList.get(i).getDescripcion());
+            }
+            return listaRoles;
+        }else {
+            return listaRoles;
+        }
+    }
+
     public String actualizarRol(Rol rol){
         if(verificarIntegridadUsuario(rol,2)){
             String[] id = {Integer.toString(rol.getIdRol())};
@@ -727,6 +845,19 @@ public String insertarCombo(ComboProducto combo ){
         return regAfectados;
     }
 
+    public String consultarRolUser(int idUser){
+        String rol = "No posee rol";
+        Cursor cursor = db.rawQuery("select OPCIONCRUD.DESCRIPCIONCRUD FROM ACCESOUSUARIO\n" +
+                "INNER JOIN OPCIONCRUD ON ACCESOUSUARIO.CODOPCION = OPCIONCRUD.CODOPCION\n" +
+                "WHERE ACCESOUSUARIO.CODUSUARIO = " + idUser, null);
+
+        if(cursor.moveToFirst()){
+            rol = cursor.getString(0);
+            return rol;
+        }else {
+            return rol;
+        }
+    }
 //    public String insertar(Alumno alumno){
 //
 //        String regInsertados = "Registro Inserado Nº= ";
