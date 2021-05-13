@@ -21,7 +21,10 @@ public class ControlBDG14 {
         this.context = context;
         DBHelper = new DatabaseHelper(context);
     }
-
+    private static final String[]camposProducto = new String []
+            {"CODPRODUCT","CODCATEGORIA" ,"CODMARCA","NOMBREPRODUCTO","DESCRIPCIONPROD", "EXISTENCIAS"};
+    private static final String[]camposMarca = new String []
+            {"CODMARCA","NOMBREMARCA"};
     private static final String[]camposCliente = new String [] {"CODCLIENTE","CODUSUARIO","NOMBRECLIENTE","APELLIDOCLIENTE", "NUMTELEFONO"};
     private static final String[]camposPedido = new String [] {"CODPEDIDO","CODREPAR","CODUBICACION","CODCLIENTE","CODLOCAL","TOTAL","COMENTARIOPEDIDO", "ESTADO"};
 
