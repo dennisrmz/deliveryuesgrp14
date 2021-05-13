@@ -482,7 +482,7 @@ public class ControlBDG14 {
     }
 
 
-    public String insertar(Usuario usuario){
+    public String insertarUsuario(Usuario usuario){
         String regInsertados = "Registro Inserado Nº= ";
         long contador = 0;
 
