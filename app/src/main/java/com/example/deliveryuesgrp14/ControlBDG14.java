@@ -278,6 +278,29 @@ public class ControlBDG14 {
         }
        return regInsertados;
         }
+
+    public String insertar(Cliente cliente){
+
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+
+        ContentValues prod = new ContentValues();
+        prod.put("CODCLIENTE", cliente.getCodCliente());
+        prod.put("CODUSUARIO",cliente.getCodUsuario());
+        prod.put("NOMBRECLIENTE",cliente.getNombreCliente());
+        prod.put("APELLIDOCLIENTE",cliente.getApellidoCliente());
+        prod.put("NUMTELEFONO", cliente.getNumTelefono());
+
+        contador = db.insert("CLIENTE",null,prod);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){
 //            String[] id = {alumno.getCarnet()};
