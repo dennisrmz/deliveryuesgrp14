@@ -8,27 +8,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ProductoEliminarActivity extends AppCompatActivity {
+public class MarcaEliminarActivity extends AppCompatActivity {
 
     ControlBDG14 helper;
-    EditText CodProducto;
-
+    EditText CodMarca;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_producto_eliminar);
+        setContentView(R.layout.activity_marca_eliminar);
         helper = new ControlBDG14(this);
-        CodProducto = (EditText) findViewById(R.id.codProducto);
+        CodMarca = (EditText) findViewById(R.id.codMarca);
     }
-    public void eliminarProducto(View v){
+    public void eliminarMarca(View v){
         String regEliminadas;
-        Producto producto=new Producto();
+        Marca marca = new Marca();
         String pivote;
-        pivote =  CodProducto.getText().toString();
-        int codProducto = Integer.parseInt(pivote);
-        producto.setCodProduct(codProducto);
+        pivote =  CodMarca.getText().toString();
+        int codMarca = Integer.parseInt(pivote);
+        marca.setCodMarca(codMarca);
         helper.abrir();
-        regEliminadas=helper.eliminar(producto);
+        regEliminadas=helper.eliminar(marca);
         helper.cerrar();
         Toast.makeText(this, regEliminadas, Toast.LENGTH_SHORT).show();
     }

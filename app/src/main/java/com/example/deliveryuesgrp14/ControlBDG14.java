@@ -12,6 +12,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class ControlBDG14 {
 
+    private static final String[]camposProducto = new String []
+            {"CODPRODUCT","CODCATEGORIA" ,"CODMARCA","NOMBREPRODUCTO","DESCRIPCIONPROD", "EXISTENCIAS"};
+    private static final String[]camposMarca = new String []
+            {"CODMARCA","NOMBREMARCA"};
+
     private final Context context;
     private DatabaseHelper DBHelper;
     private SQLiteDatabase db;
@@ -257,6 +262,7 @@ public class ControlBDG14 {
     public void cerrar(){
         DBHelper.close();
     }
+
     public String insertar(Producto producto){
 
         String regInsertados = "Registro Inserado Nº= ";
@@ -278,6 +284,115 @@ public class ControlBDG14 {
         }
        return regInsertados;
         }
+
+    public Producto consultarProducto(String codProduct){
+        String[] id = {codProduct};
+        Cursor cursor = db.query("PRODUCTO", camposProducto, "CODPRODUCT = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            Producto producto = new Producto();
+            producto.setCodProduct(cursor.getInt(0));
+            producto.setCodCategoria(cursor.getInt(1));
+            producto.setCodMarca(cursor.getInt(2));
+            producto.setNombreProducto(cursor.getString(3));
+            producto.setDescripcionProd(cursor.getString(4));
+            producto.setExistencias(cursor.getInt(5));
+           return producto;
+       }else{
+           return null;
+        }
+
+    }
+    public String actualizar(Producto producto){
+            long contador = 0;
+            String[] id = {Integer.toString(producto.getCodProduct())};
+            ContentValues cv = new ContentValues();
+            cv.put("CODPRODUCT", producto.getCodProduct());
+            cv.put("CODCATEGORIA",producto.getCodCategoria());
+            cv.put("CODMARCA",producto.getCodMarca());
+            cv.put("NOMBREPRODUCTO",producto.getNombreProducto());
+            cv.put("DESCRIPCIONPROD", producto.getDescripcionProd());
+            cv.put("EXISTENCIAS", producto.getExistencias());
+
+            contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
+             if(contador==-1 || contador==0){
+                 return "Error al insertar el registro, Registro dublicado. Verificar insercion";
+            }
+              else {
+                 return "Registro Actualizado Correctamente";
+             }
+
+      }
+
+    public String eliminar(Producto producto){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("PRODUCTO", "CODPRODUCT='"+producto.getCodProduct()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+   }
+
+   ///******************************Marca*****************************
+   public String insertar(Marca marca ){
+
+       String regInsertados = "Registro Inserado Nº= ";
+       long contador = 0;
+
+       ContentValues marc = new ContentValues();
+       marc.put("CODMARCA", marca.getCodMarca());
+       marc.put("NOMBREMARCA",marca.getNombreMarca());
+
+       contador = db.insert("MARCA",null,marc);
+       if(contador==-1 || contador==0){
+           regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+       }
+       else {
+           regInsertados = regInsertados+contador;
+       }
+       return regInsertados;
+   }
+
+    public Marca consultarMarca(String codMarca){
+        String[] id = {codMarca};
+        Cursor cursor = db.query("MARCA", camposMarca, "CODMARCA = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            Marca marca = new Marca();
+            marca.setCodMarca(cursor.getInt(0));
+            marca.setNombreMarca(cursor.getString(1));
+
+            return marca;
+        }else{
+            return null;
+        }
+
+    }
+    public String actualizar(Marca marca){
+        long contador = 0;
+        String[] id = {Integer.toString(marca.getCodMarca())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODMARCA", marca.getCodMarca());
+        cv.put("NOMBREMARCA",marca.getNombreMarca());
+
+
+        contador =  db.update("MARCA", cv, "CODMARCA = ?", id);
+        if(contador==-1 || contador==0){
+            return "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }
+        else {
+            return "Registro Actualizado Correctamente";
+        }
+
+    }
+
+    public String eliminar(Marca marca){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("MARCA", "CODMARCA='"+marca.getCodMarca()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
 //    public String actualizar(Alumno alumno){
 //        if(verificarIntegridad(alumno, 5)){
 //            String[] id = {alumno.getCarnet()};

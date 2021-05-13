@@ -9,7 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliveryuesgrp14">
-        <activity android:name=".MenuPrincipalActivity"></activity>
+        <activity android:name=".MarcaEliminarActivity"></activity>
+        <activity android:name=".MarcaActualizarActivity" />
+        <activity android:name=".MarcaConsultarActivity" />
+        <activity android:name=".MarcaInsertarActivity" />
+        <activity android:name=".MarcaMenuActivity" />
+        <activity android:name=".MenuPrincipalActivity" />
         <activity android:name=".ProductoEliminarActivity" />
         <activity android:name=".ProductoActualizarActivity" />
         <activity android:name=".ProductoConsultarActivity" />
