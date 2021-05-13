@@ -26,6 +26,16 @@
             android:maxLength="50" />
     </TableRow>
 
+    <TableRow>
+        <TextView android:text="@string/opcion_crud" />
+
+        <Spinner
+            android:id="@+id/spinnerOpcionesCrud"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </TableRow>
+
 
     <TableRow>
         <TextView android:text="@string/opciones" />
