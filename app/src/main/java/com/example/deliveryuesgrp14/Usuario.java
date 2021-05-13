@@ -18,7 +18,7 @@ public class Usuario {
         return correo;
     }
 
-    public void setCorreo(){
+    public void setCorreo(String correo){
         this.correo = correo;
     }
 
@@ -26,7 +26,7 @@ public class Usuario {
         return nombreusu;
     }
 
-    public void setNombreUsu(){
+    public void setNombreUsu(String nombreusu){
         this.nombreusu = nombreusu;
     }
 
@@ -34,7 +34,7 @@ public class Usuario {
         return contrasena;
     }
 
-    public void setContrasena(){
+    public void setContrasena(String contrasena){
         this.contrasena = contrasena;
     }
 }
