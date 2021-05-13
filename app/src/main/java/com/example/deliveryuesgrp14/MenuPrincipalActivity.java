@@ -10,26 +10,23 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity {
+public class MenuPrincipalActivity extends ListActivity {
 
-    String[] menu={"Login","LLenar Basede Datos"};
+    String[] menu={"Tabla Producto", "Tabla Marcas"};
+    String[] activities={"ProductoMenuActivity", "MarcaMenuActivity"};
 
-    String[] activities={"MenuPrincipalActivity"};
-
-    ControlBDG14 BDhelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setListAdapter(new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, menu));
-        BDhelper=new ControlBDG14(this);
+
     }
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        if(position!=1){
 
             String nombreValue=activities[position];
 
@@ -40,26 +37,8 @@ public class MainActivity extends ListActivity {
                 this.startActivity(inte);
             }catch(ClassNotFoundException e){
                 e.printStackTrace();
-            }
-        }else{
-
-            //CODIGO PARA LLENAR BASE DE DATOS
-            BDhelper.abrir();
-            String tost=BDhelper.llenarBDRG14();
-            BDhelper.cerrar();
-            Toast.makeText(this, tost, Toast.LENGTH_SHORT).show();
-
-            String nombreValue=activities[0];
-            try{
-                Class<?>
-                        clase=Class.forName("com.example.deliveryuesgrp14."+nombreValue);
-                Intent inte = new Intent(this,clase);
-                this.startActivity(inte);
-            }catch(ClassNotFoundException e){
-                e.printStackTrace();
-            }
 
 
-        }
+    }
     }
 }
