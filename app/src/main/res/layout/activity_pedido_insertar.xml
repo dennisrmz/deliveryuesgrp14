@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dip"
+    android:stretchColumns="1" >
+    <TableRow>
+        <TextView android:text="Codigo del Pedido"/>
+        <EditText
+            android:id="@+id/codPedido"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Codigo del Repartidor "/>
+        <EditText
+            android:id="@+id/codRepar"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Codigo Ubicacion "/>
+        <EditText
+            android:id="@+id/codUbicacion"
+            android:inputType="number" />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="Codigo del Cliente"/>
+        <EditText
+            android:id="@+id/codCliente"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Codigo de Local" />
+        <EditText
+            android:id="@+id/codLocal"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Total" />
+        <EditText
+            android:id="@+id/editTotal"
+            android:inputType="number"
+            android:maxLength="12" />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="Comentarios" />
+        <EditText
+            android:id="@+id/editComentario"
+            android:inputType="text"
+             />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Estado" />
+        <EditText
+            android:id="@+id/editEstado"
+            android:inputType="number"
+             />
+    </TableRow>
+
+
+
+    <TableRow>
+        <TextView android:text="Opciones" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:onClick="insertarPedido"
+            android:text="insertar" />
+        <Button android:onClick="limpiarTexto"
+            android:text="limpiar" />
+    </TableRow>
+</TableLayout>
