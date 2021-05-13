@@ -39,7 +39,7 @@
         <TextView android:text="Total" />
         <EditText
             android:id="@+id/editTotal"
-            android:inputType="number"
+            android:inputType="numberDecimal"
             android:maxLength="12" />
     </TableRow>
 
