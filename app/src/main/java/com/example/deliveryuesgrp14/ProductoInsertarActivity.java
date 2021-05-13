@@ -50,7 +50,7 @@ public class ProductoInsertarActivity extends Activity {
         producto.setExistencias(existencias);
 
         helper.abrir();
-        regInsertados=helper.insertar(producto);
+        regInsertados=helper.insertarProducto(producto);
         helper.cerrar();
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }

@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliveryuesgrp14">
         <activity android:name=".DetallePedidoInsertarActivity"></activity>
+
+        <activity android:name=".ComboProductoEliminarActivity"></activity>
+        <activity android:name=".ComboProductoConsultarActivity" />
+        <activity android:name=".ComboProductoActualizarActivity" />
+        <activity android:name=".ComboProductoInsertarActivity" />
+        <activity android:name=".ComboProductoMenuActivity" />
+        <activity android:name=".MenuRestEliminarActivity" />
+        <activity android:name=".MenuRestActualizarActivity" />
+        <activity android:name=".MenuRestConsultarActivity" />
+        <activity android:name=".MenuRestInsertarActivity" />
+        <activity android:name=".MenuRestMenuActivity" />
+
         <activity android:name=".ClienteEliminarActivity" />
         <activity android:name=".ClienteConsultarActivity" />
         <activity android:name=".ClienteActualizarActivity" />
