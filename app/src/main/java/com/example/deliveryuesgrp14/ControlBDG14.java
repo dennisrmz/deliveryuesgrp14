@@ -8,6 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import androidx.annotation.MenuRes;
 
@@ -31,6 +32,11 @@ public class ControlBDG14 {
     private static final String[]camposPedido = new String [] {"CODPEDIDO","CODREPAR","CODUBICACION","CODCLIENTE","CODLOCAL","TOTAL","COMENTARIOPEDIDO", "ESTADO"};
     private static final String[]camposMenu = new String []
             {"CODMENU","CODLOCAL" ,"PRECIOCOMBO","DESCRIPCIONCOMBO"};
+
+    private static final String[]camposDetallePedido = new String [] {"CODPEDIDO","CODPRODUCT","CODMENU","CANTIDADCOMPRA"};
+
+    private static final String[]camposCombo = new String [] {"CODMENU","CODCOMBO"};
+  
     private static class DatabaseHelper extends SQLiteOpenHelper {
         private static final String BASE_DATOS = "sistemaCafetines.s3db";
         private static final int VERSION = 1;
@@ -104,8 +110,6 @@ public class ControlBDG14 {
                         "   CODUSUARIO           INTEGER,\n" +
                         "   NOMBREENCAR          CHAR(250)            not null,\n" +
                         "   APELLIDOENCAR        CHAR(250)            not null,\n" +
-                        "   FECHACREAT           DATE                 not null,\n" +
-                        "   FECHAUPDATE          DATE                 not null,\n" +
                         "   DUIENCAR             CHAR(250)            not null,\n" +
                         "   NUMTELEFONO          CHAR(250)            not null,\n" +
                         "   constraint PK_ENCARGADOLOCAL primary key (CODENCAR)\n" +
@@ -586,6 +590,61 @@ public class ControlBDG14 {
 
     }
 
+    public String insertarDetallePedido(DetallePedido detalle){
+
+        String regInsertados = "Registro Insertado Nº= ";
+        long contador = 0;
+
+        ContentValues prod = new ContentValues();
+        prod.put("CODPEDIDO", detalle.getCodPedido());
+        prod.put("CODPRODUCT", detalle.getCodProducto());
+        prod.put("CODMENU", detalle.getCodMenu());
+        prod.put("CANTIDADCOMPRA", detalle.getCantidadCompra());
+
+
+        contador = db.insert("DETALLEPEDIDO",null,prod);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        }else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+
+    public DetallePedido consultarDetallePedido(String codPedido){
+        String[] id = {codPedido};
+        Cursor cursor = db.query("DETALLEPEDIDO", camposDetallePedido, "CODPEDIDO = ?", id, null, null, null);
+        if(cursor.moveToFirst()){
+            DetallePedido detalle = new DetallePedido();
+            detalle.setCodPedido(cursor.getInt(0));
+            detalle.setCodProducto(cursor.getInt(1));
+            detalle.setCodMenu(cursor.getInt(2));
+            detalle.setCantidadCompra(cursor.getInt(3));
+            return detalle;
+        }else{
+
+            return null;
+        }
+
+    }
+    public String actualizarDetallePedido(DetallePedido detalle){
+
+        String[] id = {Integer.toString( detalle.getCodPedido())};
+        ContentValues cv = new ContentValues();
+        cv.put("CANTIDADCOMPRA", detalle.getCantidadCompra());
+
+        db.update("DETALLEPEDIDO", cv, "CODPEDIDO = ?", id);
+        return "Registro Actualizado Correctamente";
+
+    }
+    public String eliminarDetallePedido(DetallePedido detalle){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+
+        contador+=db.delete("DETALLEPEDIDO", "CODPEDIDO='"+detalle.getCodPedido()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
 
   
     public String actualizarMarca(Marca marca){
@@ -703,7 +762,86 @@ public String insertarCombo(ComboProducto combo ){
     }
     return regInsertados;
 }
+    public ArrayList<String> consultarCombo(int codMenu){
+        String producto = "No posee producto";
+        ArrayList<String>  Listaproducto = new ArrayList<>();
 
+        Cursor cursor = db.rawQuery("select PRODUCTO.NOMBREPRODUCTO, COMBOPRODUCTO.CANTPRODUCT, MENU.PRECIOCOMBO FROM COMBOPRODUCTO" +
+                " INNER JOIN PRODUCTO ON PRODUCTO.CODPRODUCT = COMBOPRODUCTO.CODPRODUCT\n" +
+                " INNER JOIN  MENU ON  COMBOPRODUCTO.CODMENU = MENU.CODMENU WHERE COMBOPRODUCTO.CODMENU = " + codMenu +" group by PRODUCTO.NOMBREPRODUCTO", null);
+            int cantidad;
+            float precio=0;
+            while (cursor.moveToNext()){
+            Producto productos = new Producto();
+            productos.setNombreProducto(cursor.getString(0));
+            cantidad = cursor.getInt(1);
+            precio = cursor.getFloat(2);
+            Listaproducto.add(productos.getNombreProducto() + "\t Cantidad:\t" + cantidad);
+        }
+            if(!Listaproducto.isEmpty()){
+                Listaproducto.add("Precio:$"+precio);
+            }
+
+        return  Listaproducto;
+
+    }
+    public String eliminarCombo(ComboProducto combo){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("COMBOPRODUCTO", "CODMENU='"+combo.getCodMenu()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+
+    //*************Local*********////////////
+public String insertarLocal(Local local ){
+
+    String regInsertados = "Registro Inserado Nº= ";
+    long contador = 0;
+
+    ContentValues marc = new ContentValues();
+    marc.put("CODLOCAL", local.getCodLocal());
+    marc.put("CODENCAR",local.getCodEncar());
+    marc.put("NOMBRELOCAL",local.getNombreLocal());
+    marc.put("NUMEMPLEADOS",local.getNumEmpleados());
+    marc.put("DESCRIPLOCAL",local.getDescripLocal());
+
+
+    contador = db.insert("LOCAL",null,marc);
+    if(contador==-1 || contador==0){
+        regInsertados = "Error al insertar el Local, Registro dublicado. Verificar insercion";
+    }
+    else {
+        regInsertados = regInsertados+contador;
+    }
+    return regInsertados;
+}
+
+//////***************Encargado***********
+public String insertarEncargado(EncargadoLocal encargado ){
+
+    String regInsertados = "Registro Inserado Nº= ";
+    long contador = 0;
+
+    ContentValues marc = new ContentValues();
+    marc.put("CODENCAR", encargado.getCodEncar());
+    marc.put("CODUSUARIO",encargado.getCodUsuario());
+    marc.put("NOMBREENCAR",encargado.getNombreEncar());
+    marc.put("APELLIDOENCAR",encargado.getApellidoEncar());
+    marc.put("DUIENCAR",encargado.getDuiEncar());
+    marc.put("NUMTELEFONO",encargado.getNumTelefono());
+
+
+    contador = db.insert("ENCARGADOLOCAL",null,marc);
+    if(contador==-1 || contador==0){
+        regInsertados = "Error al insertar el encargado, Registro dublicado. Verificar insercion";
+    }
+    else {
+        regInsertados = regInsertados+contador;
+    }
+    return regInsertados;
+}
   
 ////////////////////////////////////////////////////////////////////////////////////////////
 

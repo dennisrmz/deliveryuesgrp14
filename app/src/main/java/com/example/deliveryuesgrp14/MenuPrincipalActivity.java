@@ -17,20 +17,32 @@ public class MenuPrincipalActivity extends ListActivity {
     String[] menu_empleado = {"Tabla Producto", "Tabla Marcas","Clientes",
             "Pedidos","Menu Restaurante", "Combo Producto", "Categoria", "Cerrar Sesion" };
 
+
     String[] activities_empleado = {"ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity",
             "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity", "CategoriaMenuActivity"};
+
+
+    String[] menu={"Tabla Producto", "Tabla Marcas","Clientes",
+                   "Pedidos", "Menu Restaurante", "Combo Producto",
+                   "Local", "Encargado Local","Detalle de Pedido"};
+    String[] activities={"ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity","PedidoMenuActivity","MenuRestMenuActivity",
+            "ComboProductoMenuActivity","LocalMenuActivity","EncargadoLocalMenuActivity","DetallePedidoMenuActivity"};
+
 
     String[] menu_propietario ={"Tabla Usuario" ,"Tabla Opciones Crud", "Cerrar Sesion"};
 
     String[] activities_propietario = { "UsuarioMenuActivity","RolMenuActivity"};
 
     String[] menu_admin = {"Tabla Producto", "Tabla Marcas","Clientes",
-            "Pedidos","Menu Restaurante", "Combo Producto", "Categoria",
-            "Tabla Usuario" ,"Tabla Opciones Crud","Llena Base de Datos", "Cerrar Sesion" };
+            "Pedidos","Menu Restaurante", "Combo Producto", 
+            "Local", "Encargado Local","Detalle de Pedido"
+            "Categoria", "Tabla Usuario" ,"Tabla Opciones Crud", 
+            "Llena Base de Datos", "Cerrar Sesion" };
 
-    String[] activities_admin = {"ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity",
-            "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity", "CategoriaMenuActivity",
-            "UsuarioMenuActivity","RolMenuActivity"};
+    String[] activities_admin = { "ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity",
+            "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity",
+            "LocalMenuActivity","EncargadoLocalMenuActivity","DetallePedidoMenuActivity"
+            "CategoriaMenuActivity", "UsuarioMenuActivity", "RolMenuActivity" };
 
     int numRol = -1;
     @Override
@@ -117,7 +129,7 @@ public class MenuPrincipalActivity extends ListActivity {
 
         }else if(numRol == 5){
 
-            if(position == 10){
+            if(position == 14){
                 //Cerrar Sesion
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -132,7 +144,7 @@ public class MenuPrincipalActivity extends ListActivity {
                 }catch(ClassNotFoundException e){
                     e.printStackTrace();
                 }
-            }else if(position == 9){
+            }else if(position == 13){
                 //Aqui metodo llenar bd
                 Toast.makeText(this, "Llenar BD", Toast.LENGTH_LONG).show();
             }

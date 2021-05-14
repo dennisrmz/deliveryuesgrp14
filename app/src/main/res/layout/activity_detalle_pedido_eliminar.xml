@@ -3,19 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Codigo del menu del que desea eleimnar los productos" />
+        android:text="Codigo de Pedido" />
     <EditText
-        android:id="@+id/codMenu"
+        android:id="@+id/codPedido"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:inputType="number"  />
+        android:inputType="text"
+        />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Eliminar"
-        android:onClick="eliminarCombo"/>
+        android:onClick="eliminarDetallePedido"/>
+
+
 </LinearLayout>

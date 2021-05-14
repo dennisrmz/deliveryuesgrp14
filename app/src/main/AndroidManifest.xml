@@ -9,11 +9,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Deliveryuesgrp14">
+
         <activity android:name=".CategoriaMenuActivity"></activity>
         <activity android:name=".CategoriaEliminarActivity" />
         <activity android:name=".CategoriaConsultarActivity" />
         <activity android:name=".CategoriaActualizarActivity" />
         <activity android:name=".CategoriaInsertarActivity" />
+
+        <activity android:name=".DetallePedidoMenuActivity"></activity>
+        <activity android:name=".DetallePedidoEliminarActivity" />
+        <activity android:name=".DetallePedidoActualizarActivity" />
+        <activity android:name=".DetallePedidoConsultarActivity" />
+
+        <activity android:name=".EncargadoLocalInsertarActivity"></activity>
+        <activity android:name=".EncargadoLocalMenuActivity" />
+        <activity android:name=".LocalInsertarActivity" />
+        <activity android:name=".LocalMenuActivity" />
+
         <activity android:name=".DetallePedidoInsertarActivity" />
         <activity android:name=".ComboProductoEliminarActivity" />
         <activity android:name=".ComboProductoConsultarActivity" />

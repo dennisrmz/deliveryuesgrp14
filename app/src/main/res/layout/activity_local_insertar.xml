@@ -5,30 +5,40 @@
     android:paddingTop="30dip"
     android:stretchColumns="1" >
     <TableRow>
-        <TextView android:text="Codigo del Pedido"/>
+        <TextView android:text="Codigo del local"/>
         <EditText
-            android:id="@+id/codPedido"
+            android:id="@+id/codLocal"
             android:inputType="number" />
     </TableRow>
     <TableRow>
-        <TextView android:text="Codigo del Producto"/>
+        <TextView android:text="Codigo Encargado del local" />
         <EditText
-            android:id="@+id/codProducto"
-            android:inputType="number" />
-    </TableRow>
-    <TableRow>
-        <TextView android:text="Codigo del Menu"/>
-        <EditText
-            android:id="@+id/codMenu"
-            android:inputType="number" />
-    </TableRow>
-    <TableRow>
-        <TextView android:text="Cantidad de Compra"/>
-        <EditText
-            android:id="@+id/editCantidadCompra"
+            android:id="@+id/editcodEncar"
             android:inputType="number" />
     </TableRow>
 
+    <TableRow>
+        <TextView android:text="Nombre del local" />
+        <EditText
+            android:id="@+id/editNombrelocal"
+            android:inputType="text"
+            android:maxLength="12" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Numero de empleados" />
+        <EditText
+            android:id="@+id/editNumEmpl"
+            android:inputType="number" />
+    </TableRow>
+
+
+    <TableRow>
+        <TextView android:text="Descripcion" />
+        <EditText
+            android:id="@+id/editDescripcionloc"
+            android:inputType="text"
+            android:maxLength="25" />
+    </TableRow>
 
 
     <TableRow>
@@ -37,7 +47,7 @@
 
     <TableRow>
         <Button
-            android:onClick="insertarDetallePedido"
+            android:onClick="insertarLocal"
             android:text="insertar" />
         <Button android:onClick="limpiarTexto"
             android:text="limpiar" />

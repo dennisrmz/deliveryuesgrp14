@@ -12,6 +12,10 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:inputType="number" />
+
+
+
+
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
@@ -30,19 +34,12 @@
             android:onClick="limpiarTexto"/>
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/listProduct"
         android:layout_height="wrap_content"
-        android:text="nombre" />
-    <EditText
-        android:id="@+id/editNombre"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:enabled ="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:cursorVisible="false"
-        android:longClickable="false" />
+        android:layout_width="match_parent"
+        />
+
+
 
 </LinearLayout>

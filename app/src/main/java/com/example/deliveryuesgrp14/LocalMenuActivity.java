@@ -8,10 +8,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class ComboProductoMenuActivity extends ListActivity {
+public class LocalMenuActivity extends ListActivity {
 
-    String[] menu={"Insertar Combo","Eliminar Combo","Consultar Combo"};
-    String[] activities={"ComboProductoInsertarActivity","ComboProductoEliminarActivity","ComboProductoConsultarActivity"};
+    String[] menu={"Insertar Local"};
+    String[] activities={"LocalInsertarActivity"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
