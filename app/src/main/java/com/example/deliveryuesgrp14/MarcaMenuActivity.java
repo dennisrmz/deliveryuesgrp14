@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 public class MarcaMenuActivity extends ListActivity {
 
-    String[] menu={"Insertar Registro","Eliminar Registro","Consultar Registro",
-            "Actualizar Registro"};
+    String[] menu={"Insertar Marca","Eliminar Marca","Consultar Marca",
+            "Actualizar Marca"};
     String[] activities={"MarcaInsertarActivity","MarcaEliminarActivity","MarcaConsultarActivity",
             "MarcaActualizarActivity"};
 

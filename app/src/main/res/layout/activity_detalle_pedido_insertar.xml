@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dip"
+    android:stretchColumns="1" >
+    <TableRow>
+        <TextView android:text="Codigo del Pedido"/>
+        <EditText
+            android:id="@+id/codPedido"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Codigo del Producto"/>
+        <EditText
+            android:id="@+id/codProducto"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Codigo del Menu"/>
+        <EditText
+            android:id="@+id/codMenu"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Cantidad de Compra"/>
+        <EditText
+            android:id="@+id/editCantidadCompra"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Cantidad de Producto"/>
+        <EditText
+            android:id="@+id/editCantidadProducto"
+            android:inputType="number" />
+    </TableRow>
+
+
+
+    <TableRow>
+        <TextView android:text="Opciones" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:onClick="insertarDetallePedido"
+            android:text="insertar" />
+        <Button android:onClick="limpiarTexto"
+            android:text="limpiar" />
+    </TableRow>
+</TableLayout>

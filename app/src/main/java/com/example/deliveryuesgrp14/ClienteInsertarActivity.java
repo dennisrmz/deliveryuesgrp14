@@ -49,6 +49,7 @@ public class ClienteInsertarActivity extends Activity {
         helper.cerrar();
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }
+
     public void limpiarTexto(View v) {
         CodCliente.setText("");
         editUsuario.setText("");

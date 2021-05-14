@@ -28,7 +28,7 @@ public class ProductoEliminarActivity extends AppCompatActivity {
         int codProducto = Integer.parseInt(pivote);
         producto.setCodProduct(codProducto);
         helper.abrir();
-        regEliminadas=helper.eliminar(producto);
+        regEliminadas=helper.eliminarProducto(producto);
         helper.cerrar();
         Toast.makeText(this, regEliminadas, Toast.LENGTH_SHORT).show();
     }

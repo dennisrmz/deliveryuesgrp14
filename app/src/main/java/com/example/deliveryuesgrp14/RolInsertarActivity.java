@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 public class RolInsertarActivity extends Activity {
     ControlBDG14 helper;
     EditText editRol;
     EditText editDescripcion;
-    EditText editNum;
+    int numGlobal = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,18 +19,16 @@ public class RolInsertarActivity extends Activity {
         helper = new ControlBDG14(this);
         editRol = (EditText) findViewById(R.id.editRol);
         editDescripcion = (EditText) findViewById(R.id.editDescripcion);
-        editNum = (EditText) findViewById(R.id.editNumber);
     }
 
     public void insertarRol(View v) {
         int idrol = Integer.parseInt(editRol.getText().toString());
         String descripcion = editDescripcion.getText().toString();
-        int number = Integer.parseInt(editNum.getText().toString());
         String regInsertados;
         Rol role = new Rol();
         role.setIdRol(idrol);
         role.setDescripcion(descripcion);
-        role.setNum(number);
+        role.setNum(numGlobal);
         helper.abrir();
         regInsertados = helper.insertarRol(role);
         helper.cerrar();
@@ -39,6 +38,28 @@ public class RolInsertarActivity extends Activity {
     public void limpiarTexto(View v) {
         editRol.setText("");
         editDescripcion.setText("");
-        editNum.setText("");
+    }
+
+    public void onRadioButtonClicked(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+        switch(view.getId()) {
+            case R.id.num1:
+                if(checked)
+                   numGlobal = 1;
+                break;
+            case R.id.num2:
+                if(checked)
+                   numGlobal = 2;
+                break;
+            case R.id.num3:
+                if(checked)
+                    numGlobal = 3;
+                break;
+            case R.id.num4:
+                if(checked)
+                    numGlobal = 4;
+                break;
+        }
+        Toast.makeText(getApplicationContext(), "Eligio : " + numGlobal , Toast.LENGTH_SHORT).show();
     }
 }
