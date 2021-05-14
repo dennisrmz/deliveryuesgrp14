@@ -3,6 +3,7 @@ package com.example.deliveryuesgrp14;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -325,7 +326,6 @@ public class ControlBDG14 {
 
                 db.execSQL("CREATE TRIGGER validate_update_categoria\n" +
                         "before update on PRODUCTO\n" +
-                        "FOR EACH ROW\n" +
                         "    BEGIN \n" +
                         "        SELECT CASE\n" +
                         "            WHEN(( SELECT CATEGORIA.CODCATEGORIA FROM CATEGORIA WHERE CATEGORIA.CODCATEGORIA = NEW.CODCATEGORIA ) IS NULL)\n" +
@@ -423,8 +423,12 @@ public class ControlBDG14 {
         cv.put("NOMBREPRODUCTO",producto.getNombreProducto());
         cv.put("DESCRIPCIONPROD", producto.getDescripcionProd());
         cv.put("EXISTENCIAS", producto.getExistencias());
+        try{
+            contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
+        }catch(Exception e){
+            contador = 0;
+        }
 
-        contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
         if(contador==-1 || contador==0){
             return "Error al insertar el registro, Registro dublicado. Verificar insercion";
         }
@@ -502,7 +506,12 @@ public class ControlBDG14 {
             cv.put("NOMBRECLIENTE", cliente.getNombreCliente());
             cv.put("APELLIDOCLIENTE", cliente.getApellidoCliente());
             cv.put("NUMTELEFONO", cliente.getNumTelefono());
-            db.update("CLIENTE", cv, "CODCLIENTE = ?", id);
+            try{
+                db.update("CLIENTE", cv, "CODCLIENTE = ?", id);
+            }catch (Exception e){
+                return "Registro no pudo ser actualizado";
+            }
+
             return "Registro Actualizado Correctamente";
 
       }
