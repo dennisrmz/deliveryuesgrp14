@@ -13,8 +13,11 @@ import android.widget.Toast;
 public class MenuPrincipalActivity extends ListActivity {
 
 
-    String[] menu={"Tabla Producto", "Tabla Marcas","Clientes","Pedidos","Menu Restaurante", "Combo Producto","Detalle de Pedido"};
-    String[] activities={"ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity","PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity","DetallePedidoMenuActivity"};
+
+    String[] menu={"Tabla Producto", "Tabla Marcas","Clientes","Pedidos",
+                   "Menu Restaurante", "Combo Producto","Local", "Encargado Local","Detalle de Pedido"};
+    String[] activities={"ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity","PedidoMenuActivity","MenuRestMenuActivity",
+            "ComboProductoMenuActivity","LocalMenuActivity","EncargadoLocalMenuActivity","DetallePedidoMenuActivity"};
 
 
     @Override
