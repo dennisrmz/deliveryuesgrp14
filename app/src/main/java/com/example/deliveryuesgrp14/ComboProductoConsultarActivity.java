@@ -16,8 +16,7 @@ public class ComboProductoConsultarActivity extends AppCompatActivity {
     ListView listProducto;
     ControlBDG14 helper;
     EditText codMenu;
-    EditText codProduct;
-    EditText cantProduct;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
