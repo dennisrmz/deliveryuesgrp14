@@ -36,52 +36,10 @@
 
 
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ListView
+        android:id="@+id/listDetallePedido"
         android:layout_height="wrap_content"
-        android:text="Codigo Producto" />
-    <EditText
-        android:id="@+id/codProducto"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:enabled ="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:cursorVisible="false"
-        android:longClickable="false"/>
-
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Codigo de menu" />
-    <EditText
-        android:id="@+id/codMenu"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:enabled ="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:cursorVisible="false"
-        android:longClickable="false" />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Cantida de Compra" />
-    <EditText
-        android:id="@+id/editCantidadCompra"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:enabled ="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:cursorVisible="false"
-        android:longClickable="false" />
+        android:layout_width="match_parent"
+        />
 
 </LinearLayout>
