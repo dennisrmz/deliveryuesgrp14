@@ -47,7 +47,7 @@ public class MenuRestInsertarActivity extends Activity {
 
 
         helper.abrir();
-        regInsertados=helper.actualizarMenu(menuRest);
+        regInsertados=helper.insertarMenu(menuRest);
         helper.cerrar();
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="30dip"
+    android:stretchColumns="1" >
+    <TableRow>
+        <TextView android:text="Codigo del Encargado"/>
+        <EditText
+            android:id="@+id/codEncar"
+            android:inputType="number" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Tipo de usuario" />
+        <EditText
+            android:id="@+id/editCodUsua"
+            android:inputType="number" />
+    </TableRow>
+
+    <TableRow>
+        <TextView android:text="Nombre del Encargado" />
+        <EditText
+            android:id="@+id/editNombreEnca"
+            android:inputType="text"
+            android:maxLength="12" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Epellido del Encargado" />
+        <EditText
+            android:id="@+id/editApeEnca"
+            android:inputType="text"
+            android:maxLength="12" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="DUI del Encargado" />
+        <EditText
+            android:id="@+id/editDUIEnca"
+            android:inputType="text"
+            android:maxLength="16" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Numero de telefono del Encargado" />
+        <EditText
+            android:id="@+id/editNumbTelfEnca"
+            android:inputType="text"
+            android:maxLength="8" />
+    </TableRow>
+
+
+    <TableRow>
+        <TextView android:text="Opciones" />
+    </TableRow>
+
+    <TableRow>
+        <Button
+            android:onClick="insertarEncargado"
+            android:text="insertar" />
+        <Button android:onClick="limpiarTexto"
+            android:text="limpiar" />
+    </TableRow>
+</TableLayout>
