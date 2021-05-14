@@ -15,7 +15,7 @@ import android.widget.Toast;
 public class MenuPrincipalActivity extends ListActivity {
 
     String[] menu_empleado = {"Tabla Producto", "Tabla Marcas","Clientes",
-            "Pedidos","Menu Restaurante", "Combo Producto", "Categoria", "Cerrar Sesion" };
+            "Pedidos","Menu Restaurante", "Combo Producto", "Categoria","Llena Base de Datos", "Cerrar Sesion" };
 
     String[] activities_empleado = {"ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity",
             "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity", "CategoriaMenuActivity"};
@@ -49,17 +49,8 @@ public class MenuPrincipalActivity extends ListActivity {
         if (numRol == 3) {
             Toast.makeText(this, "Pos : " + position, Toast.LENGTH_LONG).show();
 
-            if(position!=7){
-                nombreValue = activities_empleado[position];
-                try{
-                    Class<?>
-                            clase=Class.forName("com.example.deliveryuesgrp14."+nombreValue);
-                    Intent inte = new Intent(this,clase);
-                    this.startActivity(inte);
-                }catch(ClassNotFoundException e){
-                    e.printStackTrace();
-                }
-            }else{
+            if(position == 8){
+
                 Toast.makeText(this, "Cerrando Sesion", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -73,11 +64,13 @@ public class MenuPrincipalActivity extends ListActivity {
                 }catch(ClassNotFoundException e){
                     e.printStackTrace();
                 }
-            }
-
-        }else if(numRol == 12){
-
-            if(position != 2){
+            }else if(position == 7){
+                //CODIGO PARA LLENAR BASE DE DATOS
+                //            BDhelper.abrir();
+                //            String tost=BDhelper.llenarBDRG14();
+                //            BDhelper.cerrar();
+                            Toast.makeText(this, "Llenar bd", Toast.LENGTH_SHORT).show();
+            }else{
                 nombreValue = activities_empleado[position];
                 try{
                     Class<?>
@@ -87,7 +80,11 @@ public class MenuPrincipalActivity extends ListActivity {
                 }catch(ClassNotFoundException e){
                     e.printStackTrace();
                 }
-            }else{
+            }
+
+        }else if(numRol == 12){
+
+            if(position == 2){
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -96,6 +93,16 @@ public class MenuPrincipalActivity extends ListActivity {
                 try{
                     Class<?>
                             clase=Class.forName("com.example.deliveryuesgrp14.MainActivity");
+                    Intent inte = new Intent(this,clase);
+                    this.startActivity(inte);
+                }catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                }
+            }else{
+                nombreValue = activities_propietario[position];
+                try{
+                    Class<?>
+                            clase=Class.forName("com.example.deliveryuesgrp14."+nombreValue);
                     Intent inte = new Intent(this,clase);
                     this.startActivity(inte);
                 }catch(ClassNotFoundException e){
