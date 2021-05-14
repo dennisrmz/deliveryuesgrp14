@@ -35,13 +35,13 @@ public class MenuPrincipalActivity extends ListActivity {
 
     String[] menu_admin = {"Tabla Producto", "Tabla Marcas","Clientes",
             "Pedidos","Menu Restaurante", "Combo Producto", 
-            "Local", "Encargado Local","Detalle de Pedido"
+            "Local", "Encargado Local","Detalle de Pedido",
             "Categoria", "Tabla Usuario" ,"Tabla Opciones Crud", 
             "Llena Base de Datos", "Cerrar Sesion" };
 
     String[] activities_admin = { "ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity",
             "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity",
-            "LocalMenuActivity","EncargadoLocalMenuActivity","DetallePedidoMenuActivity"
+            "LocalMenuActivity","EncargadoLocalMenuActivity","DetallePedidoMenuActivity",
             "CategoriaMenuActivity", "UsuarioMenuActivity", "RolMenuActivity" };
 
     int numRol = -1;
@@ -128,8 +128,8 @@ public class MenuPrincipalActivity extends ListActivity {
             }
 
         }else if(numRol == 5){
-
-            if(position == 14){
+            Toast.makeText(this, "Pos : " + position, Toast.LENGTH_LONG).show();
+            if(position == 13){
                 //Cerrar Sesion
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -144,7 +144,7 @@ public class MenuPrincipalActivity extends ListActivity {
                 }catch(ClassNotFoundException e){
                     e.printStackTrace();
                 }
-            }else if(position == 13){
+            }else if(position == 12){
                 //Aqui metodo llenar bd
                 Toast.makeText(this, "Llenar BD", Toast.LENGTH_LONG).show();
             }
