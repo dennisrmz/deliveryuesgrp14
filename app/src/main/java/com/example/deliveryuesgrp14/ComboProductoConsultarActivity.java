@@ -33,7 +33,7 @@ public class ComboProductoConsultarActivity extends AppCompatActivity {
         int codMenu = Integer.parseInt(pivote);
         ArrayList<String> productos = helper.consultarCombo(codMenu);
         helper.cerrar();
-        if(productos == null)
+        if(productos.isEmpty())
             Toast.makeText(this, "Menu con el codigo " +
                     codMenu +
                     " no posee productos", Toast.LENGTH_LONG).show();
@@ -41,7 +41,6 @@ public class ComboProductoConsultarActivity extends AppCompatActivity {
             ArrayAdapter<String> producto = new
                     ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, productos);
             listProducto.setAdapter(producto);
-
 
         }
     }

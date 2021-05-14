@@ -642,12 +642,23 @@ public String insertarCombo(ComboProducto combo ){
             precio = cursor.getFloat(2);
             Listaproducto.add(productos.getNombreProducto() + "\t Cantidad:\t" + cantidad);
         }
-            Listaproducto.add("Precio:$"+precio);
+            if(!Listaproducto.isEmpty()){
+                Listaproducto.add("Precio:$"+precio);
+            }
+
         return  Listaproducto;
 
     }
+    public String eliminarCombo(ComboProducto combo){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("COMBOPRODUCTO", "CODMENU='"+combo.getCodMenu()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
 
-//*************Local*********////////////
+
+    //*************Local*********////////////
 public String insertarLocal(Local local ){
 
     String regInsertados = "Registro Inserado Nº= ";

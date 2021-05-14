@@ -10,10 +10,8 @@ import android.widget.ListView;
 
 public class ComboProductoMenuActivity extends ListActivity {
 
-    String[] menu={"Insertar Combo","Eliminar Combo","Consultar Combo",
-            "Actualizar Menu"};
-    String[] activities={"ComboProductoInsertarActivity","ComboProductoEliminarActivity","ComboProductoConsultarActivity",
-            "ComboProductoActualizarActivity"};
+    String[] menu={"Insertar Combo","Eliminar Combo","Consultar Combo"};
+    String[] activities={"ComboProductoInsertarActivity","ComboProductoEliminarActivity","ComboProductoConsultarActivity"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
