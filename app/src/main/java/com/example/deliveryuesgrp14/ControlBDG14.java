@@ -847,7 +847,7 @@ public String insertarCombo(ComboProducto combo ){
 
     public String consultarRolUser(int idUser){
         String rol = "No posee rol";
-        Cursor cursor = db.rawQuery("select OPCIONCRUD.DESCRIPCIONCRUD FROM ACCESOUSUARIO\n" +
+        Cursor cursor = db.rawQuery("select OPCIONCRUD.NUMCRUD FROM ACCESOUSUARIO\n" +
                 "INNER JOIN OPCIONCRUD ON ACCESOUSUARIO.CODOPCION = OPCIONCRUD.CODOPCION\n" +
                 "WHERE ACCESOUSUARIO.CODUSUARIO = " + idUser, null);
 
@@ -856,6 +856,98 @@ public String insertarCombo(ComboProducto combo ){
             return rol;
         }else {
             return rol;
+        }
+    }
+
+    public int consultarRolUserNum(int idUser){
+        int rol = -1;
+        Cursor cursor = db.rawQuery("select OPCIONCRUD.DESCRIPCIONCRUD,OPCIONCRUD.NUMCRUD FROM ACCESOUSUARIO\n" +
+                "INNER JOIN OPCIONCRUD ON ACCESOUSUARIO.CODOPCION = OPCIONCRUD.CODOPCION\n" +
+                "WHERE ACCESOUSUARIO.CODUSUARIO = " + idUser, null);
+
+        if(cursor.moveToFirst()){
+            rol = cursor.getInt(1);
+            return rol;
+        }else {
+            return rol;
+        }
+    }
+
+    public String insertarCategoria(Categoria categoria){
+
+        String regInsertados = "Registro Inserado Nº= ";
+        long contador = 0;
+
+        ContentValues cate = new ContentValues();
+        cate.put("CODCATEGORIA", categoria.getCodCategoria());
+        cate.put("NOMBRECATEGORIA",categoria.getNombreCategoria());
+
+        contador = db.insert("CATEGORIA",null,cate);
+        if(contador==-1 || contador==0){
+            regInsertados = "Error al insertar el registro categoria, Registro dublicado. Verificar insercion";
+        }
+        else {
+            regInsertados = regInsertados+contador;
+        }
+        return regInsertados;
+    }
+
+    public Categoria consultarCategoria(String codCategoria){
+        String[] camposCategoria = {"CODCATEGORIA", "NOMBRECATEGORIA"};
+        String[] id = {codCategoria};
+        Cursor cursor = db.query("CATEGORIA", camposCategoria, "CODCATEGORIA = ?",
+                id, null, null, null);
+        if(cursor.moveToFirst()){
+            Categoria categoria = new Categoria();
+            categoria.setCodCategoria(cursor.getInt(0));
+            categoria.setNombreCategoria(cursor.getString(1));
+
+            return categoria;
+        }else{
+            return null;
+        }
+
+    }
+
+    public String actualizarCategoria(Categoria categoria){
+        long contador = 0;
+        String[] id = {Integer.toString(categoria.getCodCategoria())};
+        ContentValues cv = new ContentValues();
+        cv.put("CODCATEGORIA", categoria.getCodCategoria());
+        cv.put("NOMBRECATEGORIA", categoria.getNombreCategoria());
+
+
+        contador =  db.update("CATEGORIA", cv, "CODCATEGORIA = ?", id);
+        if(contador==-1 || contador==0){
+            return "Error al insertar el registro Categoria, Registro dublicado. Verificar insercion";
+        }
+        else {
+            return "Registro Actualizado Correctamente";
+        }
+
+    }
+
+    public String eliminarCategoria(Categoria categoria){
+        String regAfectados="filas afectadas= ";
+        int contador=0;
+        contador+=db.delete("CATEGORIA", "CODCATEGORIA='"+categoria.getCodCategoria()+"'", null);
+        regAfectados+=contador;
+        return regAfectados;
+    }
+
+    public Usuario consultarUsuarioLog(String correo, String password){
+        String[] camposUsuario = {"CODUSUARIO","CORREO", "NOMBREUSU", "CONTRASENA"};
+        String[] id = {correo,password};
+        Cursor cursor = db.query("USUARIO", camposUsuario, "CORREO = ? AND CONTRASENA = ?", id, null, null, null);
+        if(cursor.moveToFirst()){
+            Usuario usuario = new Usuario();
+            usuario.setCodUsuario(cursor.getInt(0));
+            usuario.setCorreo(cursor.getString(1));
+            usuario.setNombreUsu(cursor.getString(2));
+            usuario.setContrasena(cursor.getString(3));
+            return usuario;
+        }else{
+            return null;
         }
     }
 //    public String insertar(Alumno alumno){

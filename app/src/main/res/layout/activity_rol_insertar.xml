@@ -21,11 +21,45 @@
     </TableRow>
     <TableRow>
         <TextView android:text="@string/numero" />
-        <EditText
-            android:id="@+id/editNumber"
-            android:ems="10"
-            android:inputType="number"
-            />
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/rdGroup"
+            android:layout_below="@+id/txtView">
+            <RadioButton
+                android:id="@+id/num1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginLeft="100dp"
+                android:text="Cliente"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton
+                android:id="@+id/num2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginLeft="100dp"
+                android:text="Propietario"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton
+                android:id="@+id/num3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginLeft="100dp"
+                android:text="Empleado"
+                android:onClick="onRadioButtonClicked"/>
+            <RadioButton
+                android:id="@+id/num4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginLeft="100dp"
+                android:text="Repartidor"
+                android:onClick="onRadioButtonClicked"/>
+        </RadioGroup>
     </TableRow>
 
 
