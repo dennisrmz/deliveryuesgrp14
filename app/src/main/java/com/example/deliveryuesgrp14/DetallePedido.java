@@ -6,14 +6,26 @@ public class DetallePedido {
     private int codPedido;
     private int codMenu;
     private int cantidadCompra;
+    private  int cantidadProducto;
+
+    public int getCantidadProducto() {
+        return cantidadProducto;
+    }
+
+    public void setCantidadProducto(int cantidadProducto) {
+        this.cantidadProducto = cantidadProducto;
+    }
 
 
 
-    public DetallePedido(int codProducto, int codPedido, int codMenu, int cantidadCompra) {
+
+
+    public DetallePedido(int codProducto, int codPedido, int codMenu, int cantidadCompra,int cantidadProducto) {
         this.codProducto = codProducto;
         this.codPedido = codPedido;
         this.codMenu = codMenu;
         this.cantidadCompra = cantidadCompra;
+        this.cantidadProducto=cantidadProducto;
     }
 
 

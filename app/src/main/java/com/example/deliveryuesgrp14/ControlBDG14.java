@@ -33,9 +33,7 @@ public class ControlBDG14 {
     private static final String[]camposMenu = new String []
             {"CODMENU","CODLOCAL" ,"PRECIOCOMBO","DESCRIPCIONCOMBO"};
 
-    private static final String[]camposDetallePedido = new String [] {"CODPEDIDO","CODPRODUCT","CODMENU","CANTIDADCOMPRA"};
 
-    private static final String[]camposCombo = new String [] {"CODMENU","CODCOMBO"};
   
     private static class DatabaseHelper extends SQLiteOpenHelper {
         private static final String BASE_DATOS = "sistemaCafetines.s3db";
@@ -99,6 +97,7 @@ public class ControlBDG14 {
                         "   CODPEDIDO            INTEGER              not null,\n" +
                         "   CODMENU              INTEGER,\n" +
                         "   CANTIDADCOMPRA       INTEGER              not null,\n" +
+                        "   CANTIDADPRODUCTO       INTEGER              not null,\n" +
                         "   constraint PK_DETALLEPEDIDO primary key (CODPEDIDO)\n" +
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
@@ -600,6 +599,7 @@ public class ControlBDG14 {
         prod.put("CODPRODUCT", detalle.getCodProducto());
         prod.put("CODMENU", detalle.getCodMenu());
         prod.put("CANTIDADCOMPRA", detalle.getCantidadCompra());
+        prod.put("CANTIDADPRODUCTO", detalle.getCantidadProducto());
 
 
         contador = db.insert("DETALLEPEDIDO",null,prod);
@@ -611,21 +611,39 @@ public class ControlBDG14 {
         return regInsertados;
     }
 
-    public DetallePedido consultarDetallePedido(String codPedido){
-        String[] id = {codPedido};
-        Cursor cursor = db.query("DETALLEPEDIDO", camposDetallePedido, "CODPEDIDO = ?", id, null, null, null);
-        if(cursor.moveToFirst()){
-            DetallePedido detalle = new DetallePedido();
-            detalle.setCodPedido(cursor.getInt(0));
-            detalle.setCodProducto(cursor.getInt(1));
-            detalle.setCodMenu(cursor.getInt(2));
-            detalle.setCantidadCompra(cursor.getInt(3));
-            return detalle;
-        }else{
+    public ArrayList<String> consultarDetallePedido(int codPedido){
 
-            return null;
+        ArrayList<String>  ListadeDetalle= new ArrayList<>();
+
+
+        Cursor cursor = db.rawQuery("SELECT PEDIDO.COMENTARIOPEDIDO, PEDIDO.TOTAL,DETALLEPEDIDO.CODMENU,PRODUCTO.NOMBREPRODUCTO,DETALLEPEDIDO.CANTIDADCOMPRA,DETALLEPEDIDO.CANTIDADPRODUCTO FROM DETALLEPEDIDO INNER JOIN PEDIDO ON PEDIDO.CODPEDIDO = DETALLEPEDIDO.CODPEDIDO \n" +
+                " INNER JOIN PRODUCTO ON PRODUCTO.CODPRODUCT=DETALLEPEDIDO.CODPRODUCT INNER JOIN MENU ON MENU.CODMENU=DETALLEPEDIDO.CODMENU WHERE DETALLEPEDIDO.CODPEDIDO= " + codPedido , null);
+
+        String comentarioPedido;
+        float total=0;
+        int codMenu;
+        String nombreProducto;
+        int cantidadCompra;
+        int cantidadProducto;
+
+
+        while (cursor.moveToNext()){
+
+            comentarioPedido=cursor.getString(0);
+            total=cursor.getFloat(1);
+            codMenu=cursor.getInt(2);
+            nombreProducto=cursor.getString(3);
+            cantidadCompra=cursor.getInt(4);
+            cantidadProducto=cursor.getInt(5);
+
+            ListadeDetalle.add(" CodMenu : \t"+ codMenu + "\n Cantidad de Menus Comprados : \t" + cantidadCompra+"\n nombre de Producto : "
+            +nombreProducto+"\n Cantidad comprada de producto: "+cantidadProducto +"\n Comentario: "+comentarioPedido );
+        }
+        if(!ListadeDetalle.isEmpty()){
+            ListadeDetalle.add("Total:$"+total);
         }
 
+        return  ListadeDetalle;
     }
     public String actualizarDetallePedido(DetallePedido detalle){
 
@@ -763,7 +781,7 @@ public String insertarCombo(ComboProducto combo ){
     return regInsertados;
 }
     public ArrayList<String> consultarCombo(int codMenu){
-        String producto = "No posee producto";
+
         ArrayList<String>  Listaproducto = new ArrayList<>();
 
         Cursor cursor = db.rawQuery("select PRODUCTO.NOMBREPRODUCTO, COMBOPRODUCTO.CANTPRODUCT, MENU.PRECIOCOMBO FROM COMBOPRODUCTO" +
