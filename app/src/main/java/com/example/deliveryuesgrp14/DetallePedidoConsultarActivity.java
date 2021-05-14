@@ -6,18 +6,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class DetallePedidoInsertarActivity extends Activity {
-
+public class DetallePedidoConsultarActivity extends Activity {
     ControlBDG14 helper;
     EditText CodPedido;
     EditText codProducto;
     EditText codMenu;
     EditText cantidadCompra;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detalle_pedido_insertar);
+        setContentView(R.layout.activity_detalle_pedido_consultar);
         helper = new ControlBDG14(this);
         codProducto = (EditText) findViewById(R.id.codProducto);
         CodPedido = (EditText) findViewById(R.id.codPedido);
@@ -26,24 +24,21 @@ public class DetallePedidoInsertarActivity extends Activity {
 
     }
 
-    public void insertarDetallePedido(View v) {
-
-        int pedido =(int)Integer.parseInt(CodPedido.getText().toString());
-        int producto =(int)Integer.parseInt(codProducto.getText().toString());
-        int menu =(int)Integer.parseInt(codMenu.getText().toString());
-        int canCompra =(int)Integer.parseInt(cantidadCompra.getText().toString());
-
-        String regInsertados;
-        DetallePedido detalle =new DetallePedido();
-        detalle.setCodPedido(pedido);
-        detalle.setCodProducto(producto);
-        detalle.setCodMenu(menu);
-        detalle.setCantidadCompra(canCompra);
+    public void consultarDetallePedido(View v) {
 
         helper.abrir();
-        regInsertados=helper.insertarDetallePedido(detalle);
+
+        DetallePedido detalle = helper.consultarDetallePedido(CodPedido.getText().toString());
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        if(detalle == null)
+            Toast.makeText(this, "Detalle de Pedido con codigo " + CodPedido.getText().toString() +
+                    " no encontrado", Toast.LENGTH_LONG).show();
+        else{
+            codProducto.setText(Integer.toString(detalle.getCodProducto()));
+            codMenu.setText(Integer.toString(detalle.getCodMenu()));
+            cantidadCompra.setText(Integer.toString(detalle.getCantidadCompra()));
+
+        }
     }
 
     public void limpiarTexto(View v) {
