@@ -13,6 +13,7 @@ public class DetallePedidoInsertarActivity extends Activity {
     EditText codProducto;
     EditText codMenu;
     EditText cantidadCompra;
+    EditText candtidadProducto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +24,7 @@ public class DetallePedidoInsertarActivity extends Activity {
         CodPedido = (EditText) findViewById(R.id.codPedido);
         codMenu = (EditText) findViewById(R.id.codMenu);
         cantidadCompra = (EditText) findViewById(R.id.editCantidadCompra);
+        candtidadProducto = (EditText) findViewById(R.id.editCantidadProducto);
 
     }
 
@@ -32,6 +34,7 @@ public class DetallePedidoInsertarActivity extends Activity {
         int producto =(int)Integer.parseInt(codProducto.getText().toString());
         int menu =(int)Integer.parseInt(codMenu.getText().toString());
         int canCompra =(int)Integer.parseInt(cantidadCompra.getText().toString());
+        int canProducto =(int)Integer.parseInt(candtidadProducto.getText().toString());
 
         String regInsertados;
         DetallePedido detalle =new DetallePedido();
@@ -39,6 +42,7 @@ public class DetallePedidoInsertarActivity extends Activity {
         detalle.setCodProducto(producto);
         detalle.setCodMenu(menu);
         detalle.setCantidadCompra(canCompra);
+        detalle.setCantidadProducto(canProducto);
 
         helper.abrir();
         regInsertados=helper.insertarDetallePedido(detalle);
@@ -51,6 +55,7 @@ public class DetallePedidoInsertarActivity extends Activity {
         codProducto.setText("");
         codMenu.setText("");
         cantidadCompra.setText("");
+        candtidadProducto.setText("");
 
     }
 }

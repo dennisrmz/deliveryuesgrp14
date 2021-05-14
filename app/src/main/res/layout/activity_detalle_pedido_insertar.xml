@@ -28,6 +28,12 @@
             android:id="@+id/editCantidadCompra"
             android:inputType="number" />
     </TableRow>
+    <TableRow>
+        <TextView android:text="Cantidad de Producto"/>
+        <EditText
+            android:id="@+id/editCantidadProducto"
+            android:inputType="number" />
+    </TableRow>
 
 
 
