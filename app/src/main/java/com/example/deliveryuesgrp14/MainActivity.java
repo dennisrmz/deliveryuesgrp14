@@ -35,6 +35,9 @@ public class MainActivity extends AppCompatActivity {
 //        setListAdapter(new ArrayAdapter<String>(this,
 //                android.R.layout.simple_list_item_1, menu));
         BDhelper=new ControlBDG14(this);
+        //crear usuario por defecto
+        validate_user_admin();
+
         SharedPreferences sh = getSharedPreferences(MainActivity.MyPREFERENCES, Context.MODE_PRIVATE);
         String pass_get = "";
         String email_get = "";
@@ -149,5 +152,34 @@ public class MainActivity extends AppCompatActivity {
                     " no encontrado", Toast.LENGTH_LONG).show();
         }
 
+    }
+
+    public void validate_user_admin(){
+        BDhelper.abrir();
+        Rol role = BDhelper.consultarRol("1");
+        BDhelper.cerrar();
+
+        if(role == null){
+            Rol newrole = new Rol();
+            newrole.setIdRol(1);
+            newrole.setDescripcion("admin");
+            newrole.setNum(5);
+            BDhelper.abrir();
+            String roleInsert = BDhelper.insertarRol(newrole);
+            BDhelper.cerrar();
+        }
+
+        BDhelper.abrir();
+        Usuario user = BDhelper.consultarUsuario("admin@gmail.com");
+        BDhelper.cerrar();
+        if(user == null){
+            Usuario usuario = new Usuario();
+            usuario.setCorreo("admin@gmail.com");
+            usuario.setNombreUsu("admin");
+            usuario.setContrasena("1234");
+            BDhelper.abrir();
+            String respuesta = BDhelper.insertarUsuario(usuario, "1");
+            BDhelper.cerrar();
+        }
     }
 }

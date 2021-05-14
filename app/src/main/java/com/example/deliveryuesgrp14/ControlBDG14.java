@@ -251,6 +251,84 @@ public class ControlBDG14 {
                         "   constraint PK_USUARIO primary key (CODUSUARIO)\n" +
                         ");");
 
+                db.execSQL("CREATE TRIGGER email_unique \n" +
+                        "before insert on USUARIO\n" +
+                        "FOR EACH ROW\n" +
+                        "    BEGIN \n" +
+                        "        SELECT CASE\n" +
+                        "            WHEN((SELECT USUARIO.CORREO FROM USUARIO WHERE USUARIO.CORREO = NEW.CORREO ) IS NOT NULL)\n" +
+                        "                THEN RAISE (ABORT, \"Ya existe usuario\")\n" +
+                        "            END;\n" +
+                        "END;");
+
+                db.execSQL("CREATE TRIGGER validate_rol_cliente\n" +
+                        "before insert on CLIENTE\n" +
+                        "FOR EACH ROW\n" +
+                        "    BEGIN \n" +
+                        "        SELECT CASE\n" +
+                        "            WHEN((SELECT USUARIO.CODUSUARIO FROM USUARIO \n" +
+                        "                    INNER JOIN ACCESOUSUARIO ON USUARIO.CODUSUARIO = ACCESOUSUARIO.CODUSUARIO\n" +
+                        "                    INNER JOIN OPCIONCRUD ON ACCESOUSUARIO.CODOPCION = OPCIONCRUD.CODOPCION\n" +
+                        "                    WHERE OPCIONCRUD.NUMCRUD = 1\n" +
+                        "                    AND USUARIO.CODUSUARIO = NEW.CODUSUARIO ) IS NULL)\n" +
+                        "                THEN RAISE (ABORT, \"cod usuario no es cliente\")\n" +
+                        "            END;\n" +
+                        "END;\n");
+
+                db.execSQL("CREATE TRIGGER validate_update_rol_cliente\n" +
+                        "before update on CLIENTE\n" +
+                        "FOR EACH ROW\n" +
+                        "    BEGIN \n" +
+                        "        SELECT CASE\n" +
+                        "            WHEN((SELECT USUARIO.CODUSUARIO FROM USUARIO \n" +
+                        "                    INNER JOIN ACCESOUSUARIO ON USUARIO.CODUSUARIO = ACCESOUSUARIO.CODUSUARIO\n" +
+                        "                    INNER JOIN OPCIONCRUD ON ACCESOUSUARIO.CODOPCION = OPCIONCRUD.CODOPCION\n" +
+                        "                    WHERE OPCIONCRUD.NUMCRUD = 1\n" +
+                        "                    AND USUARIO.CODUSUARIO = NEW.CODUSUARIO ) IS NULL)\n" +
+                        "                THEN RAISE (ABORT, \"cod usuario no es cliente\")\n" +
+                        "            END;\n" +
+                        "END;");
+
+                db.execSQL("CREATE TRIGGER validate_marca\n" +
+                        "before insert on PRODUCTO\n" +
+                        "FOR EACH ROW\n" +
+                        "    BEGIN \n" +
+                        "        SELECT CASE\n" +
+                        "            WHEN(( SELECT MARCA.CODMARCA FROM MARCA WHERE MARCA.CODMARCA = NEW.CODMARCA ) IS NULL)\n" +
+                        "                THEN RAISE (ABORT, \"la marca no existe\")\n" +
+                        "            END;\n" +
+                        "END;");
+
+                db.execSQL("CREATE TRIGGER validate_update_marca\n" +
+                        "before update on PRODUCTO\n" +
+                        "FOR EACH ROW\n" +
+                        "    BEGIN \n" +
+                        "        SELECT CASE\n" +
+                        "            WHEN(( SELECT MARCA.CODMARCA FROM MARCA WHERE MARCA.CODMARCA = NEW.CODMARCA ) IS NULL)\n" +
+                        "                THEN RAISE (ABORT, \"la marca no existe\")\n" +
+                        "            END;\n" +
+                        "END;");
+
+                db.execSQL("CREATE TRIGGER validate_categoria\n" +
+                        "before insert on PRODUCTO\n" +
+                        "FOR EACH ROW\n" +
+                        "    BEGIN \n" +
+                        "        SELECT CASE\n" +
+                        "            WHEN(( SELECT CATEGORIA.CODCATEGORIA FROM CATEGORIA WHERE CATEGORIA.CODCATEGORIA = NEW.CODCATEGORIA ) IS NULL)\n" +
+                        "                THEN RAISE (ABORT, \"la categoria no existe\")\n" +
+                        "            END;\n" +
+                        "END;\n");
+
+                db.execSQL("CREATE TRIGGER validate_update_categoria\n" +
+                        "before update on PRODUCTO\n" +
+                        "FOR EACH ROW\n" +
+                        "    BEGIN \n" +
+                        "        SELECT CASE\n" +
+                        "            WHEN(( SELECT CATEGORIA.CODCATEGORIA FROM CATEGORIA WHERE CATEGORIA.CODCATEGORIA = NEW.CODCATEGORIA ) IS NULL)\n" +
+                        "                THEN RAISE (ABORT, \"la categoria no existe\")\n" +
+                        "            END;\n" +
+                        "END;");
+
             }catch(SQLException e){
                 e.printStackTrace();
             }
@@ -766,7 +844,7 @@ public String insertarCombo(ComboProducto combo ){
         long contador = 0;
 
         ContentValues role = new ContentValues();
-        role.put("CODOPCION", rol.getNum());
+        role.put("CODOPCION", rol.getIdRol());
         role.put("DESCRIPCIONCRUD", rol.getDescripcion());
         role.put("NUMCRUD",rol.getNum());
 
