@@ -2,6 +2,7 @@ package com.example.deliveryuesgrp14;
 
 public class DetallePedido {
 
+    private  int codDetalle;
     private int codProducto;
     private int codPedido;
     private int codMenu;
@@ -20,7 +21,8 @@ public class DetallePedido {
 
 
 
-    public DetallePedido(int codProducto, int codPedido, int codMenu, int cantidadCompra,int cantidadProducto) {
+    public DetallePedido(int codDetalle, int codProducto, int codPedido, int codMenu, int cantidadCompra,int cantidadProducto) {
+        this.codDetalle = codDetalle;
         this.codProducto = codProducto;
         this.codPedido = codPedido;
         this.codMenu = codMenu;
@@ -67,6 +69,11 @@ public class DetallePedido {
         this.cantidadCompra = cantidadCompra;
     }
 
+    public int getCodDetalle() {
+        return codDetalle;
+    }
 
-
+    public void setCodDetalle(int codDetalle) {
+        this.codDetalle = codDetalle;
+    }
 }

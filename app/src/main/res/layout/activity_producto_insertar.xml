@@ -44,6 +44,12 @@
             android:id="@+id/editExistencias"
             android:inputType="number" />
     </TableRow>
+    <TableRow>
+        <TextView android:text="Precio" />
+        <EditText
+            android:id="@+id/editPrec"
+            android:inputType="numberDecimal" />
+    </TableRow>
 
     <TableRow>
         <TextView android:text="Opciones" />
