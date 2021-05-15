@@ -6,9 +6,9 @@
     android:paddingTop="30dip"
     android:stretchColumns="1" >
     <TableRow>
-        <TextView android:text="Codigo del Pedido"/>
+        <TextView android:text="Codigo del detalle del pedido"/>
        <EditText
-            android:id="@+id/codPedido"
+            android:id="@+id/codDetalle"
         android:inputType="number" />
     </TableRow>
 
@@ -16,6 +16,13 @@
         <TextView android:text="Cantidad de Compra" />
         <EditText
             android:id="@+id/editCantidadCompra"
+            android:inputType="number"
+            android:maxLength="12" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Cantidad de Productos comprados" />
+        <EditText
+            android:id="@+id/editCantidadProducto"
             android:inputType="number"
             android:maxLength="12" />
     </TableRow>

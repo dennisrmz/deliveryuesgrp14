@@ -8,17 +8,27 @@ public class Producto {
     private  String NombreProducto;
     private  String descripcionProd;
     private  int existencias;
+    private  float precio;
+
+    public float getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(float precio) {
+        this.precio = precio;
+    }
 
     public Producto() {
     }
 
-    public Producto(int codProduct, int codCategoria, int codMarca, String nombreProducto, String descripcionProd, int existencias) {
+    public Producto(int codProduct, int codCategoria, int codMarca, String nombreProducto, String descripcionProd, int existencias, float precio) {
         this.codProduct = codProduct;
         this.codCategoria = codCategoria;
         this.codMarca = codMarca;
         NombreProducto = nombreProducto;
         this.descripcionProd = descripcionProd;
         this.existencias = existencias;
+        this.precio = precio;
     }
 
     public int getCodProduct() {

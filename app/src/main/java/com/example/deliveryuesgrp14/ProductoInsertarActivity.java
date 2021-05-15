@@ -15,6 +15,7 @@ public class ProductoInsertarActivity extends Activity {
     EditText editNombre;
     EditText editDescripcionProd;
     EditText editExistencias;
+    EditText editPrec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class ProductoInsertarActivity extends Activity {
         editNombre = (EditText) findViewById(R.id.editNombre);
         editDescripcionProd = (EditText) findViewById(R.id.editDescripcion);
         editExistencias = (EditText) findViewById(R.id.editExistencias);
+        editPrec = (EditText) findViewById(R.id.editPrec);
     }
     public void insertarProducto(View v) {
         String pivote;
@@ -40,6 +42,8 @@ public class ProductoInsertarActivity extends Activity {
         String descripcionProducto=editDescripcionProd.getText().toString();
         pivote = editExistencias.getText().toString();
         int existencias = Integer.parseInt(pivote);
+        pivote = editPrec.getText().toString();
+        float precio = Float.parseFloat(pivote);
         String regInsertados;
         Producto producto=new Producto();
         producto.setCodProduct(codProducto);
@@ -48,6 +52,7 @@ public class ProductoInsertarActivity extends Activity {
         producto.setNombreProducto(nombre);
         producto.setDescripcionProd(descripcionProducto);
         producto.setExistencias(existencias);
+        producto.setPrecio(precio);
 
         helper.abrir();
         regInsertados=helper.insertarProducto(producto);

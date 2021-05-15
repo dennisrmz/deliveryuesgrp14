@@ -40,8 +40,15 @@
         <TextView android:text="Existencias" />
         <EditText
             android:id="@+id/editExistencias"
+            android:inputType="numberDecimal" />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Precio del producto" />
+        <EditText
+            android:id="@+id/editPrec"
             android:inputType="number" />
     </TableRow>
+
     <TableRow>
         <Button
             android:onClick="actualizarProducto"

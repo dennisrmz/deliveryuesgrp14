@@ -26,7 +26,7 @@ public class ControlBDG14 {
         DBHelper = new DatabaseHelper(context);
     }
     private static final String[]camposProducto = new String []
-            {"CODPRODUCT","CODCATEGORIA" ,"CODMARCA","NOMBREPRODUCTO","DESCRIPCIONPROD", "EXISTENCIAS"};
+            {"CODPRODUCT","CODCATEGORIA" ,"CODMARCA","NOMBREPRODUCTO","DESCRIPCIONPROD", "EXISTENCIAS","PRECIOPROC"};
     private static final String[]camposMarca = new String []
             {"CODMARCA","NOMBREMARCA"};
     private static final String[]camposCliente = new String [] {"CODCLIENTE","CODUSUARIO","NOMBRECLIENTE","APELLIDOCLIENTE", "NUMTELEFONO"};
@@ -94,12 +94,13 @@ public class ControlBDG14 {
                         "/*==============================================================*/\n" +
                         "create table DETALLEPEDIDO \n" +
                         "(\n" +
+                        "   CODDETALLE           INTEGER not null,\n" +
                         "   CODPRODUCT           INTEGER,\n" +
                         "   CODPEDIDO            INTEGER              not null,\n" +
                         "   CODMENU              INTEGER,\n" +
                         "   CANTIDADCOMPRA       INTEGER              not null,\n" +
                         "   CANTIDADPRODUCTO       INTEGER              not null,\n" +
-                        "   constraint PK_DETALLEPEDIDO primary key (CODPEDIDO)\n" +
+                        "   constraint PK_DETALLEPEDIDO primary key (CODDETALLE)\n" +
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: ENCARGADOLOCAL                                        */\n" +
@@ -191,6 +192,7 @@ public class ControlBDG14 {
                         "   CODMARCA             int,\n" +
                         "   NOMBREPRODUCTO       char(250) not null,\n" +
                         "   DESCRIPCIONPROD      char(250) not null,\n" +
+                        "   PRECIOPROC         FLOAT                not null,\n"+
                         "   EXISTENCIAS          int not null,\n" +
                         "   primary key (CODPRODUCT)\n" +
                         ");");
@@ -331,6 +333,20 @@ public class ControlBDG14 {
                         "                THEN RAISE (ABORT, \"la categoria no existe\")\n" +
                         "            END;\n" +
                         "END;");
+                db.execSQL("CREATE TRIGGER sumarTotal\n" +
+                        "AFTER INSERT ON DETALLEPEDIDO\n" +
+                        "BEGIN\n" +
+                        "UPDATE PEDIDO SET TOTAL = TOTAL + ((SELECT PRODUCTO.PRECIOPROC FROM PRODUCTO WHERE PRODUCTO.CODPRODUCT = NEW.CODPRODUCT)* NEW.CANTIDADPRODUCTO) \n" +
+                        "+ ((SELECT MENU.PRECIOCOMBO FROM MENU WHERE MENU.CODMENU = NEW.CODMENU)* NEW.CANTIDADCOMPRA );\n" +
+                        "END;");
+                db.execSQL("CREATE TRIGGER ActualizarTotal\n" +
+                        "AFTER UPDATE ON DETALLEPEDIDO\n" +
+                        "BEGIN\n" +
+                        "UPDATE PEDIDO SET TOTAL = TOTAL + ((SELECT PRODUCTO.PRECIOPROC FROM PRODUCTO WHERE PRODUCTO.CODPRODUCT = NEW.CODPRODUCT)* NEW.CANTIDADPRODUCTO) \n" +
+                        "+ ((SELECT MENU.PRECIOCOMBO FROM MENU WHERE MENU.CODMENU = NEW.CODMENU)* NEW.CANTIDADCOMPRA ) -  (((SELECT PRODUCTO.PRECIOPROC FROM PRODUCTO WHERE PRODUCTO.CODPRODUCT = OLD.CODPRODUCT)* OLD.CANTIDADPRODUCTO) \n" +
+                        "+ ((SELECT MENU.PRECIOCOMBO FROM MENU WHERE MENU.CODMENU = OLD.CODMENU)* OLD.CANTIDADCOMPRA ) )\n" +
+                        "WHERE PEDIDO.CODPEDIDO = NEW.CODPEDIDO;\n" +
+                        "END;");
 
             }catch(SQLException e){
                 e.printStackTrace();
@@ -361,6 +377,7 @@ public class ControlBDG14 {
           prod.put("NOMBREPRODUCTO",producto.getNombreProducto());
           prod.put("DESCRIPCIONPROD", producto.getDescripcionProd());
           prod.put("EXISTENCIAS", producto.getExistencias());
+          prod.put("PRECIOPROC",producto.getPrecio());
           contador = db.insert("PRODUCTO",null,prod);
           if(contador==-1 || contador==0){
           regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
@@ -406,6 +423,7 @@ public class ControlBDG14 {
             producto.setNombreProducto(cursor.getString(3));
             producto.setDescripcionProd(cursor.getString(4));
             producto.setExistencias(cursor.getInt(5));
+            producto.setPrecio(cursor.getFloat(6));
             return producto;
         }else{
             return null;
@@ -422,6 +440,7 @@ public class ControlBDG14 {
         cv.put("NOMBREPRODUCTO",producto.getNombreProducto());
         cv.put("DESCRIPCIONPROD", producto.getDescripcionProd());
         cv.put("EXISTENCIAS", producto.getExistencias());
+        cv.put("PRECIOPROC", producto.getPrecio());
         try{
             contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
         }catch(Exception e){
@@ -656,11 +675,12 @@ public class ControlBDG14 {
     }
     public String actualizarDetallePedido(DetallePedido detalle){
 
-        String[] id = {Integer.toString( detalle.getCodPedido())};
+        String[] id = {Integer.toString( detalle.getCodDetalle())};
         ContentValues cv = new ContentValues();
         cv.put("CANTIDADCOMPRA", detalle.getCantidadCompra());
+        cv.put("CANTIDADPRODUCTO", detalle.getCantidadProducto());
 
-        db.update("DETALLEPEDIDO", cv, "CODPEDIDO = ?", id);
+        db.update("DETALLEPEDIDO", cv, "CODDETALLE = ?", id);
         return "Registro Actualizado Correctamente";
 
     }
