@@ -332,6 +332,26 @@ public class ControlBDG14 {
                         "            END;\n" +
                         "END;");
 
+
+                db.execSQL("INSERT INTO OPCIONCRUD (NUMCRUD,DESCRIPCIONCRUD,CODOPCION)\n" +
+                        "       VALUES (3,'empleado',2),\n" +
+                        "              (1,'cliente',3),\n" +
+                        "              (2,'propietario',4),\n" +
+                        "              (4,'repartidor',5);");
+
+                db.execSQL("INSERT INTO USUARIO (CONTRASENA,NOMBREUSU,CORREO,CODUSUARIO)\n" +
+                        "            VALUES (1234,'Dennis Orellana','repartidor@gmail.com',4),\n" +
+                        "                   (1234,'Agustin Ascencio','propietario@gmail.com',3),\n" +
+                        "                   (1234,'Kevin Gonzalo','cliente@gmail.com',2),\n" +
+                        "                   (1234,'Mario Castro','empleado@gmail.com',5);");
+
+                db.execSQL("INSERT INTO ACCESOUSUARIO (CODOPCION,CODUSUARIO)\n" +
+                        "                  VALUES (2,5),\n" +
+                        "                         (3,2),\n" +
+                        "                         (4,3),\n" +
+                        "                         (5,4);");
+
+
             }catch(SQLException e){
                 e.printStackTrace();
             }
