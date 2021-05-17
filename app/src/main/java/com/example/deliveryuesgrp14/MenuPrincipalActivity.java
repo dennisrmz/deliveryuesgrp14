@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MenuPrincipalActivity extends ListActivity {
 
-    String[] menu_empleado = {"Tabla Producto", "Tabla Marcas","Clientes",
+    String[] menu_empleado = {"Producto", "Marcas","Clientes",
             "Pedidos","Menu Restaurante", "Combo Producto", "Categoria", "Cerrar Sesion" };
 
 
@@ -22,33 +22,31 @@ public class MenuPrincipalActivity extends ListActivity {
             "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity", "CategoriaMenuActivity"};
 
 
-    String[] menu_cliente={"Tabla Producto", "Pedidos", "Menu Restaurante",
+    String[] menu_cliente={"Producto", "Pedidos",
                 "Combo Producto", "Detalle de Pedido",  "Cerrar Sesion"};
-    String[] activities_cliente={"ProductoMenuActivity","PedidoMenuActivity","MenuRestMenuActivity",
+    String[] activities_cliente={"ProductoMenuActivity","PedidoMenuActivity",
                 "ComboProductoMenuActivity", "DetallePedidoMenuActivity"};
 
 
-    String[] menu_propietario ={"Tabla Producto", "Tabla Marcas","Clientes",
+    String[] menu_propietario ={"Producto", "Marcas","Clientes",
             "Pedidos","Menu Restaurante", "Combo Producto",
-            "Local", "Encargado Local","Detalle de Pedido",
+            "Detalle de Pedido",
             "Categoria", "Tabla Usuario" ,"Tabla Opciones Crud", "Cerrar Sesion"};
 
     String[] activities_propietario = { "ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity",
             "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity",
-            "LocalMenuActivity","EncargadoLocalMenuActivity","DetallePedidoMenuActivity",
+            "DetallePedidoMenuActivity",
             "CategoriaMenuActivity", "UsuarioMenuActivity", "RolMenuActivity" };
 
-    String[] menu_repartidor = {"Clientes", "Pedidos","Menu Restaurante",
-                "Combo Producto", "Local", "Encargado Local",
+    String[] menu_repartidor = { "Pedidos",
             "Detalle de Pedido", "Cerrar Sesion" };
 
 
-    String[] activities_repartidor = {"ClienteMenuActivity", "PedidoMenuActivity","MenuRestMenuActivity",
-                "ComboProductoMenuActivity", "LocalMenuActivity","EncargadoLocalMenuActivity",
+    String[] activities_repartidor = { "PedidoMenuActivity",
             "DetallePedidoMenuActivity"};
 
 
-    String[] menu_admin = {"Tabla Producto", "Tabla Marcas","Clientes",
+    String[] menu_admin = {"Producto", "Marcas","Clientes",
             "Pedidos","Menu Restaurante", "Combo Producto", 
             "Local", "Encargado Local","Detalle de Pedido",
             "Categoria", "Tabla Usuario" ,"Tabla Opciones Crud", 
@@ -122,7 +120,7 @@ public class MenuPrincipalActivity extends ListActivity {
 
         }else if(numRol == 2){
 
-            if(position == 12){
+            if(position == 10){
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -183,7 +181,7 @@ public class MenuPrincipalActivity extends ListActivity {
 
         }else if(numRol == 1){
             Toast.makeText(this, "Pos : " + position, Toast.LENGTH_LONG).show();
-            if(position == 5){
+            if(position == 4){
                 //Cerrar Sesion
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -213,7 +211,7 @@ public class MenuPrincipalActivity extends ListActivity {
 
         }else if(numRol == 4){
             Toast.makeText(this, "Pos : " + position, Toast.LENGTH_LONG).show();
-            if(position == 7){
+            if(position == 2){
                 //Cerrar Sesion
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
