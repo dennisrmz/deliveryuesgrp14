@@ -593,7 +593,9 @@ public class ControlBDG14 {
     public String eliminarPedido(Pedido pedido){
         String regAfectados="filas afectadas= ";
         int contador=0;
-
+        if (verificarIntegridadPedido(pedido,1)) {
+            contador+=db.delete("DETALLEPEDIDO", "CODPEDIDO='"+pedido.getCodPedido()+"'", null);
+        }
         contador+=db.delete("PEDIDO", "CODPEDIDO='"+pedido.getCodPedido()+"'", null);
         regAfectados+=contador;
         return regAfectados;
@@ -715,6 +717,9 @@ public class ControlBDG14 {
     public String eliminarMarca(Marca marca){
         String regAfectados="filas afectadas= ";
         int contador=0;
+         if (verificarIntegridadMarca(marca,1)) {
+            contador+=db.delete("PRODUCTO", "CODMARCA='"+marca.getCodMarca()+"'", null);
+        }
         contador+=db.delete("MARCA", "CODMARCA='"+marca.getCodMarca()+"'", null);
         regAfectados+=contador;
         return regAfectados;
@@ -1193,6 +1198,9 @@ public String insertarEncargado(EncargadoLocal encargado ){
     public String eliminarCategoria(Categoria categoria){
         String regAfectados="filas afectadas= ";
         int contador=0;
+        if (verificarIntegridadCategoria(categoria,1)) {
+            contador+=db.delete("PRODUCTO", "CODCATEGORIA='"+categoria.getCodCategoria()+"'", null);
+        }
         contador+=db.delete("CATEGORIA", "CODCATEGORIA='"+categoria.getCodCategoria()+"'", null);
         regAfectados+=contador;
         return regAfectados;
@@ -1211,6 +1219,60 @@ public String insertarEncargado(EncargadoLocal encargado ){
             return usuario;
         }else{
             return null;
+        }
+    }
+    private boolean verificarIntegridadMarca(Object dato, int relacion) throws SQLException{
+        switch(relacion){
+            case 1:
+            {
+                Marca marca = (Marca) dato;
+                Cursor c=db.query(true, "PRODUCTO", new String[] {
+                                "CODPRODUCT" }, "CODMARCA='"+marca.getCodMarca()+"'",null,
+                        null, null, null, null);
+                if(c.moveToFirst())
+                    return true;
+                else
+                    return false;
+            }
+
+            default:
+                return false;
+        }
+       }
+    private boolean verificarIntegridadCategoria(Object dato, int relacion) throws SQLException{
+        switch(relacion){
+            case 1:
+            {
+                Categoria categoria = (Categoria) dato;
+                Cursor c=db.query(true, "PRODUCTO", new String[] {
+                                "CODPRODUCT" }, "CODCATEGORIA='"+categoria.getCodCategoria()+"'",null,
+                        null, null, null, null);
+                if(c.moveToFirst())
+                    return true;
+                else
+                    return false;
+            }
+
+            default:
+                return false;
+        }
+    }
+    private boolean verificarIntegridadPedido(Object dato, int relacion) throws SQLException{
+        switch(relacion){
+            case 1:
+            {
+                Pedido pedido = (Pedido) dato;
+                Cursor c=db.query(true, "DETALLEPEDIDO", new String[] {
+                                "CODDETALLE" }, "CODPEDIDO='"+pedido.getCodPedido()+"'",null,
+                        null, null, null, null);
+                if(c.moveToFirst())
+                    return true;
+                else
+                    return false;
+            }
+
+            default:
+                return false;
         }
     }
 //    public String insertar(Alumno alumno){
