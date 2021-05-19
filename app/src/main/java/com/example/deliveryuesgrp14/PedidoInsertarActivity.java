@@ -1,12 +1,20 @@
 package com.example.deliveryuesgrp14;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import android.os.Bundle;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PedidoInsertarActivity extends Activity {
 
@@ -15,11 +23,11 @@ public class PedidoInsertarActivity extends Activity {
     EditText codRepar;
     EditText codUbicacion;
     EditText codCliente;
-    EditText codLocal;
-    EditText editTotal;
+    Spinner codLocal;
+
     EditText editComentario;
     EditText editEstado;
-
+    ArrayList<String> listaLocales;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,18 +37,39 @@ public class PedidoInsertarActivity extends Activity {
         codRepar = (EditText) findViewById(R.id.codRepar);
         codUbicacion= (EditText) findViewById(R.id.codUbicacion);
         codCliente = (EditText) findViewById(R.id.codCliente);
-        codLocal = (EditText) findViewById(R.id.codLocal);
-        editTotal = (EditText) findViewById(R.id.editTotal);
+        codLocal = (Spinner) findViewById(R.id.codLocal);
+
         editComentario = (EditText) findViewById(R.id.editComentario);
         editEstado = (EditText) findViewById(R.id.editEstado);
+        helper.abrir();
+        listaLocales=helper.listarLocales();
+        helper.cerrar();
+        if(listaLocales.isEmpty() == false){
+            ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,listaLocales);
+            codLocal.setAdapter(adapter);
+        }else {
+            Toast.makeText(this, "No se ha registrado un menu o un producto", Toast.LENGTH_LONG).show();
+            Log.i("Pedido vacio", "en el no: ");
+            try{
+                Class<?>
+                        clase=Class.forName("com.example.deliveryuesgrp14.MainActivity");
+                Intent inte = new Intent(this,clase);
+
+                this.startActivity(inte);
+            }catch(ClassNotFoundException e){
+                e.printStackTrace();
+            }
+        }
+
     }
     public void insertarPedido(View v) {
         int codPedido =(int)Integer.parseInt(CodPedido.getText().toString());
         int repartido =(int)Integer.parseInt(codRepar.getText().toString());
         int ubicacion =(int)Integer.parseInt(codUbicacion.getText().toString());
         int cliente =(int)Integer.parseInt(codCliente.getText().toString());
-        int local =(int)Integer.parseInt(codLocal.getText().toString());
-        float total=Float.valueOf(editTotal.getText().toString());
+        String text = codLocal.getSelectedItem().toString();
+        int local = idCodmenu(text);
+
         String comentario=editComentario.getText().toString();
         int estado= (int)Integer.parseInt(editEstado.getText().toString());
         String regInsertados;
@@ -50,7 +79,6 @@ public class PedidoInsertarActivity extends Activity {
         pedido.setCodUbicacion(ubicacion);
         pedido.setCodCliente(cliente);
         pedido.setCodLocal(local);
-        pedido.setTotal(total);
         pedido.setComentarioPedido(comentario);
         pedido.setEstado(estado);
 
@@ -59,13 +87,19 @@ public class PedidoInsertarActivity extends Activity {
         helper.cerrar();
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
     }
+    private int idCodmenu(String text) {
+        int codigoM=0;
+        Matcher encontrado = Pattern.compile("\\d+").matcher(text);
+        while ( encontrado .find()) {
+            codigoM = Integer.parseInt( encontrado .group());
+        }
+        return codigoM;
+    }
     public void limpiarTexto(View v) {
         CodPedido.setText("");
         codRepar.setText("");
         codUbicacion.setText("");
         codCliente.setText("");
-        codLocal.setText("");
-        editTotal.setText("");
         editComentario.setText("");
         editEstado.setText("");
 
