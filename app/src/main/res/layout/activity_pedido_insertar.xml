@@ -37,13 +37,6 @@
             android:layout_height="wrap_content"
             />
     </TableRow>
-    <TableRow>
-        <TextView android:text="Total" />
-        <EditText
-            android:id="@+id/editTotal"
-            android:inputType="numberDecimal"
-            android:maxLength="12" />
-    </TableRow>
 
     <TableRow>
         <TextView android:text="Comentarios" />

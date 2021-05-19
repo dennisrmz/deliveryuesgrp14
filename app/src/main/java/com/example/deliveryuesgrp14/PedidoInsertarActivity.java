@@ -24,7 +24,7 @@ public class PedidoInsertarActivity extends Activity {
     EditText codUbicacion;
     EditText codCliente;
     Spinner codLocal;
-    EditText editTotal;
+
     EditText editComentario;
     EditText editEstado;
     ArrayList<String> listaLocales;
@@ -38,7 +38,7 @@ public class PedidoInsertarActivity extends Activity {
         codUbicacion= (EditText) findViewById(R.id.codUbicacion);
         codCliente = (EditText) findViewById(R.id.codCliente);
         codLocal = (Spinner) findViewById(R.id.codLocal);
-        editTotal = (EditText) findViewById(R.id.editTotal);
+
         editComentario = (EditText) findViewById(R.id.editComentario);
         editEstado = (EditText) findViewById(R.id.editEstado);
         helper.abrir();
@@ -48,7 +48,7 @@ public class PedidoInsertarActivity extends Activity {
             ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,listaLocales);
             codLocal.setAdapter(adapter);
         }else {
-            Toast.makeText(this, "No se ha registrado un menu, un producto o un pedido", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "No se ha registrado un menu o un producto", Toast.LENGTH_LONG).show();
             Log.i("Pedido vacio", "en el no: ");
             try{
                 Class<?>
@@ -69,7 +69,7 @@ public class PedidoInsertarActivity extends Activity {
         int cliente =(int)Integer.parseInt(codCliente.getText().toString());
         String text = codLocal.getSelectedItem().toString();
         int local = idCodmenu(text);
-        float total=Float.valueOf(editTotal.getText().toString());
+
         String comentario=editComentario.getText().toString();
         int estado= (int)Integer.parseInt(editEstado.getText().toString());
         String regInsertados;
@@ -79,7 +79,6 @@ public class PedidoInsertarActivity extends Activity {
         pedido.setCodUbicacion(ubicacion);
         pedido.setCodCliente(cliente);
         pedido.setCodLocal(local);
-        pedido.setTotal(total);
         pedido.setComentarioPedido(comentario);
         pedido.setEstado(estado);
 
@@ -101,8 +100,6 @@ public class PedidoInsertarActivity extends Activity {
         codRepar.setText("");
         codUbicacion.setText("");
         codCliente.setText("");
-
-        editTotal.setText("");
         editComentario.setText("");
         editEstado.setText("");
 

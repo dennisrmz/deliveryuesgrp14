@@ -177,7 +177,7 @@ public class ControlBDG14 {
                         "   CODUBICACION         INTEGER,\n" +
                         "   CODCLIENTE           INTEGER,\n" +
                         "   CODLOCAL             INTEGER,\n" +
-                        "   TOTAL                FLOAT                not null,\n" +
+                        "   TOTAL                FLOAT                not null default 0,\n" +
                         "   COMENTARIOPEDIDO     CHAR(250)            not null,\n" +
                         "   ESTADO               SMALLINT             not null,\n" +
                         "   constraint PK_PEDIDO primary key (CODPEDIDO)\n" +
@@ -192,7 +192,7 @@ public class ControlBDG14 {
                         "   CODMARCA             int,\n" +
                         "   NOMBREPRODUCTO       char(250) not null,\n" +
                         "   DESCRIPCIONPROD      char(250) not null,\n" +
-                        "   PRECIOPROC         FLOAT                not null,\n"+
+                        "   PRECIOPROC         FLOAT  not null ,\n"+
                         "   EXISTENCIAS          int not null,\n" +
                         "   primary key (CODPRODUCT)\n" +
                         ");");
@@ -575,7 +575,6 @@ public class ControlBDG14 {
         prod.put("CODUBICACION", pedido.getCodUbicacion());
         prod.put("CODCLIENTE", pedido.getCodCliente());
         prod.put("CODLOCAL",pedido.getCodLocal());
-        prod.put("TOTAL",pedido.getTotal());
         prod.put("COMENTARIOPEDIDO",pedido.getComentarioPedido());
         prod.put("ESTADO", pedido.getEstado());
 

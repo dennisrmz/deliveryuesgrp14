@@ -22,10 +22,10 @@ public class MenuPrincipalActivity extends ListActivity {
             "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity", "CategoriaMenuActivity"};
 
 
-    String[] menu_cliente={"Producto", "Pedidos",
-                "Combo Producto", "Detalle de Pedido",  "Cerrar Sesion"};
-    String[] activities_cliente={"ProductoMenuActivity","PedidoMenuActivity",
-                "ComboProductoMenuActivity", "DetallePedidoMenuActivity"};
+    String[] menu_cliente={"Pedidos",
+                 "Detalle de Pedido",  "Cerrar Sesion"};
+    String[] activities_cliente={"PedidoMenuActivity",
+                 "DetallePedidoMenuActivity"};
 
 
     String[] menu_propietario ={"Producto", "Marcas","Clientes",
@@ -181,7 +181,7 @@ public class MenuPrincipalActivity extends ListActivity {
 
         }else if(numRol == 1){
             Toast.makeText(this, "Pos : " + position, Toast.LENGTH_LONG).show();
-            if(position == 4){
+            if(position == 2){
                 //Cerrar Sesion
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
