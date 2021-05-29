@@ -6,21 +6,23 @@
     android:paddingTop="30dip"
     android:stretchColumns="1" >
     <TableRow>
-        <TextView android:text="Codigo del menu al que pertenece el combo"/>
-        <EditText
+        <TextView android:text="Menu" />
+        <Spinner
             android:id="@+id/codMenu"
-            android:inputType="number" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </TableRow>
-
     <TableRow>
-        <TextView android:text="Producto que forma parte del combo" />
-        <EditText
+        <TextView android:text="Producto" />
+        <Spinner
             android:id="@+id/codProducto"
-            android:inputType="text"
-            android:maxLength="12" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </TableRow>
     <TableRow>
-        <TextView android:text="Unidades de productos pertenecientes al combo"/>
+        <TextView android:text="Unidades de productos"/>
         <EditText
             android:id="@+id/editCantProduct"
             android:inputType="number" />

@@ -3,6 +3,7 @@ package com.example.deliveryuesgrp14;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,7 +26,7 @@ public class ControlBDG14 {
         DBHelper = new DatabaseHelper(context);
     }
     private static final String[]camposProducto = new String []
-            {"CODPRODUCT","CODCATEGORIA" ,"CODMARCA","NOMBREPRODUCTO","DESCRIPCIONPROD", "EXISTENCIAS"};
+            {"CODPRODUCT","CODCATEGORIA" ,"CODMARCA","NOMBREPRODUCTO","DESCRIPCIONPROD", "EXISTENCIAS","PRECIOPROC"};
     private static final String[]camposMarca = new String []
             {"CODMARCA","NOMBREMARCA"};
     private static final String[]camposCliente = new String [] {"CODCLIENTE","CODUSUARIO","NOMBRECLIENTE","APELLIDOCLIENTE", "NUMTELEFONO"};
@@ -93,12 +94,13 @@ public class ControlBDG14 {
                         "/*==============================================================*/\n" +
                         "create table DETALLEPEDIDO \n" +
                         "(\n" +
+                        "   CODDETALLE           INTEGER not null,\n" +
                         "   CODPRODUCT           INTEGER,\n" +
                         "   CODPEDIDO            INTEGER              not null,\n" +
                         "   CODMENU              INTEGER,\n" +
                         "   CANTIDADCOMPRA       INTEGER              not null,\n" +
                         "   CANTIDADPRODUCTO       INTEGER              not null,\n" +
-                        "   constraint PK_DETALLEPEDIDO primary key (CODPEDIDO)\n" +
+                        "   constraint PK_DETALLEPEDIDO primary key (CODDETALLE)\n" +
                         ");");
                 db.execSQL("/*==============================================================*/\n" +
                         "/* Table: ENCARGADOLOCAL                                        */\n" +
@@ -175,7 +177,7 @@ public class ControlBDG14 {
                         "   CODUBICACION         INTEGER,\n" +
                         "   CODCLIENTE           INTEGER,\n" +
                         "   CODLOCAL             INTEGER,\n" +
-                        "   TOTAL                FLOAT                not null,\n" +
+                        "   TOTAL                FLOAT                not null default 0,\n" +
                         "   COMENTARIOPEDIDO     CHAR(250)            not null,\n" +
                         "   ESTADO               SMALLINT             not null,\n" +
                         "   constraint PK_PEDIDO primary key (CODPEDIDO)\n" +
@@ -190,6 +192,7 @@ public class ControlBDG14 {
                         "   CODMARCA             int,\n" +
                         "   NOMBREPRODUCTO       char(250) not null,\n" +
                         "   DESCRIPCIONPROD      char(250) not null,\n" +
+                        "   PRECIOPROC         FLOAT  not null ,\n"+
                         "   EXISTENCIAS          int not null,\n" +
                         "   primary key (CODPRODUCT)\n" +
                         ");");
@@ -324,13 +327,46 @@ public class ControlBDG14 {
 
                 db.execSQL("CREATE TRIGGER validate_update_categoria\n" +
                         "before update on PRODUCTO\n" +
-                        "FOR EACH ROW\n" +
                         "    BEGIN \n" +
                         "        SELECT CASE\n" +
                         "            WHEN(( SELECT CATEGORIA.CODCATEGORIA FROM CATEGORIA WHERE CATEGORIA.CODCATEGORIA = NEW.CODCATEGORIA ) IS NULL)\n" +
                         "                THEN RAISE (ABORT, \"la categoria no existe\")\n" +
                         "            END;\n" +
                         "END;");
+                db.execSQL("CREATE TRIGGER sumarTotal\n" +
+                        "AFTER INSERT ON DETALLEPEDIDO\n" +
+                        "BEGIN\n" +
+                        "UPDATE PEDIDO SET TOTAL = TOTAL + ((SELECT PRODUCTO.PRECIOPROC FROM PRODUCTO WHERE PRODUCTO.CODPRODUCT = NEW.CODPRODUCT)* NEW.CANTIDADPRODUCTO) \n" +
+                        "+ ((SELECT MENU.PRECIOCOMBO FROM MENU WHERE MENU.CODMENU = NEW.CODMENU)* NEW.CANTIDADCOMPRA );\n" +
+                        "END;");
+                db.execSQL("CREATE TRIGGER ActualizarTotal\n" +
+                        "AFTER UPDATE ON DETALLEPEDIDO\n" +
+                        "BEGIN\n" +
+                        "UPDATE PEDIDO SET TOTAL = TOTAL + ((SELECT PRODUCTO.PRECIOPROC FROM PRODUCTO WHERE PRODUCTO.CODPRODUCT = NEW.CODPRODUCT)* NEW.CANTIDADPRODUCTO) \n" +
+                        "+ ((SELECT MENU.PRECIOCOMBO FROM MENU WHERE MENU.CODMENU = NEW.CODMENU)* NEW.CANTIDADCOMPRA ) -  (((SELECT PRODUCTO.PRECIOPROC FROM PRODUCTO WHERE PRODUCTO.CODPRODUCT = OLD.CODPRODUCT)* OLD.CANTIDADPRODUCTO) \n" +
+                        "+ ((SELECT MENU.PRECIOCOMBO FROM MENU WHERE MENU.CODMENU = OLD.CODMENU)* OLD.CANTIDADCOMPRA ) )\n" +
+                        "WHERE PEDIDO.CODPEDIDO = NEW.CODPEDIDO;\n" +
+                        "END;");
+
+
+                db.execSQL("INSERT INTO OPCIONCRUD (NUMCRUD,DESCRIPCIONCRUD,CODOPCION)\n" +
+                        "       VALUES (3,'empleado',2),\n" +
+                        "              (1,'cliente',3),\n" +
+                        "              (2,'propietario',4),\n" +
+                        "              (4,'repartidor',5);");
+
+                db.execSQL("INSERT INTO USUARIO (CONTRASENA,NOMBREUSU,CORREO,CODUSUARIO)\n" +
+                        "            VALUES (1234,'Dennis Orellana','repartidor@gmail.com',4),\n" +
+                        "                   (1234,'Agustin Ascencio','propietario@gmail.com',3),\n" +
+                        "                   (1234,'Kevin Gonzalo','cliente@gmail.com',2),\n" +
+                        "                   (1234,'Mario Castro','empleado@gmail.com',5);");
+
+                db.execSQL("INSERT INTO ACCESOUSUARIO (CODOPCION,CODUSUARIO)\n" +
+                        "                  VALUES (2,5),\n" +
+                        "                         (3,2),\n" +
+                        "                         (4,3),\n" +
+                        "                         (5,4);");
+
 
             }catch(SQLException e){
                 e.printStackTrace();
@@ -361,6 +397,7 @@ public class ControlBDG14 {
           prod.put("NOMBREPRODUCTO",producto.getNombreProducto());
           prod.put("DESCRIPCIONPROD", producto.getDescripcionProd());
           prod.put("EXISTENCIAS", producto.getExistencias());
+          prod.put("PRECIOPROC",producto.getPrecio());
           contador = db.insert("PRODUCTO",null,prod);
           if(contador==-1 || contador==0){
           regInsertados = "Error al insertar el registro, Registro dublicado. Verificar insercion";
@@ -406,6 +443,7 @@ public class ControlBDG14 {
             producto.setNombreProducto(cursor.getString(3));
             producto.setDescripcionProd(cursor.getString(4));
             producto.setExistencias(cursor.getInt(5));
+            producto.setPrecio(cursor.getFloat(6));
             return producto;
         }else{
             return null;
@@ -422,8 +460,13 @@ public class ControlBDG14 {
         cv.put("NOMBREPRODUCTO",producto.getNombreProducto());
         cv.put("DESCRIPCIONPROD", producto.getDescripcionProd());
         cv.put("EXISTENCIAS", producto.getExistencias());
+        cv.put("PRECIOPROC", producto.getPrecio());
+        try{
+            contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
+        }catch(Exception e){
+            contador = 0;
+        }
 
-        contador =  db.update("PRODUCTO", cv, "CODPRODUCT = ?", id);
         if(contador==-1 || contador==0){
             return "Error al insertar el registro, Registro dublicado. Verificar insercion";
         }
@@ -501,7 +544,12 @@ public class ControlBDG14 {
             cv.put("NOMBRECLIENTE", cliente.getNombreCliente());
             cv.put("APELLIDOCLIENTE", cliente.getApellidoCliente());
             cv.put("NUMTELEFONO", cliente.getNumTelefono());
-            db.update("CLIENTE", cv, "CODCLIENTE = ?", id);
+            try{
+                db.update("CLIENTE", cv, "CODCLIENTE = ?", id);
+            }catch (Exception e){
+                return "Registro no pudo ser actualizado";
+            }
+
             return "Registro Actualizado Correctamente";
 
       }
@@ -527,7 +575,6 @@ public class ControlBDG14 {
         prod.put("CODUBICACION", pedido.getCodUbicacion());
         prod.put("CODCLIENTE", pedido.getCodCliente());
         prod.put("CODLOCAL",pedido.getCodLocal());
-        prod.put("TOTAL",pedido.getTotal());
         prod.put("COMENTARIOPEDIDO",pedido.getComentarioPedido());
         prod.put("ESTADO", pedido.getEstado());
 
@@ -565,7 +612,9 @@ public class ControlBDG14 {
     public String eliminarPedido(Pedido pedido){
         String regAfectados="filas afectadas= ";
         int contador=0;
-
+        if (verificarIntegridadPedido(pedido,1)) {
+            contador+=db.delete("DETALLEPEDIDO", "CODPEDIDO='"+pedido.getCodPedido()+"'", null);
+        }
         contador+=db.delete("PEDIDO", "CODPEDIDO='"+pedido.getCodPedido()+"'", null);
         regAfectados+=contador;
         return regAfectados;
@@ -591,7 +640,7 @@ public class ControlBDG14 {
 
     public String insertarDetallePedido(DetallePedido detalle){
 
-        String regInsertados = "Registro Insertado Nº= ";
+        String regInsertados = "Codigo de su detalle de pedido Nº= ";
         long contador = 0;
 
         ContentValues prod = new ContentValues();
@@ -647,11 +696,12 @@ public class ControlBDG14 {
     }
     public String actualizarDetallePedido(DetallePedido detalle){
 
-        String[] id = {Integer.toString( detalle.getCodPedido())};
+        String[] id = {Integer.toString( detalle.getCodDetalle())};
         ContentValues cv = new ContentValues();
         cv.put("CANTIDADCOMPRA", detalle.getCantidadCompra());
+        cv.put("CANTIDADPRODUCTO", detalle.getCantidadProducto());
 
-        db.update("DETALLEPEDIDO", cv, "CODPEDIDO = ?", id);
+        db.update("DETALLEPEDIDO", cv, "CODDETALLE = ?", id);
         return "Registro Actualizado Correctamente";
 
     }
@@ -686,6 +736,9 @@ public class ControlBDG14 {
     public String eliminarMarca(Marca marca){
         String regAfectados="filas afectadas= ";
         int contador=0;
+         if (verificarIntegridadMarca(marca,1)) {
+            contador+=db.delete("PRODUCTO", "CODMARCA='"+marca.getCodMarca()+"'", null);
+        }
         contador+=db.delete("MARCA", "CODMARCA='"+marca.getCodMarca()+"'", null);
         regAfectados+=contador;
         return regAfectados;
@@ -713,6 +766,8 @@ public class ControlBDG14 {
         }
         return regInsertados;
     }
+
+
 
     public MenuRest consultarMenu(String codMenu){
         String[] id = {codMenu};
@@ -1164,6 +1219,9 @@ public String insertarEncargado(EncargadoLocal encargado ){
     public String eliminarCategoria(Categoria categoria){
         String regAfectados="filas afectadas= ";
         int contador=0;
+        if (verificarIntegridadCategoria(categoria,1)) {
+            contador+=db.delete("PRODUCTO", "CODCATEGORIA='"+categoria.getCodCategoria()+"'", null);
+        }
         contador+=db.delete("CATEGORIA", "CODCATEGORIA='"+categoria.getCodCategoria()+"'", null);
         regAfectados+=contador;
         return regAfectados;
@@ -1183,6 +1241,137 @@ public String insertarEncargado(EncargadoLocal encargado ){
         }else{
             return null;
         }
+    }
+    private boolean verificarIntegridadMarca(Object dato, int relacion) throws SQLException{
+        switch(relacion){
+            case 1:
+            {
+                Marca marca = (Marca) dato;
+                Cursor c=db.query(true, "PRODUCTO", new String[] {
+                                "CODPRODUCT" }, "CODMARCA='"+marca.getCodMarca()+"'",null,
+                        null, null, null, null);
+                if(c.moveToFirst())
+                    return true;
+                else
+                    return false;
+            }
+
+            default:
+                return false;
+        }
+       }
+    private boolean verificarIntegridadCategoria(Object dato, int relacion) throws SQLException{
+        switch(relacion){
+            case 1:
+            {
+                Categoria categoria = (Categoria) dato;
+                Cursor c=db.query(true, "PRODUCTO", new String[] {
+                                "CODPRODUCT" }, "CODCATEGORIA='"+categoria.getCodCategoria()+"'",null,
+                        null, null, null, null);
+                if(c.moveToFirst())
+                    return true;
+                else
+                    return false;
+            }
+
+            default:
+                return false;
+        }
+    }
+    private boolean verificarIntegridadPedido(Object dato, int relacion) throws SQLException{
+        switch(relacion){
+            case 1:
+            {
+                Pedido pedido = (Pedido) dato;
+                Cursor c=db.query(true, "DETALLEPEDIDO", new String[] {
+                                "CODDETALLE" }, "CODPEDIDO='"+pedido.getCodPedido()+"'",null,
+                        null, null, null, null);
+                if(c.moveToFirst())
+                    return true;
+                else
+                    return false;
+            }
+
+            default:
+                return false;
+        }
+    }
+
+    public ArrayList<String> listarLocales(){
+        ArrayList<String>  listaLocales = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select LOCAL.CODLOCAL, LOCAL.NOMBRELOCAL FROM LOCAL" , null);
+
+        while (cursor.moveToNext()){
+            Local local = new Local();
+            local.setCodLocal(cursor.getInt(0));
+            local.setNombreLocal(cursor.getString(1));
+            listaLocales.add(Integer.toString( local.getCodLocal())+"\t"+ local.getNombreLocal());
+        }
+        return  listaLocales;
+    }
+    public ArrayList<String> listarCategorias(){
+        ArrayList<String>  listaCat = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select CATEGORIA.CODCATEGORIA, CATEGORIA.NOMBRECATEGORIA FROM CATEGORIA" , null);
+
+        while (cursor.moveToNext()){
+            Categoria categoria = new Categoria();
+            categoria.setCodCategoria(cursor.getInt(0));
+            categoria.setNombreCategoria(cursor.getString(1));
+            listaCat.add(Integer.toString( categoria.getCodCategoria())+"\t"+"nombre categoria:"+"\t"+ categoria.getNombreCategoria());
+        }
+        return  listaCat;
+    }
+    public ArrayList<String> listarMarcas(){
+        ArrayList<String>  listaMarca = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select MARCA.CODMARCA, MARCA.NOMBREMARCA FROM MARCA" , null);
+
+        while (cursor.moveToNext()){
+            Marca marca = new Marca();
+            marca.setCodMarca(cursor.getInt(0));
+            marca.setNombreMarca(cursor.getString(1));
+            listaMarca.add(Integer.toString( marca.getCodMarca())+"\t"+"Nombre marca:\t"+ marca.getNombreMarca());
+        }
+        return  listaMarca;
+    }
+    public ArrayList<String> listarProductos(){
+        ArrayList<String>  listaProducto = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select PRODUCTO.CODPRODUCT, PRODUCTO.NOMBREPRODUCTO FROM PRODUCTO" , null);
+
+        while (cursor.moveToNext()){
+            Producto producto = new Producto();
+            producto.setCodProduct(cursor.getInt(0));
+            producto.setNombreProducto(cursor.getString(1));
+            listaProducto.add(Integer.toString( producto.getCodProduct())+"\t"+"Nombre Producto:\t"+ producto.getNombreProducto());
+        }
+        return  listaProducto;
+    }
+    public ArrayList<String> listarMenus(){
+        ArrayList<String>  listaMenus = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select MENU.CODMENU FROM MENU" , null);
+
+        while (cursor.moveToNext()){
+            MenuRest menuRest = new MenuRest();
+            menuRest.setCODMENU(cursor.getInt(0));
+            listaMenus.add("Menu #:"+Integer.toString( menuRest.getCODMENU()));
+        }
+        return  listaMenus;
+    }
+    public ArrayList<String> listarPedidos(){
+        ArrayList<String>  listaPedidos = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select PEDIDO.CODPEDIDO FROM PEDIDO" , null);
+
+        while (cursor.moveToNext()){
+            Pedido pedido = new Pedido();
+            pedido.setCodPedido(cursor.getInt(0));
+            listaPedidos.add("Pedido #:"+Integer.toString( pedido.getCodPedido()));
+        }
+        return  listaPedidos;
     }
 //    public String insertar(Alumno alumno){
 //

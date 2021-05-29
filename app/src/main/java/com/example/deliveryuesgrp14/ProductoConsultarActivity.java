@@ -16,6 +16,7 @@ public class ProductoConsultarActivity extends Activity {
     EditText editNombre;
     EditText editDescripcionProd;
     EditText editExistencias;
+    EditText editPrec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class ProductoConsultarActivity extends Activity {
         editNombre = (EditText) findViewById(R.id.editNombre);
         editDescripcionProd = (EditText) findViewById(R.id.editDescripcion);
         editExistencias = (EditText) findViewById(R.id.editExistencias);
+        editPrec = (EditText) findViewById(R.id.editPrec);
     }
     public void consultarProducto(View v) {
         helper.abrir();
@@ -44,6 +46,7 @@ public class ProductoConsultarActivity extends Activity {
             editNombre.setText(producto.getNombreProducto());
             editDescripcionProd.setText(producto.getDescripcionProd());
             editExistencias.setText(Integer.toString(producto.getExistencias()));
+            editPrec.setText(Float.toString(producto.getPrecio()));
         }
     }
     public void limpiarTexto(View v){
@@ -53,5 +56,6 @@ public class ProductoConsultarActivity extends Activity {
         editNombre.setText("");
         editDescripcionProd.setText("");
         editExistencias.setText("");
+        editPrec.setText("");
     }
 }

@@ -9,27 +9,30 @@ import android.widget.Toast;
 
 public class DetallePedidoActualizarActivity extends AppCompatActivity {
     ControlBDG14 helper;
-    EditText CodPedido;
+    EditText codDetalle;
     EditText cantidadCompra;
+    EditText cantidadProducto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detalle_pedido_actualizar);
         helper = new ControlBDG14(this);
-        CodPedido = (EditText) findViewById(R.id.codPedido);
+        codDetalle = (EditText) findViewById(R.id.codDetalle);
         cantidadCompra = (EditText) findViewById(R.id.editCantidadCompra);
+        cantidadProducto = (EditText) findViewById(R.id.editCantidadProducto);
     }
     public void actualizarDetallePedido(View v) {
         DetallePedido detalle = new DetallePedido();
-        detalle.setCodPedido(Integer.parseInt(CodPedido.getText().toString()));
+        detalle.setCodDetalle(Integer.parseInt(codDetalle.getText().toString()));
         detalle.setCantidadCompra(Integer.parseInt(cantidadCompra.getText().toString()));
+        detalle.setCantidadProducto(Integer.parseInt(cantidadProducto.getText().toString()));
         helper.abrir();
         String estado = helper.actualizarDetallePedido(detalle);
         helper.cerrar();
         Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
     }
     public void limpiarTexto(View v) {
-        CodPedido.setText("");
+        codDetalle.setText("");
         cantidadCompra.setText("");
 
     }
