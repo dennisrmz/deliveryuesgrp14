@@ -16,12 +16,31 @@
         android:id="@+id/linearLayout1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
+
         <Button
             android:id="@+id/botonConsultar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="consultar"
-            android:onClick="consultarMarca"/>
+            android:onClick="consultarMarca"
+            android:text="consultar" />
+        <Button
+            android:id="@+id/Button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="servicioPHP"
+            android:text="servicioLocal" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <Button
+            android:id="@+id/consultarWeb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="servicioWEB"
+            android:text="servicioWeb" />
         <Button
             android:id="@+id/botonLimpiar"
             android:layout_width="wrap_content"
@@ -29,7 +48,6 @@
             android:text="limpiar"
             android:onClick="limpiarTexto"/>
     </LinearLayout>
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -44,5 +62,8 @@
         android:focusableInTouchMode="false"
         android:cursorVisible="false"
         android:longClickable="false" />
-
+    <ListView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/listView1"> </ListView>
 </LinearLayout>
