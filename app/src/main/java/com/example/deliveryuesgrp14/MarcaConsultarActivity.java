@@ -25,7 +25,7 @@ public class MarcaConsultarActivity extends AppCompatActivity {
     static List<Marca> listaMaterias;
     static List<String> nombreMaterias;
     ListView listViewMaterias;
-    private final String urlLocal = "https://pdmgrupo14.000webhostapp.com//marca.php";
+    private final String urlLocal = "http://192.168.1.5/ServicePDM/marca.php";
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
