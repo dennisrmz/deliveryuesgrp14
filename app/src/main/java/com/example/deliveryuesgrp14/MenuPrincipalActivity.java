@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 public class MenuPrincipalActivity extends ListActivity {
 
-    String[] menu_empleado = {"Tabla Producto", "Tabla Marcas","Clientes",
+    String[] menu_empleado = {"Producto", "Marcas","Clientes",
             "Pedidos","Menu Restaurante", "Combo Producto", "Categoria", "Cerrar Sesion" };
 
 
@@ -22,18 +22,31 @@ public class MenuPrincipalActivity extends ListActivity {
             "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity", "CategoriaMenuActivity"};
 
 
-    String[] menu={"Tabla Producto", "Tabla Marcas","Clientes",
-                   "Pedidos", "Menu Restaurante", "Combo Producto",
-                   "Local", "Encargado Local","Detalle de Pedido"};
-    String[] activities={"ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity","PedidoMenuActivity","MenuRestMenuActivity",
-            "ComboProductoMenuActivity","LocalMenuActivity","EncargadoLocalMenuActivity","DetallePedidoMenuActivity"};
+    String[] menu_cliente={"Pedidos",
+                 "Detalle de Pedido",  "Cerrar Sesion"};
+    String[] activities_cliente={"PedidoMenuActivity",
+                 "DetallePedidoMenuActivity"};
 
 
-    String[] menu_propietario ={"Tabla Usuario" ,"Tabla Opciones Crud", "Cerrar Sesion"};
+    String[] menu_propietario ={"Producto", "Marcas","Clientes",
+            "Pedidos","Menu Restaurante", "Combo Producto",
+            "Detalle de Pedido",
+            "Categoria", "Tabla Usuario" ,"Tabla Opciones Crud", "Cerrar Sesion"};
 
-    String[] activities_propietario = { "UsuarioMenuActivity","RolMenuActivity"};
+    String[] activities_propietario = { "ProductoMenuActivity", "MarcaMenuActivity","ClienteMenuActivity",
+            "PedidoMenuActivity","MenuRestMenuActivity", "ComboProductoMenuActivity",
+            "DetallePedidoMenuActivity",
+            "CategoriaMenuActivity", "UsuarioMenuActivity", "RolMenuActivity" };
 
-    String[] menu_admin = {"Tabla Producto", "Tabla Marcas","Clientes",
+    String[] menu_repartidor = { "Pedidos",
+            "Detalle de Pedido", "Cerrar Sesion" };
+
+
+    String[] activities_repartidor = { "PedidoMenuActivity",
+            "DetallePedidoMenuActivity"};
+
+
+    String[] menu_admin = {"Producto", "Marcas","Clientes",
             "Pedidos","Menu Restaurante", "Combo Producto", 
             "Local", "Encargado Local","Detalle de Pedido",
             "Categoria", "Tabla Usuario" ,"Tabla Opciones Crud", 
@@ -61,6 +74,12 @@ public class MenuPrincipalActivity extends ListActivity {
         }else if(numRol == 5){
             setListAdapter(new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, menu_admin));
+        }else if(numRol == 1){
+            setListAdapter(new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, menu_cliente));
+        }else if(numRol == 4){
+            setListAdapter(new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, menu_repartidor));
         }
 
     }
@@ -101,7 +120,7 @@ public class MenuPrincipalActivity extends ListActivity {
 
         }else if(numRol == 2){
 
-            if(position == 2){
+            if(position == 10){
                 Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
                 SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -150,6 +169,66 @@ public class MenuPrincipalActivity extends ListActivity {
             }
             else{
                 nombreValue = activities_admin[position];
+                try{
+                    Class<?>
+                            clase=Class.forName("com.example.deliveryuesgrp14."+nombreValue);
+                    Intent inte = new Intent(this,clase);
+                    this.startActivity(inte);
+                }catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                }
+            }
+
+        }else if(numRol == 1){
+            Toast.makeText(this, "Pos : " + position, Toast.LENGTH_LONG).show();
+            if(position == 2){
+                //Cerrar Sesion
+                Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
+                SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                try{
+                    Class<?>
+                            clase=Class.forName("com.example.deliveryuesgrp14.MainActivity");
+                    Intent inte = new Intent(this,clase);
+                    this.startActivity(inte);
+                }catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                }
+            }
+            else{
+                nombreValue = activities_cliente[position];
+                try{
+                    Class<?>
+                            clase=Class.forName("com.example.deliveryuesgrp14."+nombreValue);
+                    Intent inte = new Intent(this,clase);
+                    this.startActivity(inte);
+                }catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                }
+            }
+
+        }else if(numRol == 4){
+            Toast.makeText(this, "Pos : " + position, Toast.LENGTH_LONG).show();
+            if(position == 2){
+                //Cerrar Sesion
+                Toast.makeText(this, "Sesion Cerrada", Toast.LENGTH_LONG).show();
+                SharedPreferences sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedpreferences.edit();
+                editor.clear();
+                editor.commit();
+                try{
+                    Class<?>
+                            clase=Class.forName("com.example.deliveryuesgrp14.MainActivity");
+                    Intent inte = new Intent(this,clase);
+                    this.startActivity(inte);
+                }catch(ClassNotFoundException e){
+                    e.printStackTrace();
+                }
+            }
+            else{
+                nombreValue = activities_repartidor[position];
                 try{
                     Class<?>
                             clase=Class.forName("com.example.deliveryuesgrp14."+nombreValue);
