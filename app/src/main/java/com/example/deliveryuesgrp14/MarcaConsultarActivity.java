@@ -25,6 +25,7 @@ public class MarcaConsultarActivity extends AppCompatActivity {
     static List<Marca> listaMaterias;
     static List<String> nombreMaterias;
     ListView listViewMaterias;
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//marca.php";
     private final String urlLocal = "http://192.168.1.5/ServicePDM/marca.php";
     @SuppressLint("NewApi")
     @Override
@@ -45,6 +46,7 @@ public class MarcaConsultarActivity extends AppCompatActivity {
         helper.abrir();
         Marca marca = helper.consultarMarca(CodMarca.getText().toString());
         helper.cerrar();
+
         if(marca == null)
             Toast.makeText(this, "Marca con el codigo " +
                     CodMarca.getText().toString() +
@@ -59,6 +61,18 @@ public class MarcaConsultarActivity extends AppCompatActivity {
                  String url = "";
                 // it was the first button
                 url = urlLocal;
+        String marca = consumoWSG14.obtenerRespuestaPeticion(url, this);
+        try {
+            listaMaterias.addAll(consumoWSG14.obtenerMateriasExterno(marca, this));
+            actualizarListView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public void servicioWEB(View v) {
+        String url = "";
+        // it was the first button
+        url = urlWeb;
         String marca = consumoWSG14.obtenerRespuestaPeticion(url, this);
         try {
             listaMaterias.addAll(consumoWSG14.obtenerMateriasExterno(marca, this));

@@ -22,7 +22,8 @@ public class MarcaInsertarActivity extends AppCompatActivity {
     ControlBDG14 helper;
     EditText CodMarca;
     EditText editNombre;
-    private final String urlLocal = "https://pdmgrupo14.000webhostapp.com//insertarMarca.php";
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//insertarMarca.php";
+    private final String urlLocal = "http://192.168.1.5/ServicePDM/insertarMarca.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +47,17 @@ public class MarcaInsertarActivity extends AppCompatActivity {
         helper.abrir();
         regInsertados=helper.insertarMarca(marca);
         helper.cerrar();
-        String url = "";
-        url = urlLocal+"?cod_marca="+codMarca+"&nombre_marca="+nombre;
-        String marc = consumoWSG14.obtenerRespuestaPeticion(url, this);
-        if (!marc.isEmpty()){
+        String mensajeError = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        if(regInsertados.equals(mensajeError)){
             Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
-        }
-        else{
-            Toast.makeText(this,  regInsertados+" menos en el webservis", Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_marca="+codMarca+"&nombre_marca="+nombre;
+            urlW = urlWeb+"?cod_marca="+codMarca+"&nombre_marca="+nombre;
+            String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
         }
 
     }
