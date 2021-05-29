@@ -2,17 +2,27 @@ package com.example.deliveryuesgrp14;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.os.StrictMode;
 
+import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
+@SuppressLint("NewApi")
 public class MarcaInsertarActivity extends AppCompatActivity {
 
     ControlBDG14 helper;
     EditText CodMarca;
     EditText editNombre;
-
+    private final String urlLocal = "https://pdmgrupo14.000webhostapp.com//insertarMarca.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +46,16 @@ public class MarcaInsertarActivity extends AppCompatActivity {
         helper.abrir();
         regInsertados=helper.insertarMarca(marca);
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        String url = "";
+        url = urlLocal+"?cod_marca="+codMarca+"&nombre_marca="+nombre;
+        String marc = consumoWSG14.obtenerRespuestaPeticion(url, this);
+        if (!marc.isEmpty()){
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }
+        else{
+            Toast.makeText(this,  regInsertados+" menos en el webservis", Toast.LENGTH_SHORT).show();
+        }
+
     }
     public void limpiarTexto(View v) {
         CodMarca.setText("");
