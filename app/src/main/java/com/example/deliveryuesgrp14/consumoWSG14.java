@@ -113,20 +113,45 @@ public class consumoWSG14 {
         }
 
     }
-    public static List<Marca> obtenerMateriasExterno(String json, Context ctx) {
+    public static List<Marca> obtenerMarcas(String json, Context ctx) {
 
-        List<Marca> listaMaterias = new ArrayList<Marca>();
+        List<Marca> LismaMarcas = new ArrayList<Marca>();
 
         try {
             JSONArray materiasJSON = new JSONArray(json);
             for (int i = 0; i < materiasJSON.length(); i++) {
                 JSONObject obj = materiasJSON.getJSONObject(i);
-                Marca materia = new Marca();
-                materia.setCodMarca(obj.getInt("cod"));
-                materia.setNombreMarca(obj.getString("nombre"));
-                listaMaterias.add(materia);
+                Marca marca = new Marca();
+                marca.setCodMarca(obj.getInt("cod"));
+                marca.setNombreMarca(obj.getString("nombre"));
+                LismaMarcas.add(marca);
             }
-            return listaMaterias;
+            return LismaMarcas;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+    public static List<Producto> obtenerProductos(String json, Context ctx) {
+
+        List<Producto> LisProducto = new ArrayList<Producto>();
+
+        try {
+            JSONArray materiasJSON = new JSONArray(json);
+            for (int i = 0; i < materiasJSON.length(); i++) {
+                JSONObject obj = materiasJSON.getJSONObject(i);
+                Producto producto = new Producto();
+                producto.setCodProduct(obj.getInt("cod"));
+                producto.setCodMarca(obj.getInt("codMarca"));
+                producto.setCodCategoria(obj.getInt("codCate"));
+                producto.setNombreProducto(obj.getString("nombre"));
+                producto.setDescripcionProd(obj.getString("descrip"));
+                producto.setPrecio((float)obj.getDouble("precio"));
+                producto.setExistencias(obj.getInt("existen"));
+                LisProducto.add(producto);
+            }
+            return LisProducto;
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();

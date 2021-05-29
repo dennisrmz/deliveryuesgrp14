@@ -2,16 +2,20 @@ package com.example.deliveryuesgrp14;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
+@SuppressLint("NewApi")
 public class MarcaEliminarActivity extends AppCompatActivity {
 
     ControlBDG14 helper;
     EditText CodMarca;
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//eliminarMarca.php";
+    private final String urlLocal = "http://192.168.1.5/ServicePDM/eliminarMarca.php";
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +33,12 @@ public class MarcaEliminarActivity extends AppCompatActivity {
         helper.abrir();
         regEliminadas=helper.eliminarMarca(marca);
         helper.cerrar();
+        String url = "";
+        String urlW = "";
+        url = urlLocal+"?cod_marca="+codMarca;
+        urlW = urlWeb+"?cod_marca="+codMarca;
+        String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+        String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
         Toast.makeText(this, regEliminadas, Toast.LENGTH_SHORT).show();
     }
 }
