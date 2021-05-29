@@ -177,7 +177,7 @@ public class ControlBDG14 {
                         "   CODUBICACION         INTEGER,\n" +
                         "   CODCLIENTE           INTEGER,\n" +
                         "   CODLOCAL             INTEGER,\n" +
-                        "   TOTAL                FLOAT                not null,\n" +
+                        "   TOTAL                FLOAT                not null default 0,\n" +
                         "   COMENTARIOPEDIDO     CHAR(250)            not null,\n" +
                         "   ESTADO               SMALLINT             not null,\n" +
                         "   constraint PK_PEDIDO primary key (CODPEDIDO)\n" +
@@ -192,7 +192,7 @@ public class ControlBDG14 {
                         "   CODMARCA             int,\n" +
                         "   NOMBREPRODUCTO       char(250) not null,\n" +
                         "   DESCRIPCIONPROD      char(250) not null,\n" +
-                        "   PRECIOPROC         FLOAT                not null,\n"+
+                        "   PRECIOPROC         FLOAT  not null ,\n"+
                         "   EXISTENCIAS          int not null,\n" +
                         "   primary key (CODPRODUCT)\n" +
                         ");");
@@ -575,7 +575,6 @@ public class ControlBDG14 {
         prod.put("CODUBICACION", pedido.getCodUbicacion());
         prod.put("CODCLIENTE", pedido.getCodCliente());
         prod.put("CODLOCAL",pedido.getCodLocal());
-        prod.put("TOTAL",pedido.getTotal());
         prod.put("COMENTARIOPEDIDO",pedido.getComentarioPedido());
         prod.put("ESTADO", pedido.getEstado());
 
@@ -641,7 +640,7 @@ public class ControlBDG14 {
 
     public String insertarDetallePedido(DetallePedido detalle){
 
-        String regInsertados = "Registro Insertado Nº= ";
+        String regInsertados = "Codigo de su detalle de pedido Nº= ";
         long contador = 0;
 
         ContentValues prod = new ContentValues();
@@ -767,6 +766,8 @@ public class ControlBDG14 {
         }
         return regInsertados;
     }
+
+
 
     public MenuRest consultarMenu(String codMenu){
         String[] id = {codMenu};
@@ -1294,6 +1295,83 @@ public String insertarEncargado(EncargadoLocal encargado ){
             default:
                 return false;
         }
+    }
+
+    public ArrayList<String> listarLocales(){
+        ArrayList<String>  listaLocales = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select LOCAL.CODLOCAL, LOCAL.NOMBRELOCAL FROM LOCAL" , null);
+
+        while (cursor.moveToNext()){
+            Local local = new Local();
+            local.setCodLocal(cursor.getInt(0));
+            local.setNombreLocal(cursor.getString(1));
+            listaLocales.add(Integer.toString( local.getCodLocal())+"\t"+ local.getNombreLocal());
+        }
+        return  listaLocales;
+    }
+    public ArrayList<String> listarCategorias(){
+        ArrayList<String>  listaCat = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select CATEGORIA.CODCATEGORIA, CATEGORIA.NOMBRECATEGORIA FROM CATEGORIA" , null);
+
+        while (cursor.moveToNext()){
+            Categoria categoria = new Categoria();
+            categoria.setCodCategoria(cursor.getInt(0));
+            categoria.setNombreCategoria(cursor.getString(1));
+            listaCat.add(Integer.toString( categoria.getCodCategoria())+"\t"+"nombre categoria:"+"\t"+ categoria.getNombreCategoria());
+        }
+        return  listaCat;
+    }
+    public ArrayList<String> listarMarcas(){
+        ArrayList<String>  listaMarca = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select MARCA.CODMARCA, MARCA.NOMBREMARCA FROM MARCA" , null);
+
+        while (cursor.moveToNext()){
+            Marca marca = new Marca();
+            marca.setCodMarca(cursor.getInt(0));
+            marca.setNombreMarca(cursor.getString(1));
+            listaMarca.add(Integer.toString( marca.getCodMarca())+"\t"+"Nombre marca:\t"+ marca.getNombreMarca());
+        }
+        return  listaMarca;
+    }
+    public ArrayList<String> listarProductos(){
+        ArrayList<String>  listaProducto = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select PRODUCTO.CODPRODUCT, PRODUCTO.NOMBREPRODUCTO FROM PRODUCTO" , null);
+
+        while (cursor.moveToNext()){
+            Producto producto = new Producto();
+            producto.setCodProduct(cursor.getInt(0));
+            producto.setNombreProducto(cursor.getString(1));
+            listaProducto.add(Integer.toString( producto.getCodProduct())+"\t"+"Nombre Producto:\t"+ producto.getNombreProducto());
+        }
+        return  listaProducto;
+    }
+    public ArrayList<String> listarMenus(){
+        ArrayList<String>  listaMenus = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select MENU.CODMENU FROM MENU" , null);
+
+        while (cursor.moveToNext()){
+            MenuRest menuRest = new MenuRest();
+            menuRest.setCODMENU(cursor.getInt(0));
+            listaMenus.add("Menu #:"+Integer.toString( menuRest.getCODMENU()));
+        }
+        return  listaMenus;
+    }
+    public ArrayList<String> listarPedidos(){
+        ArrayList<String>  listaPedidos = new ArrayList<>();
+
+        Cursor cursor = db.rawQuery("select PEDIDO.CODPEDIDO FROM PEDIDO" , null);
+
+        while (cursor.moveToNext()){
+            Pedido pedido = new Pedido();
+            pedido.setCodPedido(cursor.getInt(0));
+            listaPedidos.add("Pedido #:"+Integer.toString( pedido.getCodPedido()));
+        }
+        return  listaPedidos;
     }
 //    public String insertar(Alumno alumno){
 //

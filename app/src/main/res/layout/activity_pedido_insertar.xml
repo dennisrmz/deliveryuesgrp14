@@ -30,17 +30,12 @@
             android:inputType="number" />
     </TableRow>
     <TableRow>
-        <TextView android:text="Codigo de Local" />
-        <EditText
+        <TextView android:text="Codigo local:" />
+        <Spinner
             android:id="@+id/codLocal"
-            android:inputType="number" />
-    </TableRow>
-    <TableRow>
-        <TextView android:text="Total" />
-        <EditText
-            android:id="@+id/editTotal"
-            android:inputType="numberDecimal"
-            android:maxLength="12" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </TableRow>
 
     <TableRow>

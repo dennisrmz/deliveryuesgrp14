@@ -13,15 +13,19 @@
     </TableRow>
     <TableRow>
         <TextView android:text="Categoria" />
-        <EditText
-            android:id="@+id/editCategoria"
-            android:inputType="number" />
+        <Spinner
+            android:id="@+id/codCategoria"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </TableRow>
     <TableRow>
         <TextView android:text="Marca" />
-        <EditText
-            android:id="@+id/editMarca"
-            android:inputType="number" />
+        <Spinner
+            android:id="@+id/codMarca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </TableRow>
 
     <TableRow>
@@ -36,7 +40,7 @@
         <EditText
             android:id="@+id/editDescripcion"
             android:inputType="text"
-            android:maxLength="12" />
+            android:maxLength="100" />
     </TableRow>
     <TableRow>
         <TextView android:text="Existencias" />

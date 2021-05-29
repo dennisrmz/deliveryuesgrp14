@@ -6,21 +6,27 @@
     android:stretchColumns="1" >
     <TableRow>
         <TextView android:text="Codigo del Pedido"/>
-        <EditText
+        <Spinner
             android:id="@+id/codPedido"
-            android:inputType="number" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </TableRow>
     <TableRow>
-        <TextView android:text="Codigo del Producto"/>
-        <EditText
-            android:id="@+id/codProducto"
-            android:inputType="number" />
-    </TableRow>
-    <TableRow>
-        <TextView android:text="Codigo del Menu"/>
-        <EditText
+        <TextView android:text="Menu" />
+        <Spinner
             android:id="@+id/codMenu"
-            android:inputType="number" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </TableRow>
+    <TableRow>
+        <TextView android:text="Producto" />
+        <Spinner
+            android:id="@+id/codProducto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
     </TableRow>
     <TableRow>
         <TextView android:text="Cantidad de Compra"/>
