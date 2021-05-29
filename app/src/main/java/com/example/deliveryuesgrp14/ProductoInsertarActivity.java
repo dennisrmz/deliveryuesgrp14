@@ -26,7 +26,8 @@ public class ProductoInsertarActivity extends Activity {
     EditText editPrec;
     ArrayList<String> listaCategorias;
     ArrayList<String> listaMarcas;
-
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//insertarProducto.php";
+    private final String urlLocal = "http://192.168.1.5/ServicePDM/insertarProducto.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,7 +91,19 @@ public class ProductoInsertarActivity extends Activity {
         helper.abrir();
         regInsertados=helper.insertarProducto(producto);
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        if(regInsertados.equals(mensajeError)){
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_producto="+codProducto+"&cod_marca="+marca+"&cod_categoria="+categoria+"&nombre_producto="+nombre+"&descripcion="+descripcionProducto+"&existencias="+existencias+"&precio="+precio;
+            urlW = urlWeb+"?cod_producto="+codProducto+"&cod_marca="+marca+"&cod_categoria="+categoria+"&nombre_producto="+nombre+"&descripcion="+descripcionProducto+"&existencias="+existencias+"&precio="+precio;
+            String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }
+
     }
     private int getid(String text) {
         int codigoM=0;

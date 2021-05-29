@@ -15,6 +15,7 @@ public class MarcaEliminarActivity extends AppCompatActivity {
     EditText CodMarca;
     private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//eliminarMarca.php";
     private final String urlLocal = "http://192.168.1.5/ServicePDM/eliminarMarca.php";
+    @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
