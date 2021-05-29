@@ -114,7 +114,7 @@ public class consumoWSG14 {
 
     }
     public static List<Marca> obtenerMateriasExterno(String json, Context ctx) {
-
+        Log.v("JSON_MARCAS", json);
         List<Marca> listaMaterias = new ArrayList<Marca>();
 
         try {
@@ -127,6 +127,27 @@ public class consumoWSG14 {
                 listaMaterias.add(materia);
             }
             return listaMaterias;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+
+    public static List<Categoria> obtenerCategoriasExterno(String json, Context ctx) {
+        Log.v("JSON_CATEGORIAS", json);
+        List<Categoria> listaCategorias = new ArrayList<Categoria>();
+
+        try {
+            JSONArray materiasJSON = new JSONArray(json);
+            for (int i = 0; i < materiasJSON.length(); i++) {
+                JSONObject obj = materiasJSON.getJSONObject(i);
+                Categoria categoria = new Categoria();
+                categoria.setCodCategoria(obj.getInt("cod"));
+                categoria.setNombreCategoria(obj.getString("nombre"));
+                listaCategorias.add(categoria);
+            }
+            return listaCategorias;
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();
