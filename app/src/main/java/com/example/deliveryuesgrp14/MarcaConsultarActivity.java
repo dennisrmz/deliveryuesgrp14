@@ -108,6 +108,6 @@ public class MarcaConsultarActivity extends AppCompatActivity {
     public void limpiarTexto(View v){
         CodMarca.setText("");
         editNombreMarca.setText("");
-
+        listViewMaterias.setAdapter(null);
     }
 }
