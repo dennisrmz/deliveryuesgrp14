@@ -3,6 +3,7 @@ package com.example.deliveryuesgrp14;
 import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.Toast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -152,6 +153,29 @@ public class consumoWSG14 {
                 LisProducto.add(producto);
             }
             return LisProducto;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+    public static List<MenuRest> obtenerMenus(String json, Context ctx) {
+
+        List<MenuRest> listMenus = new ArrayList<MenuRest>();
+
+        try {
+            JSONArray materiasJSON = new JSONArray(json);
+            for (int i = 0; i < materiasJSON.length(); i++) {
+                JSONObject obj = materiasJSON.getJSONObject(i);
+                MenuRest menu = new MenuRest();
+                menu.setCODLOCAL(obj.getInt("cod"));
+                menu.setCODMENU(obj.getInt("codMarca"));
+                menu.setDESCRIPCIONCOMBO(obj.getString("descrip"));
+                menu.setPRECIOCOMBO((float) obj.getDouble("precio"));
+
+                listMenus.add(menu);
+            }
+            return listMenus;
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();
