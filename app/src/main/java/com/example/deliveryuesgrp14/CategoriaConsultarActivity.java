@@ -57,7 +57,11 @@ public class CategoriaConsultarActivity extends AppCompatActivity {
     public void servicioPHP(View v) {
         String url = "";
         // it was the first button
+        String cod_categ = codCategoria.getText().toString();
         url = urlLocal;
+        if(cod_categ != ""){
+            url = urlLocal + "?cod_opcion=" + cod_categ;
+        }
         String categoria = consumoWSG14.obtenerRespuestaPeticion(url, this);
         try {
             listaCategorias.addAll(consumoWSG14.obtenerCategoriasExterno(categoria, this));

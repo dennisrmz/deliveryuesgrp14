@@ -135,7 +135,7 @@ public class consumoWSG14 {
     }
 
     public static List<Categoria> obtenerCategoriasExterno(String json, Context ctx) {
-        Log.v("JSON_CATEGORIAS", json);
+
         List<Categoria> listaCategorias = new ArrayList<Categoria>();
 
         try {
@@ -148,6 +148,28 @@ public class consumoWSG14 {
                 listaCategorias.add(categoria);
             }
             return listaCategorias;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+
+    public static List<Rol> obtenerRolesExterno(String json, Context ctx) {
+        Log.v("JSON_roles",json);
+        List<Rol> listaRoles = new ArrayList<Rol>();
+
+        try {
+            JSONArray rolesJSON = new JSONArray(json);
+            for (int i = 0; i < rolesJSON.length(); i++) {
+                JSONObject obj = rolesJSON.getJSONObject(i);
+                Rol rol = new Rol();
+                rol.setIdRol(obj.getInt("cod"));
+                rol.setDescripcion(obj.getString("descripcion"));
+                rol.setNum(obj.getInt("numero"));
+                listaRoles.add(rol);
+            }
+            return listaRoles;
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();

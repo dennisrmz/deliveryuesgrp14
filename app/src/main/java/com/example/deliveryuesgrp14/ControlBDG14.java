@@ -1119,12 +1119,12 @@ public String insertarEncargado(EncargadoLocal encargado ){
             db.update("OPCIONCRUD", cv, "CODOPCION = ?", id);
             return "Registro Actualizado Correctamente";
         }else{
-            return  "Registro con COD " + rol.getIdRol() + " no existe";
+            return  "Error al actualizar, registro no existe";
         }
     }
 
-    public String eliminarRol(Rol rol){
-        String regAfectados="filas afectadas= ";
+    public int eliminarRol(Rol rol){
+        int regAfectados=0;
         int contador=0;
 //        if (verificarIntegridadUsuario(usuario,2)) {
 //            contador+=db.delete("nota", "carnet='"+alumno.getCarnet()+"'", null);
@@ -1208,7 +1208,7 @@ public String insertarEncargado(EncargadoLocal encargado ){
 
         contador =  db.update("CATEGORIA", cv, "CODCATEGORIA = ?", id);
         if(contador==-1 || contador==0){
-            return "Error al insertar el registro Categoria, Registro dublicado. Verificar insercion";
+            return "Error al insertar el registro categoria, Registro dublicado. Verificar insercion";
         }
         else {
             return "Registro Actualizado Correctamente";
@@ -1216,7 +1216,7 @@ public String insertarEncargado(EncargadoLocal encargado ){
 
     }
 
-    public String eliminarCategoria(Categoria categoria){
+    public int eliminarCategoria(Categoria categoria){
         String regAfectados="filas afectadas= ";
         int contador=0;
         if (verificarIntegridadCategoria(categoria,1)) {
@@ -1224,7 +1224,7 @@ public String insertarEncargado(EncargadoLocal encargado ){
         }
         contador+=db.delete("CATEGORIA", "CODCATEGORIA='"+categoria.getCodCategoria()+"'", null);
         regAfectados+=contador;
-        return regAfectados;
+        return contador;
     }
 
     public Usuario consultarUsuarioLog(String correo, String password){
