@@ -15,7 +15,8 @@ public class EncargadoLocalInsertarActivity extends Activity {
     EditText editApeEnca;
     EditText editDuiEnca;
     EditText editTelfEnca;
-
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com/encargadoLocal.php";
+    private final String urlLocal = "http://192.168.1.5/ServicePDM/encargadoLocal.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,18 @@ public class EncargadoLocalInsertarActivity extends Activity {
         helper.abrir();
         regInsertados=helper.insertarEncargado(encargado);
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        if(regInsertados.equals(mensajeError)){
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_encargado="+codEncar+"&cod_usuario="+codUsua+"&nombre="+nombreEnca+"&apellido="+apeEnca+"&dui="+duiEnca+"&numtelefono="+telfEnca;
+            urlW = urlWeb+"?cod_encargado="+codEncar+"&cod_usuario="+codUsua+"&nombre="+nombreEnca+"&apellido="+apeEnca+"&dui="+duiEnca+"&numtelefono="+telfEnca;;
+            String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }
     }
     public void limpiarTexto(View v) {
         codEnca.setText("");
