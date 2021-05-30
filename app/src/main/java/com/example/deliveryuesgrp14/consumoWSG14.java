@@ -158,6 +158,31 @@ public class consumoWSG14 {
             return null;
         }
     }
+
+    public static List<Cliente> obtenerClientesExterno(String json, Context ctx) {
+
+        List<Cliente> listaClientes = new ArrayList<Cliente>();
+
+        try {
+            JSONArray clientesJSON = new JSONArray(json);
+            for (int i = 0; i < clientesJSON.length(); i++) {
+                JSONObject obj = clientesJSON.getJSONObject(i);
+                Cliente cliente = new Cliente();
+                cliente.setCodCliente(obj.getInt("cod_cliente"));
+                cliente.setCodUsuario(obj.getInt("cod_usuario"));
+                cliente.setNombreCliente(obj.getString("nombre_cliente"));
+                cliente.setApellidoCliente(obj.getString("apellido_cliente"));
+                cliente.setNumTelefono(obj.getString("numTel"));
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+
 //    public static void insertarNotaLocal(String url, JSONObject obj, Context ctx) {
 //        String respuesta = obtenerRespuestaPost(url, obj, ctx);
 //        try {
