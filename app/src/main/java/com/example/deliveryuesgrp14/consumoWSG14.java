@@ -182,6 +182,34 @@ public class consumoWSG14 {
             return null;
         }
     }
+    public static ArrayList<String> combos(String json, Context ctx) {
+
+        ArrayList<String>  Listaproducto = new ArrayList<>();
+        int cantidad;
+        float precio=0;
+
+        try {
+            JSONArray combosJSON = new JSONArray(json);
+
+            for (int i = 0; i < combosJSON.length(); i++) {
+                JSONObject obj = combosJSON.getJSONObject(i);
+                Producto productos = new Producto();
+                productos.setNombreProducto(obj.getString("nombre"));
+                cantidad = obj.getInt("cantidad");
+                precio = (float) obj.getDouble("precio");
+                Listaproducto.add(productos.getNombreProducto() + "\t Cantidad:\t" + cantidad);
+            }
+            if(!Listaproducto.isEmpty()){
+                Listaproducto.add("Precio:$"+precio);
+            }
+            return Listaproducto;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            Log.v("Error de parse", e.toString());
+            return null;
+        }
+    }
 //    public static void insertarNotaLocal(String url, JSONObject obj, Context ctx) {
 //        String respuesta = obtenerRespuestaPost(url, obj, ctx);
 //        try {

@@ -25,6 +25,8 @@ public class ComboProductoInsertarActivity extends AppCompatActivity {
 
     ArrayList<String> listaMenus;
     ArrayList<String> listarProductos;
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//insertarComboProducto.php";
+    private final String urlLocal = "http://192.168.1.5/ServicePDM/insertarComboProducto.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,19 @@ public class ComboProductoInsertarActivity extends AppCompatActivity {
         helper.abrir();
         regInsertados=helper.insertarCombo(combo);
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        if(regInsertados.equals(mensajeError)){
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_menu="+codMenu+"&cod_producto="+codProduct+"&cantidad="+cantProduct;
+            urlW = urlWeb+"?cod_menu="+codMenu+"&cod_producto="+codProduct+"&cantidad="+cantProduct;
+            String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }
+
     }
     private int getid(String text) {
         int codigoM=0;
