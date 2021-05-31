@@ -209,6 +209,31 @@ public class consumoWSG14 {
         }
     }
 
+    public static List<DetallePedido> obtenerDetallePedidosExterno(String json, Context ctx) {
+
+        List<DetallePedido> listaDetallePedidos = new ArrayList<DetallePedido>();
+
+        try {
+            JSONArray detallePedidosJSON = new JSONArray(json);
+            for (int i = 0; i < detallePedidosJSON.length(); i++) {
+                JSONObject obj = detallePedidosJSON.getJSONObject(i);
+                DetallePedido detallePedido = new DetallePedido();
+                detallePedido.setCodDetalle(obj.getInt("codDetalle"));
+                detallePedido.setCodPedido(obj.getInt("codPedido"));
+                detallePedido.setCodMenu(obj.getInt("codMenu"));
+                detallePedido.setCantidadCompra(obj.getInt("cantCompra"));
+                detallePedido.setCantidadProducto(obj.getInt("cantProducto"));
+
+                listaDetallePedidos.add(detallePedido);
+            }
+            return listaDetallePedidos;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+
 
 //    public static void insertarNotaLocal(String url, JSONObject obj, Context ctx) {
 //        String respuesta = obtenerRespuestaPost(url, obj, ctx);
