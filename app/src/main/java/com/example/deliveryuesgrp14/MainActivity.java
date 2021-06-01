@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
             usuario.setNombreUsu("admin");
             usuario.setContrasena("1234");
             BDhelper.abrir();
-            String respuesta = BDhelper.insertarUsuario(usuario, "1");
+            long respuesta = BDhelper.insertarUsuario(usuario, "1");
             BDhelper.cerrar();
         }
     }

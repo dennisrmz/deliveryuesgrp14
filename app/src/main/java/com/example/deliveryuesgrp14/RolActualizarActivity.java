@@ -13,6 +13,9 @@ public class RolActualizarActivity extends AppCompatActivity {
     EditText editCodRol;
     EditText editDescripcion;
     int numGlobal = 0;
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//rolActualizar.php";
+    private final String urlLocal = "http://192.168.1.3/ServicePDM/rolActualizar.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +29,26 @@ public class RolActualizarActivity extends AppCompatActivity {
 
     public void actualizarRol(View v) {
         Rol role = new Rol();
+        int idrol = Integer.parseInt(editCodRol.getText().toString());
+        String descripcion = editDescripcion.getText().toString();
         role.setIdRol(Integer.parseInt(editCodRol.getText().toString()));
         role.setDescripcion(editDescripcion.getText().toString());
         role.setNum(numGlobal);
         helper.abrir();
         String estado = helper.actualizarRol(role);
         helper.cerrar();
-        Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al actualizar, registro no existe";
+        if(estado.equals(mensajeError)){
+            Toast.makeText(this,  estado, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_opcion="+idrol+"&nombre_opcioncrud="+descripcion+"&num_opcion="+numGlobal;
+            urlW = urlWeb+"?cod_opcion="+idrol+"&nombre_opcioncrud="+descripcion+"&num_opcion="+numGlobal;
+            String categoriaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String categoriaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  estado, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onRadioButtonClicked(View view) {
