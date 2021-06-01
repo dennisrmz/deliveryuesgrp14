@@ -2,6 +2,7 @@ package com.example.deliveryuesgrp14;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -17,6 +18,10 @@ public class UsuarioInsertarActivity extends Activity {
     EditText editContrasena;
     Spinner comboRoles;
     ArrayList<String> rolesList = new ArrayList<String>();
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//usuarioInsertar.php";
+    private final String urlLocal = "http://192.168.1.3/ServicePDM/usuarioInsertar.php";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +43,7 @@ public class UsuarioInsertarActivity extends Activity {
         String nombre = editNombre.getText().toString();
         String contrasena = editContrasena.getText().toString();
         String rolSelected  = comboRoles.getSelectedItem().toString();
-        String regInsertados;
+        long regInsertados;
         Usuario usuario = new Usuario();
         usuario.setCorreo(correo);
         usuario.setNombreUsu(nombre);
@@ -47,7 +52,20 @@ public class UsuarioInsertarActivity extends Activity {
         helper.abrir();
         regInsertados = helper.insertarUsuario(usuario, parts[0]);
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        if(regInsertados <= 0){
+            Toast.makeText(this,  "Error al insertar", Toast.LENGTH_SHORT).show();
+        }else{
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_user="+ regInsertados +"&email="+correo+"&nombre_completo="+nombre+"&contrasena="+contrasena+"&cod_rol="+parts[0];
+            Log.v("URL_LOCAL", url);
+            urlW = urlWeb+"?cod_user="+ regInsertados +"&email="+correo+"&nombre_completo="+nombre+"&contrasena="+contrasena+"&cod_rol="+parts[0];
+            String categoriaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String categoriaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this, "registros insertados: " + regInsertados, Toast.LENGTH_SHORT).show();
+
+        }
+
     }
 
     public void limpiarTexto(View v) {

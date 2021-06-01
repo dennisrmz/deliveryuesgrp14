@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -918,9 +920,9 @@ public String insertarEncargado(EncargadoLocal encargado ){
   
 ////////////////////////////////////////////////////////////////////////////////////////////
 
-    public String insertarUsuario(Usuario usuario, String idRol){
+    public long insertarUsuario(Usuario usuario, String idRol){
 
-        String regInsertados = "Registro Inserado Nº= ";
+        long regInsertados = 0;
         long contador = 0;
         long contador_two = 0;
 
@@ -930,8 +932,7 @@ public String insertarEncargado(EncargadoLocal encargado ){
         user.put("CONTRASENA",usuario.getContrasena());
         contador = db.insert("USUARIO",null,user);
         if(contador==-1 || contador==0){
-            regInsertados = "Error al insertar el registro de usuario, Registro dublicado. Verificar insercion";
-            return regInsertados;
+            return contador;
         }
         else {
             ContentValues accesousuario = new ContentValues();
@@ -940,14 +941,14 @@ public String insertarEncargado(EncargadoLocal encargado ){
             contador_two = db.insert("ACCESOUSUARIO",null,accesousuario);
 
             if(contador==-1 || contador==0){
-                regInsertados = "Se creo Usuario pero Error al insertar el registro de ACCESO USUARIO, Registro dublicado. Verificar insercion";
-                return regInsertados;
+
+                return contador;
             }else{
                 regInsertados = regInsertados+contador;
             }
 
         }
-        return regInsertados;
+        return contador;
     }
 
     public Usuario consultarUsuario(String correo){
@@ -978,11 +979,20 @@ public String insertarEncargado(EncargadoLocal encargado ){
             String[] camposUsuario = {"CODUSUARIO","CORREO", "NOMBREUSU", "CONTRASENA"};
             Cursor cursor = db.query("USUARIO", camposUsuario, "CORREO = ?", id, null, null, null);
             if(cursor.moveToFirst()){
-
                 ContentValues cv_two = new ContentValues();
                 String[] id_two = {Integer.toString(cursor.getInt(0))};
                 cv_two.put("CODOPCION", role);
                 db.update("ACCESOUSUARIO", cv_two, "CODUSUARIO = ?", id_two);
+
+
+                String urlWeb = "https://pdmgrupo14.000webhostapp.com//usuarioActualizar.php";
+                String urlLocal = "http://192.168.1.3/ServicePDM/usuarioActualizar.php";
+                String url = "";
+                String urlW = "";
+                url = urlLocal+"?cod_user="+ cursor.getInt(0) +"&email="+usuario.getCorreo()+"&nombre_completo="+usuario.getNombreUsu()+"&contrasena="+usuario.getContrasena()+"&cod_rol="+role;
+                urlW = urlWeb+"?cod_user="+ cursor.getInt(0) +"&email="+usuario.getCorreo()+"&nombre_completo="+usuario.getNombreUsu()+"&contrasena="+usuario.getContrasena()+"&cod_rol="+role;
+                String userL = consumoWSG14.obtenerRespuestaPeticion(url, context);
+                String userW = consumoWSG14.obtenerRespuestaPeticion(urlW, context);
 
             }else{
                 return null;
@@ -993,8 +1003,7 @@ public String insertarEncargado(EncargadoLocal encargado ){
         }
     }
 
-    public String eliminarUsuario(Usuario usuario){
-        String regAfectados="filas afectadas= ";
+    public int eliminarUsuario(Usuario usuario){
         int contado_two = 0;
         int contador=0;
 //        if (verificarIntegridadUsuario(usuario,2)) {
@@ -1003,9 +1012,8 @@ public String insertarEncargado(EncargadoLocal encargado ){
         Usuario user = consultarUsuario(usuario.getCorreo());
         eliminarRolUser(user.getCodUsuario());
         contador+=db.delete("USUARIO", "CORREO='"+usuario.getCorreo()+"'", null);
-        regAfectados+=contador;
-        regAfectados+=contado_two;
-        return regAfectados;
+
+        return contador;
     }
 
     public int eliminarRolUser(int ide){
