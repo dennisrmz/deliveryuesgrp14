@@ -17,6 +17,9 @@ public class PedidoActualizarActivity extends AppCompatActivity {
     EditText editComentario;
     EditText editEstado;
 
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com/pedido_update.php";
+    private final String urlLocal = "http://192.168.1.2/ServicePDM/pedido_update.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,16 +34,32 @@ public class PedidoActualizarActivity extends AppCompatActivity {
     }
     public void actualizarPedido(View v) {
         Pedido pedido = new Pedido();
-        pedido.setCodPedido(Integer.parseInt(CodPedido.getText().toString()));
-        pedido.setCodRepar(Integer.parseInt(codRepar.getText().toString()));
-        pedido.setCodUbicacion(Integer.parseInt(codUbicacion.getText().toString()));
+        int codPedido=Integer.parseInt(CodPedido.getText().toString());
+        int repartido=Integer.parseInt(codRepar.getText().toString());
+        int ubicacion=Integer.parseInt(codUbicacion.getText().toString());
+        String comentario=editComentario.getText().toString();
+        int estado1=Integer.parseInt(editEstado.getText().toString());
+        pedido.setCodPedido(codPedido);
+        pedido.setCodRepar(repartido);
+        pedido.setCodUbicacion(ubicacion);
+        pedido.setComentarioPedido(comentario);
+        pedido.setEstado(estado1);
 
-        pedido.setComentarioPedido(editComentario.getText().toString());
-        pedido.setEstado(Integer.parseInt(editEstado.getText().toString()));
         helper.abrir();
         String estado = helper.actualizarPedido(pedido);
         helper.cerrar();
-        Toast.makeText(this, estado, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        if(estado.equals(mensajeError)){
+            Toast.makeText(this,  estado, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_pedido="+codPedido+"&cod_ubicacion="+ubicacion+"&cod_repar="+repartido+"&comentarios="+comentario+"&estado="+estado1;
+            urlW = urlWeb+"?cod_pedido="+codPedido+"&cod_ubicacion="+ubicacion+"&cod_repar="+repartido+"&comentarios="+comentario+"&estado="+estado1;
+            String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  estado, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void limpiarTexto(View v) {

@@ -1,5 +1,6 @@
 package com.example.deliveryuesgrp14;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +29,10 @@ public class PedidoInsertarActivity extends Activity {
     EditText editComentario;
     EditText editEstado;
     ArrayList<String> listaLocales;
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com/pedido_insert.php";
+    private final String urlLocal = "http://192.168.1.2/ServicePDM/pedido_insert.php";
+    @SuppressLint("NewApi")
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,8 +90,22 @@ public class PedidoInsertarActivity extends Activity {
         helper.abrir();
         regInsertados=helper.insertarPedido(pedido);
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        if(regInsertados.equals(mensajeError)){
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_pedido="+codPedido+"&cod_cliente="+cliente+"&cod_local="+local+"&cod_ubicacion="+ubicacion+"&cod_repar="+repartido+"&total="+0+"&comentarios="+comentario+"&estado="+estado;
+            urlW = urlWeb+"?cod_pedido="+codPedido+"&cod_cliente="+cliente+"&cod_local="+local+"&cod_ubicacion="+ubicacion+"&cod_repar="+repartido+"&total="+0+"&comentarios="+comentario+"&estado="+estado;
+            String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }
     }
+
+
+
     private int idCodmenu(String text) {
         int codigoM=0;
         Matcher encontrado = Pattern.compile("\\d+").matcher(text);

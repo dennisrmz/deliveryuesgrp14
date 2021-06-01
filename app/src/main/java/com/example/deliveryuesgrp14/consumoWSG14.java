@@ -160,6 +160,32 @@ public class consumoWSG14 {
             return null;
         }
     }
+
+
+    public static List<Cliente> obtenerClientesExterno(String json, Context ctx) {
+
+        List<Cliente> listaClientes = new ArrayList<Cliente>();
+
+        try {
+            JSONArray clientesJSON = new JSONArray(json);
+            for (int i = 0; i < clientesJSON.length(); i++) {
+                JSONObject obj = clientesJSON.getJSONObject(i);
+                Cliente cliente = new Cliente();
+                cliente.setCodCliente(obj.getInt("cod_cliente"));
+                cliente.setCodUsuario(obj.getInt("cod_usuario"));
+                cliente.setNombreCliente(obj.getString("nombre_cliente"));
+                cliente.setApellidoCliente(obj.getString("apellido_cliente"));
+                cliente.setNumTelefono(obj.getString("numTel"));
+                listaClientes.add(cliente);
+            }
+            return listaClientes;
+         } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+  
     public static List<MenuRest> obtenerMenus(String json, Context ctx) {
 
         List<MenuRest> listMenus = new ArrayList<MenuRest>();
@@ -177,9 +203,39 @@ public class consumoWSG14 {
                 listMenus.add(menu);
             }
             return listMenus;
+
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();
+            return null;
+        }
+    }
+  
+    public static List<Pedido> obtenerPedidosExterno(String json, Context ctx) {
+
+        List<Pedido> listaPedidos = new ArrayList<Pedido>();
+
+        try {
+            JSONArray pedidosJSON = new JSONArray(json);
+            for (int i = 0; i < pedidosJSON.length(); i++) {
+                JSONObject obj = pedidosJSON.getJSONObject(i);
+                Pedido pedido = new Pedido();
+                pedido.setCodPedido(obj.getInt("codPedido"));
+                pedido.setCodCliente(obj.getInt("codCliente"));
+                pedido.setCodLocal(obj.getInt("codLocal"));
+                pedido.setCodUbicacion(obj.getInt("codUbicacion"));
+                pedido.setCodRepar(obj.getInt("codRepar"));
+                pedido.setTotal(obj.getInt("total"));
+                pedido.setComentarioPedido(obj.getString("comentarios"));
+                pedido.setEstado(obj.getInt("estado"));
+                listaPedidos.add(pedido);
+            }
+            return listaPedidos;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+          Log.v("Error de parse", e.toString());
+
             return null;
         }
     }
@@ -208,10 +264,36 @@ public class consumoWSG14 {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();
             Log.v("Error de parse", e.toString());
+
             return null;
         }
     }
 
+    public static List<DetallePedido> obtenerDetallePedidosExterno(String json, Context ctx) {
+
+        List<DetallePedido> listaDetallePedidos = new ArrayList<DetallePedido>();
+
+        try {
+            JSONArray detallePedidosJSON = new JSONArray(json);
+            for (int i = 0; i < detallePedidosJSON.length(); i++) {
+                JSONObject obj = detallePedidosJSON.getJSONObject(i);
+                DetallePedido detallePedido = new DetallePedido();
+                detallePedido.setCodDetalle(obj.getInt("codDetalle"));
+                detallePedido.setCodPedido(obj.getInt("codPedido"));
+                detallePedido.setCodMenu(obj.getInt("codMenu"));
+                detallePedido.setCantidadCompra(obj.getInt("cantCompra"));
+                detallePedido.setCantidadProducto(obj.getInt("cantProducto"));
+
+                listaDetallePedidos.add(detallePedido);
+            }
+            return listaDetallePedidos;
+          } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+  
     public static List<Categoria> obtenerCategoriasExterno(String json, Context ctx) {
 
         List<Categoria> listaCategorias = new ArrayList<Categoria>();
@@ -254,6 +336,7 @@ public class consumoWSG14 {
             return null;
         }
     }
+
 
     public static List<Usuario> obtenerUsuariosExterno(String json, Context ctx) {
 
