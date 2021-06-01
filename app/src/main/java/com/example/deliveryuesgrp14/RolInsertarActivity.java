@@ -12,6 +12,9 @@ public class RolInsertarActivity extends Activity {
     EditText editRol;
     EditText editDescripcion;
     int numGlobal = 0;
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//rolInsertar.php";
+    private final String urlLocal = "http://192.168.1.3/ServicePDM/rolInsertar.php";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +35,18 @@ public class RolInsertarActivity extends Activity {
         helper.abrir();
         regInsertados = helper.insertarRol(role);
         helper.cerrar();
-        Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al insertar el registro de rol, Registro dublicado. Verificar insercion";
+        if(regInsertados.equals(mensajeError)){
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_opcion="+idrol+"&nombre_opcioncrud="+descripcion+"&num_opcion="+numGlobal;
+            urlW = urlWeb+"?cod_copcion="+idrol+"&nombre_opcioncrud="+descripcion+"&num_opcion="+numGlobal;
+            String categoriaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String categoriaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void limpiarTexto(View v) {

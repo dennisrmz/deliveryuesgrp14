@@ -23,10 +23,27 @@
             android:text="@string/consultar"
             android:onClick="consultarCategoria"/>
         <Button
+            android:id="@+id/Button4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="servicioPHP"
+            android:text="servicioLocal" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <Button
+            android:id="@+id/consultarWeb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="servicioWEB"
+            android:text="servicioWeb" />
+        <Button
             android:id="@+id/botonLimpiar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/limpiar"
+            android:text="limpiar"
             android:onClick="limpiarTexto"/>
     </LinearLayout>
 
@@ -44,5 +61,8 @@
         android:focusableInTouchMode="false"
         android:cursorVisible="false"
         android:longClickable="false" />
-
+    <ListView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/listView1"> </ListView>
 </LinearLayout>

@@ -3,6 +3,7 @@ package com.example.deliveryuesgrp14;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,7 +16,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@SuppressLint("NewApi")
 public class MenuRestActualizarActivity extends AppCompatActivity {
 
 
@@ -24,7 +25,10 @@ public class MenuRestActualizarActivity extends AppCompatActivity {
     Spinner comboLocal;
     EditText editPrecioComb;
     EditText editDescripCombo;
-    ArrayList<String> listaMenus;
+    ArrayList<String> listaLocales;
+
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//actualizarMenu.php";
+    private final String urlLocal = "http://192.168.1.5/ServicePDM/actualizarMenu.php";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,10 +40,10 @@ public class MenuRestActualizarActivity extends AppCompatActivity {
         editDescripCombo = (EditText) findViewById(R.id.editDescripCombo);
 
         helper.abrir();
-        listaMenus=helper.listarLocales();
+        listaLocales=helper.listarLocales();
         helper.cerrar();
-        if(listaMenus.isEmpty() == false){
-            ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,listaMenus);
+        if(listaLocales.isEmpty() == false){
+            ArrayAdapter<CharSequence> adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,listaLocales);
             comboLocal.setAdapter(adapter);
         }else {
             Toast.makeText(this, "No se ha registrado un menu, un producto o un pedido", Toast.LENGTH_LONG).show();
@@ -73,9 +77,21 @@ public class MenuRestActualizarActivity extends AppCompatActivity {
 
 
         helper.abrir();
-        regInsertados=helper.insertarMenu(menuRest);
+        regInsertados=helper.actualizarMenu(menuRest);
         helper.cerrar();
         Toast.makeText(this, regInsertados, Toast.LENGTH_SHORT).show();
+        String mensajeError = "Error al insertar el registro, Registro dublicado. Verificar insercion";
+        if(regInsertados.equals(mensajeError)){
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }else {
+            String url = "";
+            String urlW = "";
+            url = urlLocal+"?cod_menu="+codMenu+"&cod_local="+codLocal+"&descripcion="+descripcionComb+"&precio="+precioComb;
+            urlW = urlWeb+"?cod_menu="+codMenu+"&cod_local="+codLocal+"&descripcion="+descripcionComb+"&precio="+precioComb;
+            String marcaL = consumoWSG14.obtenerRespuestaPeticion(url, this);
+            String marcaW = consumoWSG14.obtenerRespuestaPeticion(urlW, this);
+            Toast.makeText(this,  regInsertados, Toast.LENGTH_SHORT).show();
+        }
     }
     private int idCodmenu(String text) {
         int codigoM=0;

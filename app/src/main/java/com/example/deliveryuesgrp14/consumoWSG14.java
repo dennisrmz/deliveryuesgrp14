@@ -3,6 +3,7 @@ package com.example.deliveryuesgrp14;
 import android.content.Context;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
 import android.widget.Toast;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -113,6 +114,7 @@ public class consumoWSG14 {
         }
 
     }
+
     public static List<Marca> obtenerMarcas(String json, Context ctx) {
 
         List<Marca> LismaMarcas = new ArrayList<Marca>();
@@ -159,6 +161,7 @@ public class consumoWSG14 {
         }
     }
 
+
     public static List<Cliente> obtenerClientesExterno(String json, Context ctx) {
 
         List<Cliente> listaClientes = new ArrayList<Cliente>();
@@ -176,12 +179,38 @@ public class consumoWSG14 {
                 listaClientes.add(cliente);
             }
             return listaClientes;
+         } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+  
+    public static List<MenuRest> obtenerMenus(String json, Context ctx) {
+
+        List<MenuRest> listMenus = new ArrayList<MenuRest>();
+
+        try {
+            JSONArray materiasJSON = new JSONArray(json);
+            for (int i = 0; i < materiasJSON.length(); i++) {
+                JSONObject obj = materiasJSON.getJSONObject(i);
+                MenuRest menu = new MenuRest();
+                menu.setCODLOCAL(obj.getInt("cod"));
+                menu.setCODMENU(obj.getInt("codMarca"));
+                menu.setDESCRIPCIONCOMBO(obj.getString("descrip"));
+                menu.setPRECIOCOMBO((float) obj.getDouble("precio"));
+
+                listMenus.add(menu);
+            }
+            return listMenus;
+
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();
             return null;
         }
     }
+  
     public static List<Pedido> obtenerPedidosExterno(String json, Context ctx) {
 
         List<Pedido> listaPedidos = new ArrayList<Pedido>();
@@ -205,6 +234,37 @@ public class consumoWSG14 {
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();
+          Log.v("Error de parse", e.toString());
+
+            return null;
+        }
+    }
+    public static ArrayList<String> combos(String json, Context ctx) {
+
+        ArrayList<String>  Listaproducto = new ArrayList<>();
+        int cantidad;
+        float precio=0;
+
+        try {
+            JSONArray combosJSON = new JSONArray(json);
+
+            for (int i = 0; i < combosJSON.length(); i++) {
+                JSONObject obj = combosJSON.getJSONObject(i);
+                Producto productos = new Producto();
+                productos.setNombreProducto(obj.getString("nombre"));
+                cantidad = obj.getInt("cantidad");
+                precio = (float) obj.getDouble("precio");
+                Listaproducto.add(productos.getNombreProducto() + "\t Cantidad:\t" + cantidad);
+            }
+            if(!Listaproducto.isEmpty()){
+                Listaproducto.add("Precio:$"+precio);
+            }
+            return Listaproducto;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            Log.v("Error de parse", e.toString());
+
             return null;
         }
     }
@@ -227,6 +287,49 @@ public class consumoWSG14 {
                 listaDetallePedidos.add(detallePedido);
             }
             return listaDetallePedidos;
+          } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+  
+    public static List<Categoria> obtenerCategoriasExterno(String json, Context ctx) {
+
+        List<Categoria> listaCategorias = new ArrayList<Categoria>();
+
+        try {
+            JSONArray materiasJSON = new JSONArray(json);
+            for (int i = 0; i < materiasJSON.length(); i++) {
+                JSONObject obj = materiasJSON.getJSONObject(i);
+                Categoria categoria = new Categoria();
+                categoria.setCodCategoria(obj.getInt("cod"));
+                categoria.setNombreCategoria(obj.getString("nombre"));
+                listaCategorias.add(categoria);
+            }
+            return listaCategorias;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
+
+    public static List<Rol> obtenerRolesExterno(String json, Context ctx) {
+        Log.v("JSON_roles",json);
+        List<Rol> listaRoles = new ArrayList<Rol>();
+
+        try {
+            JSONArray rolesJSON = new JSONArray(json);
+            for (int i = 0; i < rolesJSON.length(); i++) {
+                JSONObject obj = rolesJSON.getJSONObject(i);
+                Rol rol = new Rol();
+                rol.setIdRol(obj.getInt("cod"));
+                rol.setDescripcion(obj.getString("descripcion"));
+                rol.setNum(obj.getInt("numero"));
+                listaRoles.add(rol);
+            }
+            return listaRoles;
         } catch (Exception e) {
             Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
                     .show();
@@ -235,6 +338,28 @@ public class consumoWSG14 {
     }
 
 
+    public static List<Usuario> obtenerUsuariosExterno(String json, Context ctx) {
+
+        List<Usuario> listaUsuarios = new ArrayList<Usuario>();
+
+        try {
+            JSONArray usuariosJSON = new JSONArray(json);
+            for (int i = 0; i < usuariosJSON.length(); i++) {
+                JSONObject obj = usuariosJSON.getJSONObject(i);
+                Usuario usuario = new Usuario();
+                usuario.setCodUsuario(obj.getInt("cod"));
+                usuario.setCorreo(obj.getString("correo"));
+                usuario.setNombreUsu(obj.getString("name"));
+                usuario.setContrasena(obj.getString("contrasena"));
+                listaUsuarios.add(usuario);
+            }
+            return listaUsuarios;
+        } catch (Exception e) {
+            Toast.makeText(ctx, "Error en parseOO de JSON", Toast.LENGTH_LONG)
+                    .show();
+            return null;
+        }
+    }
 //    public static void insertarNotaLocal(String url, JSONObject obj, Context ctx) {
 //        String respuesta = obtenerRespuestaPost(url, obj, ctx);
 //        try {
