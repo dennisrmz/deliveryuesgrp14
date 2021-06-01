@@ -11,12 +11,6 @@
             android:inputType="number" />
     </TableRow>
     <TableRow>
-        <TextView android:text="Codigo del local" />
-        <EditText
-            android:id="@+id/editCodLocal"
-            android:inputType="number" />
-    </TableRow>
-    <TableRow>
         <TextView android:text="Precio del combo" />
         <EditText
             android:id="@+id/editPrec"
@@ -29,7 +23,14 @@
             android:inputType="text"
             android:maxLength="120" />
     </TableRow>
-
+    <TableRow>
+        <TextView android:text="Codigo local:" />
+        <Spinner
+            android:id="@+id/comboLocales"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </TableRow>
     <TableRow>
         <Button
             android:onClick="actualizarMenu"
