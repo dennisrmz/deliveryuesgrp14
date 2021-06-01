@@ -23,6 +23,7 @@ public class CategoriaConsultarActivity extends AppCompatActivity {
     static List<Categoria> listaCategorias;
     static List<String> nombreCategorias;
     ListView listViewCategorias;
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//categoriaConsultar.php";
     private final String urlLocal = "http://192.168.1.3/ServicePDM/categoriaConsultar.php";
     @SuppressLint("NewApi")
     @Override
@@ -60,8 +61,26 @@ public class CategoriaConsultarActivity extends AppCompatActivity {
         String cod_categ = codCategoria.getText().toString();
         url = urlLocal;
         if(cod_categ != ""){
-            url = urlLocal + "?cod_opcion=" + cod_categ;
+            url = urlLocal + "?cod_categoria=" + cod_categ;
         }
+        String categoria = consumoWSG14.obtenerRespuestaPeticion(url, this);
+        try {
+            listaCategorias.addAll(consumoWSG14.obtenerCategoriasExterno(categoria, this));
+            actualizarListView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void servicioWEB(View v) {
+        String url = "";
+        String cod_categ = codCategoria.getText().toString();
+        // it was the first button
+        url = urlWeb;
+        if(!cod_categ.equals("")){
+            url = urlWeb + "?cod_categoria=" + cod_categ;
+        }
+
         String categoria = consumoWSG14.obtenerRespuestaPeticion(url, this);
         try {
             listaCategorias.addAll(consumoWSG14.obtenerCategoriasExterno(categoria, this));

@@ -25,6 +25,7 @@ public class UsuarioConsultarActivity extends AppCompatActivity {
     static List<String> nombreUsuarios;
     ListView listViewUsuarios;
     private final String urlLocal = "http://192.168.1.3/ServicePDM/usuarioConsultar.php";
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//usuarioConsultar.php";
     @SuppressLint("NewApi")
 
     @Override
@@ -69,6 +70,23 @@ public class UsuarioConsultarActivity extends AppCompatActivity {
         url = urlLocal;
         if(cod_user != ""){
             url = urlLocal + "?email_user=" + cod_user;
+        }
+        String user = consumoWSG14.obtenerRespuestaPeticion(url, this);
+        try {
+            listaUsuarios.addAll(consumoWSG14.obtenerUsuariosExterno(user, this));
+            actualizarListView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void servicioWEB(View v) {
+        String url = "";
+        // it was the first button
+        String cod_user = editCorreo.getText().toString();
+        url = urlWeb;
+        if(cod_user != ""){
+            url = urlWeb + "?email_user=" + cod_user;
         }
         String user = consumoWSG14.obtenerRespuestaPeticion(url, this);
         try {

@@ -26,6 +26,7 @@ public class RolConsultarActivity extends AppCompatActivity {
     static List<String> nombreRoles;
     ListView listViewRoles;
     private final String urlLocal = "http://192.168.1.3/ServicePDM/rolConsultar.php";
+    private final String urlWeb = "https://pdmgrupo14.000webhostapp.com//rolConsultar.php";
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +65,25 @@ public class RolConsultarActivity extends AppCompatActivity {
         Log.v("COD_ROLE", cod_role);
         if(!cod_role.trim().isEmpty()){
             url = urlLocal + "?cod_opcion=" + cod_role;
+        }
+        Log.v("URL_PETICION",url);
+        String role = consumoWSG14.obtenerRespuestaPeticion(url, this);
+        try {
+            listaRoles.addAll(consumoWSG14.obtenerRolesExterno(role, this));
+            actualizarListView();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void servicioWEB(View v) {
+        String url = "";
+        // it was the first button
+        String cod_role = editIdRol.getText().toString();
+        url = urlWeb;
+        Log.v("COD_ROLE", cod_role);
+        if(!cod_role.trim().isEmpty()){
+            url = urlWeb + "?cod_opcion=" + cod_role;
         }
         Log.v("URL_PETICION",url);
         String role = consumoWSG14.obtenerRespuestaPeticion(url, this);
